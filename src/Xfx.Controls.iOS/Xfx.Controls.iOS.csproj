@@ -97,6 +97,7 @@
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\UIViewExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\XfxEntryRenderer_Touch.cs" />
     <Compile Include="Renderers\XfxComboBoxRenderer_Touch.cs" />
   </ItemGroup>
   <ItemGroup>
