@@ -13,6 +13,7 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
  - [Getting Started](#getting-started)
      - [Android](#android)
 	 - [iOS](#ios)
+ - [Demos](#demos)
  - [Contributions / Thanks](#contributions--thanks)
  - [License](#license)
 
@@ -39,6 +40,8 @@ In your AppDelegate, initialize XfxControls just before initializing Xamarin For
 XfxControls.Init();
 global::Xamarin.Forms.Forms.Init();
 ```
+
+###Demos###
 
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.ios.gif)
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.droid.gif)

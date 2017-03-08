@@ -10,6 +10,9 @@
 # Xamarin Components
 Components/
 
+# Nuget Releases
+*.nupkg
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
