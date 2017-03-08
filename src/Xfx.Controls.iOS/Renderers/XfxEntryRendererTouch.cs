@@ -9,48 +9,39 @@ using Xfx;
 using Xfx.Controls.iOS.Controls;
 using Xfx.Controls.iOS.Extensions;
 using Xfx.Controls.iOS.Renderers;
-using Color = Xamarin.Forms.Color;
 
-[assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRenderer_Touch))]
+[assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererTouch))]
 
 namespace Xfx.Controls.iOS.Renderers
 {
-    public class XfxEntryRenderer_Touch : ViewRenderer<XfxEntry, FloatLabeledTextField>
+    public class XfxEntryRendererTouch : ViewRenderer<XfxEntry, FloatLabeledTextField>
     {
         private readonly CGColor _defaultLineColor = Color.FromHex("#666666").ToCGColor();
-        private FloatLabeledTextField _nativeView;
+        private readonly CGColor _editingUnderlineColor = UIColor.Blue.CGColor;
         private UIColor _defaultPlaceholderColor;
         private UIColor _defaultTextColor;
-        private readonly CGColor _editingUnderlineColor = UIColor.Blue.CGColor;
-        private bool _hasFocus;
         private bool _hasError;
+        private bool _hasFocus;
 
         private IElementController ElementController => Element as IElementController;
-
-        private new FloatLabeledTextField NativeView
-        {
-            get { return _nativeView ?? (_nativeView = InitializeNativeView()); }
-        }
-
+        
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
-
+            
+            // unsubscribe
             if (e.OldElement != null)
             {
-                // unsubscribe
-                if (e.OldElement != null)
-                {
-                    NativeView.EditingDidBegin -= OnEditingDidBegin;
-                    NativeView.EditingDidEnd -= OnEditingDidEnd;
-                    NativeView.EditingChanged -= ViewOnEditingChanged;
-                }
+                Control.EditingDidBegin -= OnEditingDidBegin;
+                Control.EditingDidEnd -= OnEditingDidEnd;
+                Control.EditingChanged -= ViewOnEditingChanged;
             }
-
+            
             if (e.NewElement != null)
             {
-                SetNativeControl(NativeView);
-
+                var ctrl = CreateNativeControl();
+                SetNativeControl(ctrl);
+                
                 SetIsPassword();
                 SetText();
                 SetHintText();
@@ -62,11 +53,21 @@ namespace Xfx.Controls.iOS.Renderers
                 SetErrorText();
                 SetFont();
 
-                NativeView.ErrorTextIsVisible = true;
-                NativeView.EditingDidBegin += OnEditingDidBegin;
-                NativeView.EditingDidEnd += OnEditingDidEnd;
-                NativeView.EditingChanged += ViewOnEditingChanged;
+                Control.ErrorTextIsVisible = true;
+                Control.EditingDidBegin += OnEditingDidBegin;
+                Control.EditingDidEnd += OnEditingDidEnd;
+                Control.EditingChanged += ViewOnEditingChanged;
             }
+        }
+
+        protected virtual FloatLabeledTextField CreateNativeControl()
+        {
+            var view = new FloatLabeledTextField();
+            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
+                SetAutomationId(Element.AutomationId);
+            _defaultPlaceholderColor = view.FloatingLabelTextColor;
+            _defaultTextColor = view.TextColor;
+            return view;
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -74,73 +75,41 @@ namespace Xfx.Controls.iOS.Renderers
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == Entry.PlaceholderProperty.PropertyName)
-            {
                 SetHintText();
-            }
             else if (e.PropertyName == XfxEntry.ErrorTextProperty.PropertyName)
-            {
                 SetErrorText();
-            }
             else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
-            {
                 SetTextColor();
-            }
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-            {
                 SetBackgroundColor();
-            }
             else if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
-            {
                 SetIsPassword();
-            }
             else if (e.PropertyName == Entry.TextProperty.PropertyName)
-            {
                 SetText();
-            }
             else if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
-            {
                 SetPlaceholderColor();
-            }
             else if (e.PropertyName == Xamarin.Forms.InputView.KeyboardProperty.PropertyName)
-            {
                 SetKeyboard();
-            }
             else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
-            {
                 SetHorizontalTextAlignment();
-            }
-            else if (e.PropertyName == Entry.FontAttributesProperty.PropertyName ||
-                     e.PropertyName == Entry.FontFamilyProperty.PropertyName ||
-                     e.PropertyName == Entry.FontSizeProperty.PropertyName)
-            {
+            else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
+                     (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
+                     (e.PropertyName == Entry.FontSizeProperty.PropertyName))
                 SetFont();
-            }
         }
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
         {
             // TODO : Florell, Chase (Contractor) 02/21/17 unfocus
             _hasFocus = false;
-            NativeView.UnderlineColor = GetUnderlineColorForState();
+            Control.UnderlineColor = GetUnderlineColorForState();
         }
 
         private void OnEditingDidBegin(object sender, EventArgs eventArgs)
         {
             // TODO : Florell, Chase (Contractor) 02/21/17 focus
             _hasFocus = true;
-            NativeView.UnderlineColor = GetUnderlineColorForState();
-        }
-
-        private FloatLabeledTextField InitializeNativeView()
-        {
-            var view = new FloatLabeledTextField();
-            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-            {
-                SetAutomationId(Element.AutomationId);
-            }
-            _defaultPlaceholderColor = view.FloatingLabelTextColor;
-            _defaultTextColor = view.TextColor;
-            return view;
+            Control.UnderlineColor = GetUnderlineColorForState();
         }
 
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
@@ -151,9 +120,9 @@ namespace Xfx.Controls.iOS.Renderers
         private void SetErrorText()
         {
             _hasError = !string.IsNullOrEmpty(Element.ErrorText);
-            NativeView.UnderlineColor = GetUnderlineColorForState();
-            NativeView.ErrorTextIsVisible = _hasError;
-            NativeView.ErrorText = Element.ErrorText;
+            Control.UnderlineColor = GetUnderlineColorForState();
+            Control.ErrorTextIsVisible = _hasError;
+            Control.ErrorText = Element.ErrorText;
         }
 
         private CGColor GetUnderlineColorForState()
@@ -165,42 +134,42 @@ namespace Xfx.Controls.iOS.Renderers
         private void SetBackgroundColor()
         {
             NativeView.BackgroundColor = Element.BackgroundColor.ToUIColor();
-            NativeView.UnderlineColor = _defaultLineColor;
+            Control.UnderlineColor = _defaultLineColor;
         }
 
         private void SetText()
         {
-            if (NativeView.Text != Element.Text)
-            {
-                NativeView.Text = Element.Text;
-            }
+            if (Control.Text != Element.Text)
+                Control.Text = Element.Text;
         }
 
         private void SetIsPassword()
         {
-            NativeView.SecureTextEntry = Element.IsPassword;
+            Control.SecureTextEntry = Element.IsPassword;
         }
 
         private void SetHintText()
         {
-            NativeView.Placeholder = Element.Placeholder;
+            Control.Placeholder = Element.Placeholder;
         }
 
         private void SetPlaceholderColor()
         {
-            NativeView.FloatingLabelTextColor = Element.PlaceholderColor == Color.Default ?
-                _defaultPlaceholderColor :
-                Element.PlaceholderColor.ToUIColor();
+            Control.FloatingLabelTextColor = Element.PlaceholderColor == Color.Default
+                ? _defaultPlaceholderColor
+                : Element.PlaceholderColor.ToUIColor();
         }
 
         private void SetTextColor()
         {
-            NativeView.TextColor = Element.TextColor == Color.Default ? _defaultTextColor : Element.TextColor.ToUIColor();
+            Control.TextColor = Element.TextColor == Color.Default
+                ? _defaultTextColor
+                : Element.TextColor.ToUIColor();
         }
 
         private void SetFont()
         {
-            NativeView.Font = Element.ToUIFont();
+            Control.Font = Element.ToUIFont();
         }
 
         private void SetHorizontalTextAlignment()
@@ -222,27 +191,27 @@ namespace Xfx.Controls.iOS.Renderers
         private void SetKeyboard()
         {
             var kbd = Element.Keyboard.ToNative();
-            NativeView.KeyboardType = kbd;
+            Control.KeyboardType = kbd;
             Control.InputAccessoryView = kbd == UIKeyboardType.NumberPad ? NumberpadAccessoryView() : null;
-            NativeView.ShouldReturn = delegate { return InvokeCompleted(); };
+            Control.ShouldReturn = InvokeCompleted;
         }
 
         private UIToolbar NumberpadAccessoryView()
         {
-            return new UIToolbar(new RectangleF(0.0f, 0.0f, (float)Control.Frame.Size.Width, 44.0f))
+            return new UIToolbar(new RectangleF(0.0f, 0.0f, (float) Control.Frame.Size.Width, 44.0f))
             {
                 Items = new[]
                 {
                     new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
-                    new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate {InvokeCompleted();})
+                    new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate { InvokeCompleted(null); })
                 }
             };
         }
 
-        private bool InvokeCompleted()
+        private bool InvokeCompleted(UITextField textField)
         {
             Control.ResignFirstResponder();
-            ((IEntryController)Element).SendCompleted();
+            ((IEntryController) Element).SendCompleted();
             return true;
         }
     }

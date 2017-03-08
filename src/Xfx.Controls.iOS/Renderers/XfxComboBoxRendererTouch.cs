@@ -12,11 +12,11 @@ using Xfx.Controls.iOS.Extensions;
 using Xfx.Controls.iOS.Renderers;
 using Color = Xamarin.Forms.Color;
 
-[assembly: ExportRenderer(typeof(XfxComboBox), typeof(XfxComboBoxRenderer_Touch))]
+[assembly: ExportRenderer(typeof(XfxComboBox), typeof(XfxComboBoxRendererTouch))]
 
 namespace Xfx.Controls.iOS.Renderers
 {
-    public class XfxComboBoxRenderer_Touch : ViewRenderer<XfxComboBox, MbAutoCompleteTextField>
+    public class XfxComboBoxRendererTouch : ViewRenderer<XfxComboBox, MbAutoCompleteTextField>
     {
         private readonly CGColor _defaultLineColor = Color.Gray.ToCGColor();
         private UIColor _defaultPlaceholderColor;
@@ -26,16 +26,13 @@ namespace Xfx.Controls.iOS.Renderers
         private bool _hasFocus;
         private bool _hasError;
 
-        public XfxComboBoxRenderer_Touch()
+        public XfxComboBoxRendererTouch()
         {
             // ReSharper disable once VirtualMemberCallInContructor
             Frame = new RectangleF(0, 20, 320, 40);
         }
 
-        private new MbAutoCompleteTextField NativeView
-        {
-            get { return _nativeView ?? (_nativeView = InitializeNativeView()); }
-        }
+        private new MbAutoCompleteTextField NativeView => _nativeView ?? (_nativeView = InitializeNativeView());
 
         private IElementController ElementController => Element as IElementController;
 

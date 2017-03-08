@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace Xfx.Controls.Example.iOS
@@ -22,6 +18,7 @@ namespace Xfx.Controls.Example.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            XfxControls.Init();
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

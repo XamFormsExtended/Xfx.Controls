@@ -16,26 +16,23 @@ using Xfx.Controls.Droid.Renderers;
 using Application = Android.App.Application;
 using FormsAppCompat = Xamarin.Forms.Platform.Android.AppCompat;
 
-[assembly: ExportRenderer(typeof (XfxEntry), typeof (XfxEntryRenderer_Droid))]
+[assembly: ExportRenderer(typeof (XfxEntry), typeof (XfxEntryRendererDroid))]
 
 namespace Xfx.Controls.Droid.Renderers
 {
-    public class XfxEntryRenderer_Droid : FormsAppCompat.ViewRenderer<XfxEntry, TextInputLayout>,
+    public class XfxEntryRendererDroid : FormsAppCompat.ViewRenderer<XfxEntry, TextInputLayout>,
         ITextWatcher,
         TextView.IOnEditorActionListener
     {
         private ColorStateList _defaultHintColor;
         private ColorStateList _defaultTextColor;
 
-        public XfxEntryRenderer_Droid()
+        public XfxEntryRendererDroid()
         {
             AutoPackage = false;
         }
 
-        private EditText EditText
-        {
-            get { return Control.EditText; }
-        }
+        private EditText EditText => Control.EditText;
 
         public bool OnEditorAction(TextView v, ImeAction actionId, KeyEvent e)
         {

@@ -25,7 +25,9 @@
     <ConsolePause>false</ConsolePause>
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
-    <MtouchDebug>true</MtouchDebug>
+    <MtouchDebug>True</MtouchDebug>
+    <IOSDebugOverWiFi>False</IOSDebugOverWiFi>
+    <IOSDebuggerPort>10000</IOSDebuggerPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -98,6 +100,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Xfx.Controls.iOS\Xfx.Controls.iOS.csproj">
+      <Project>{33fdb41c-6a13-4548-954d-7a366d4b874f}</Project>
+      <Name>Xfx.Controls.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Xfx.Controls\Xfx.Controls.csproj">
+      <Project>{7d05fb35-f383-48f1-bc5d-499b19f1fff4}</Project>
+      <Name>Xfx.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xfx.Controls.Example\Xfx.Controls.Example.csproj">
       <Name>Xfx.Controls.Example</Name>
     </ProjectReference>

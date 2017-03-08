@@ -9,16 +9,13 @@ using Xamarin.Forms.Platform.Android;
 using Xfx;
 using Xfx.Controls.Droid.Renderers;
 
-[assembly: ExportRenderer(typeof (XfxComboBox), typeof (XfxComboBoxRenderer_Droid))]
+[assembly: ExportRenderer(typeof (XfxComboBox), typeof (XfxComboBoxRendererDroid))]
 
 namespace Xfx.Controls.Droid.Renderers
 {
-    public class XfxComboBoxRenderer_Droid : XfxEntryRenderer_Droid
+    public class XfxComboBoxRendererDroid : XfxEntryRendererDroid
     {
-        private AutoCompleteTextView AutoComplete
-        {
-            get { return (AutoCompleteTextView) Control.EditText; }
-        }
+        private AutoCompleteTextView AutoComplete => (AutoCompleteTextView) Control.EditText;
 
         protected override TextInputLayout CreateNativeControl()
         {

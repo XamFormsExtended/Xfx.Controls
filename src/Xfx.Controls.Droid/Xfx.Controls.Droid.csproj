@@ -14,7 +14,6 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -113,8 +112,8 @@
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\KeyboardExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\XfxComboBoxRenderer_Droid.cs" />
-    <Compile Include="Renderers\XfxEntryRenderer_Droid.cs" />
+    <Compile Include="Renderers\XfxComboBoxRendererDroid.cs" />
+    <Compile Include="Renderers\XfxEntryRendererDroid.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxFilter.cs" />
   </ItemGroup>
