@@ -3,10 +3,10 @@
 *Description*
 Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms Controls.
 
-|  | iOS | Android | UWP | Mac |
------
-| XfxEntry | :white_check_mark: | :white_check_mark: | :x: | :x:|
-| XfxComboBox | :white_check_mark: | :white_check_mark: | :x: | :x:|
+|               | iOS                | Android            | UWP | Mac |
+| ------------- |:------------------:|:------------------:|:---:|:---:|
+| XfxEntry      | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| XfxComboBox   | :white_check_mark: | :white_check_mark: | :x: | :x: |
 
 ###Getting Started###
 
@@ -30,8 +30,8 @@ XfxControls.Init();
 global::Xamarin.Forms.Forms.Init();
 ```
 
-![](resources\xfx.controls.droid.gif)
-![](resources\xfx.controls.ios.gif)
+![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.ios.gif)
+![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.droid.gif)
 
 ###License###
 
