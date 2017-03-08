@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
+             x:Class="Xfx.Controls.Example.MainPage">
+  <ScrollView Padding="8">
+    <StackLayout>
+      <xfx:XfxComboBox Placeholder="Enter your email address"
+                       Text="{Binding EmailAddress}"
+                       ItemsSource="{Binding EmailSuggestions}"
+                       SortingAlgorithm="{Binding SortingAlgorithm}"/>
+      <xfx:XfxEntry Placeholder="Enter your name"
+                    Text="{Binding Name}"
+                    ErrorText="{Binding NameErrorText}"/>
+    </StackLayout>
+  </ScrollView>
+</ContentPage>
