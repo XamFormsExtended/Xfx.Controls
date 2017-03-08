@@ -10,7 +10,7 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
 
 -----
 
- - [Getting Started](#gettingstarted)
+ - [Getting Started](#getting-started)
      - [Android](#android)
 	 - [iOS](#ios)
  - [Contributions / Thanks](#contributions--thanks)
