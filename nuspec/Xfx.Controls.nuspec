@@ -1,21 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>Xfx.Controls</id>
-        <version>1.0.0</version>
-        <title>Xamarin Forms Extended Controls</title>
-        <authors>Chase Florell</authors>
-        <owners>Chase Florell</owners>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Xamarin Forms Extended Controls </description>
-    </metadata>
-    <files>
-        <file src="..\src\Xfx.Controls.Droid\bin\release\Xfx.Controls.Droid.dll" target="lib\MonoAndroid" />
-        <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" target="lib\MonoAndroid" />
-      
-        <file src="..\src\Xfx.Controls.iOS\bin\iPhone\release\Xfx.Controls.iOS.dll" target="lib\Xamarin.iOS10" />
-        <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" target="lib\Xamarin.iOS10" />
-      
-        <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" target="lib\portable-net4+wp8+win8" />
-    </files>
+  <metadata>
+    <id>Xfx.Controls</id>
+    <version>1.0.0.2</version>
+    <title>Xamarin Forms Extended Controls</title>
+    <authors>Chase Florell</authors>
+    <owners>Chase Florell</owners>
+    <projectUrl>https://github.com/XamFormsExtended/Xfx.Controls</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Xamarin Forms Extended Controls</description>
+    <dependencies>
+      <dependency id="Xamarin.Forms" version="2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <!--Portable-->
+    <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" 
+          target="lib\portable-net45+win8+wpa81" />
+    
+    <!-- Android-->
+    <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" 
+          target="lib\MonoAndroid\Xfx.Controls.dll" />
+    <file src="..\src\Xfx.Controls.Droid\bin\release\Xfx.Controls.Droid.dll"
+          target="lib\MonoAndroid\Xfx.Controls.Droid.dll" />
+    
+    <!-- iOS-->
+    <file src="..\src\Xfx.Controls\bin\release\Xfx.Controls.dll" 
+          target="lib\Xamarin.iOS10\Xfx.Controls.dll" />
+    <file src="..\src\Xfx.Controls.iOS\bin\iPhone\release\Xfx.Controls.iOS.dll"
+          target="lib\Xamarin.iOS10\Xfx.Controls.iOS.dll" />
+  </files>
 </package>

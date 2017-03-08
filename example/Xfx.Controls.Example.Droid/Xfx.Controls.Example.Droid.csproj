@@ -106,6 +106,14 @@
       <HintPath>..\..\packages\Xamarin.Forms.2.3.3.193\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Xfx.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xfx.Controls.1.0.0.1\lib\MonoAndroid\Xfx.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xfx.Controls.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xfx.Controls.1.0.0.1\lib\MonoAndroid\Xfx.Controls.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -127,14 +135,6 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Xfx.Controls.Droid\Xfx.Controls.Droid.csproj">
-      <Project>{ae34d725-a613-46c6-b169-6fd3e31a1615}</Project>
-      <Name>Xfx.Controls.Droid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Xfx.Controls\Xfx.Controls.csproj">
-      <Project>{7d05fb35-f383-48f1-bc5d-499b19f1fff4}</Project>
-      <Name>Xfx.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xfx.Controls.Example\Xfx.Controls.Example.csproj">
       <Name>Xfx.Controls.Example</Name>
     </ProjectReference>
