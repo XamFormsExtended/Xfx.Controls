@@ -50,4 +50,4 @@ global::Xamarin.Forms.Forms.Init();
 
 ##License##
 
-Licensed MTI, please review the [license](license) file.
+Licensed MTI, please review the [license](https://github.com/XamFormsExtended/Xfx.Controls/blob/master/LICENSE) file.
