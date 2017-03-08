@@ -116,6 +116,7 @@
     <Compile Include="Renderers\XfxEntryRendererDroid.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxFilter.cs" />
+    <Compile Include="XfxControls.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,10 +1,5 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 namespace Xfx.Controls.Example.Droid
@@ -16,9 +11,7 @@ namespace Xfx.Controls.Example.Droid
         {
             base.OnCreate(bundle);
 
-            // absolutely nothing fancy going on here, just make sure that your 
-            // android app is using an AppCompat theme.
-
+            XfxControls.Init();
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }

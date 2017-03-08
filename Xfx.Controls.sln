@@ -21,12 +21,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sln", "sln", "{435387BA-775
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		LICENSE = LICENSE
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{32960BB1-CAD4-4EE3-B455-D89B93A486F3}"
 	ProjectSection(SolutionItems) = preProject
 		.github\ISSUE_TEMPLATE.md = .github\ISSUE_TEMPLATE.md
 		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{3FC53E02-2385-4040-8BC6-0C79F0FD2AF0}"
+	ProjectSection(SolutionItems) = preProject
+		resources\xfx.controls.droid.gif = resources\xfx.controls.droid.gif
+		resources\xfx.controls.ios.gif = resources\xfx.controls.ios.gif
 	EndProjectSection
 EndProject
 Global
@@ -208,5 +216,6 @@ Global
 		{899DFC4A-8823-402A-A5BE-562E8ACD81C6} = {C487A1B3-B27D-4DDE-B2C8-FF3D786AFB98}
 		{FA0CBFEC-8A9A-4BAE-BBFF-C99AA6D92FDF} = {C487A1B3-B27D-4DDE-B2C8-FF3D786AFB98}
 		{32960BB1-CAD4-4EE3-B455-D89B93A486F3} = {435387BA-775F-45F1-9F00-030885761C1A}
+		{3FC53E02-2385-4040-8BC6-0C79F0FD2AF0} = {435387BA-775F-45F1-9F00-030885761C1A}
 	EndGlobalSection
 EndGlobal
