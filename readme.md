@@ -1,4 +1,4 @@
-##Xamarin Forms Extended Controls##
+#Xamarin Forms Extended Controls#
 
 *Description*
 Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms Controls.
@@ -8,9 +8,19 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
 | XfxEntry      | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | XfxComboBox   | :white_check_mark: | :white_check_mark: | :x: | :x: |
 
-###Getting Started###
+-----
 
-**Android**
+ - [Getting Started](#GettingStarted)
+     - [Android](#Android)
+	 - [iOS](#iOS)
+ - [Contributions / Thanks](#ContributionsThanks)
+ - [License](#License)
+
+-----
+
+##Getting Started##
+
+###Android###
 
 In your MainActivity, initialize XfxControls just before initializing Xamarin Forms
 
@@ -21,7 +31,7 @@ global::Xamarin.Forms.Forms.Init(this, bundle);
 
 *note: XfxEntry and XfxComboBox REQUIRES your app to use an AppCompat theme.*
 
-**iOS**
+###iOS###
 
 In your AppDelegate, initialize XfxControls just before initializing Xamarin Forms
 
@@ -33,6 +43,11 @@ global::Xamarin.Forms.Forms.Init();
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.ios.gif)
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.droid.gif)
 
-###License###
+##Contributions / Thanks##
+
+ - [@MarcBruins](https://github.com/MarcBruins)  for: [MBAutoComplete](https://github.com/MarcBruins/MBAutoComplete)
+ - [@gshackles](https://github.com/gshackles) for: [FloatLabeledEntry](https://github.com/gshackles/FloatLabeledEntry)
+
+##License##
 
 Licensed MTI, please review the [license](license) file.
