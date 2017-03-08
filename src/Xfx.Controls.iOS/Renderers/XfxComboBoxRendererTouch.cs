@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -8,23 +9,18 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using Xfx;
+using Xfx.Controls.iOS.Controls;
 using Xfx.Controls.iOS.Extensions;
 using Xfx.Controls.iOS.Renderers;
-using Color = Xamarin.Forms.Color;
 
 [assembly: ExportRenderer(typeof(XfxComboBox), typeof(XfxComboBoxRendererTouch))]
 
 namespace Xfx.Controls.iOS.Renderers
 {
-    public class XfxComboBoxRendererTouch : ViewRenderer<XfxComboBox, MbAutoCompleteTextField>
+    public class XfxComboBoxRendererTouch : XfxEntryRendererTouch
     {
-        private readonly CGColor _defaultLineColor = Color.Gray.ToCGColor();
-        private UIColor _defaultPlaceholderColor;
-        private UIColor _defaultTextColor;
-        private MbAutoCompleteTextField _nativeView;
-        private readonly CGColor _editingUnderlineColor = Color.Blue.ToCGColor();
-        private bool _hasFocus;
-        private bool _hasError;
+        private MbAutoCompleteTextField NativeControl => (MbAutoCompleteTextField)Control;
+        private XfxComboBox ComboBox => (XfxComboBox)Element;
 
         public XfxComboBoxRendererTouch()
         {
@@ -32,16 +28,13 @@ namespace Xfx.Controls.iOS.Renderers
             Frame = new RectangleF(0, 20, 320, 40);
         }
 
-        private new MbAutoCompleteTextField NativeView => _nativeView ?? (_nativeView = InitializeNativeView());
-
-        private IElementController ElementController => Element as IElementController;
-
-        private MbAutoCompleteTextField InitializeNativeView()
+        protected override FloatLabeledTextField CreateNativeControl()
         {
+            var element = (XfxComboBox)Element;
             var view = new MbAutoCompleteTextField
             {
                 AutoCompleteViewSource = new MbAutoCompleteDefaultDataSource(),
-                SortingAlgorithm = Element.SortingAlgorithm
+                SortingAlgorithm = element.SortingAlgorithm
             };
             if (!string.IsNullOrWhiteSpace(Element.AutomationId))
             {
@@ -49,8 +42,8 @@ namespace Xfx.Controls.iOS.Renderers
             }
             view.AutoCompleteViewSource.Selected += AutoCompleteViewSourceOnSelected;
 
-            _defaultPlaceholderColor = view.FloatingLabelTextColor;
-            _defaultTextColor = view.TextColor;
+            SetDefaultPlaceholderColor(view.FloatingLabelTextColor);
+            SetDefaultTextColor(view.TextColor);
             return view;
         }
 
@@ -59,40 +52,28 @@ namespace Xfx.Controls.iOS.Renderers
             base.Draw(rect);
             var scrollView = GetParentScrollView(Control);
             var ctrl = UIApplication.SharedApplication.GetTopViewController();
-            NativeView.Draw(ctrl, Layer, scrollView);
+            NativeControl.Draw(ctrl, Layer, scrollView);
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<XfxComboBox> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
             if (e.OldElement != null)
             {
                 // unsubscribe
-                NativeView.EditingDidBegin -= OnEditingDidBegin;
-                NativeView.EditingChanged -= OnEditingChanged;
-                NativeView.EditingDidEnd -= OnEditingDidEnd;
-                NativeView.AutoCompleteViewSource.Selected -= AutoCompleteViewSourceOnSelected;
+                NativeControl.AutoCompleteViewSource.Selected -= AutoCompleteViewSourceOnSelected;
+                var elm = (XfxComboBox)e.OldElement;
+                elm.CollectionChanged -= ItemsSourceCollectionChanged;
             }
 
             if (e.NewElement != null)
             {
-                SetNativeControl(NativeView);
-                SetText();
-                SetPlaceholderText();
-                SetTextColor();
-                SetBackgroundColor();
-                SetPlaceholderColor();
-                SetKeyboard();
-                SetErrorText();
-                SetHorizontalAlignment();
                 SetItemsSource();
                 SetThreshold();
-                SetFont();
+                KillPassword();
 
-                NativeView.ErrorTextIsVisible = true;
-                NativeView.EditingDidBegin += OnEditingDidBegin;
-                NativeView.EditingChanged += OnEditingChanged;
-                NativeView.EditingDidEnd += OnEditingDidEnd;
+                var elm = (XfxComboBox)e.NewElement;
+                elm.CollectionChanged += ItemsSourceCollectionChanged;
             }
         }
 
@@ -101,193 +82,46 @@ namespace Xfx.Controls.iOS.Renderers
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
-            {
-                if (Element.IsPassword)
-                    throw new NotImplementedException("Cannot set IsPassword on a XfxComboBox");
-            }
-
-            if (e.PropertyName == Entry.TextProperty.PropertyName)
-            {
-                SetText();
-            }
-
-            if (e.PropertyName == Entry.TextColorProperty.PropertyName)
-            {
-                SetTextColor();
-            }
-
-            if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
-            {
-                SetPlaceholderColor();
-            }
-
-            if (e.PropertyName == Xamarin.Forms.InputView.KeyboardProperty.PropertyName)
-            {
-                SetKeyboard();
-            }
-
+                KillPassword();
             if (e.PropertyName == XfxComboBox.ItemsSourceProperty.PropertyName)
-            {
                 SetItemsSource();
-            }
-
-            if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
-            {
-                SetHorizontalAlignment();
-            }
-
-            if (e.PropertyName == XfxEntry.ErrorTextProperty.PropertyName)
-            {
-                SetErrorText();
-            }
-
-            if (e.PropertyName == XfxComboBox.ThresholdProperty.PropertyName)
-            {
+            else if (e.PropertyName == XfxComboBox.ThresholdProperty.PropertyName)
                 SetThreshold();
-            }
-
-            if (e.PropertyName == Entry.FontAttributesProperty.PropertyName ||
-                e.PropertyName == Entry.FontFamilyProperty.PropertyName ||
-                e.PropertyName == Entry.FontSizeProperty.PropertyName)
-            {
-                SetFont();
-            }
-        }
-
-        private void SetFont()
-        {
-            _nativeView.Font = Element.ToUIFont();
         }
 
         private void SetThreshold()
         {
-            NativeView.Threshold = Element.Threshold;
+            NativeControl.Threshold = ComboBox.Threshold;
         }
 
         private void SetItemsSource()
         {
-            var items = Element.ItemsSource.ToList();
-            NativeView.UpdateItems(items);
+            var items = ComboBox.ItemsSource.ToList();
+            NativeControl.UpdateItems(items);
         }
 
-        private void SetHorizontalAlignment()
+        private void KillPassword()
         {
-            switch (Element.HorizontalTextAlignment)
-            {
-                case TextAlignment.Center:
-                    Control.TextAlignment = UITextAlignment.Center;
-                    break;
-                case TextAlignment.End:
-                    Control.TextAlignment = UITextAlignment.Right;
-                    break;
-                default:
-                    Control.TextAlignment = UITextAlignment.Left;
-                    break;
-            }
+            if (Element.IsPassword)
+                throw new NotImplementedException("Cannot set IsPassword on a XfxComboBox");
         }
 
-        private void SetBackgroundColor()
+        private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            NativeView.BackgroundColor = Element.BackgroundColor.ToUIColor();
-            NativeView.UnderlineColor = _defaultLineColor;
+            SetItemsSource();
         }
 
-        private void SetErrorText()
-        {
-            _hasError = !string.IsNullOrEmpty(Element.ErrorText);
-            NativeView.UnderlineColor = GetUnderlineColorForState();
-            NativeView.ErrorTextIsVisible = _hasError;
-            NativeView.ErrorText = Element.ErrorText;
-        }
-
-        private void SetPlaceholderColor()
-        {
-            NativeView.FloatingLabelTextColor = Element.PlaceholderColor == Color.Default ?
-                _defaultPlaceholderColor :
-                Element.PlaceholderColor.ToUIColor();
-        }
-
-        private void SetTextColor()
-        {
-            NativeView.TextColor = Element.TextColor == Color.Default
-                ? _defaultTextColor
-                : Element.TextColor.ToUIColor();
-        }
-
-        private void SetPlaceholderText()
-        {
-            NativeView.Placeholder = Element.Placeholder;
-        }
-
-        private void SetText()
-        {
-            if (NativeView.Text != Element.Text)
-            {
-                NativeView.Text = Element.Text;
-            }
-        }
-
-        private UIScrollView GetParentScrollView(UIView element)
+        private static UIScrollView GetParentScrollView(UIView element)
         {
             if (element.Superview == null) return null;
             var scrollView = element.Superview as UIScrollView;
             return scrollView ?? GetParentScrollView(element.Superview);
         }
 
-        private CGColor GetUnderlineColorForState()
-        {
-            if (_hasError) return UIColor.Red.CGColor;
-            return _hasFocus ? _editingUnderlineColor : _defaultLineColor;
-        }
-
         private void AutoCompleteViewSourceOnSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            Element.OnItemSelectedInternal(Element, args);
+            ComboBox.OnItemSelectedInternal(Element, args);
             // TODO : Florell, Chase (Contractor) 02/15/17 SET FOCUS
-        }
-
-        private void OnEditingChanged(object sender, EventArgs eventArgs)
-        {
-            ElementController?.SetValueFromRenderer(Entry.TextProperty, Control.Text);
-        }
-
-        private void OnEditingDidEnd(object sender, EventArgs eventArgs)
-        {
-            _hasFocus = false;
-            NativeView.UnderlineColor = GetUnderlineColorForState();
-        }
-
-        private void OnEditingDidBegin(object sender, EventArgs eventArgs)
-        {
-            _hasFocus = true;
-            NativeView.UnderlineColor = GetUnderlineColorForState();
-        }
-
-        private void SetKeyboard()
-        {
-            var kbd = Element.Keyboard.ToNative();
-            NativeView.KeyboardType = kbd;
-            Control.InputAccessoryView = kbd == UIKeyboardType.NumberPad ? NumberpadAccessoryView() : null;
-            NativeView.ShouldReturn = delegate { return InvokeCompleted(); };
-        }
-
-        private UIToolbar NumberpadAccessoryView()
-        {
-            return new UIToolbar(new RectangleF(0.0f, 0.0f, (float)Control.Frame.Size.Width, 44.0f))
-            {
-                Items = new[]
-                {
-                    new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
-                    new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate {InvokeCompleted();})
-                }
-            };
-        }
-
-        private bool InvokeCompleted()
-        {
-            Control.ResignFirstResponder();
-            ((IEntryController)Element).SendCompleted();
-            return true;
         }
     }
 }

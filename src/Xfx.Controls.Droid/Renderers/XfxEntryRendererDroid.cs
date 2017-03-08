@@ -16,7 +16,7 @@ using Xfx.Controls.Droid.Renderers;
 using Application = Android.App.Application;
 using FormsAppCompat = Xamarin.Forms.Platform.Android.AppCompat;
 
-[assembly: ExportRenderer(typeof (XfxEntry), typeof (XfxEntryRendererDroid))]
+[assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererDroid))]
 
 namespace Xfx.Controls.Droid.Renderers
 {
@@ -36,7 +36,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         public bool OnEditorAction(TextView v, ImeAction actionId, KeyEvent e)
         {
-            if (actionId == ImeAction.Done || actionId == ImeAction.ImeNull && e.KeyCode == Keycode.Enter)
+            if ((actionId == ImeAction.Done) || ((actionId == ImeAction.ImeNull) && (e.KeyCode == Keycode.Enter)))
             {
                 Control.ClearFocus();
                 HideKeyboard();
@@ -55,7 +55,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         public virtual void OnTextChanged(ICharSequence s, int start, int before, int count)
         {
-            if (string.IsNullOrWhiteSpace(Element.Text) && s.Length() == 0) return;
+            if (string.IsNullOrWhiteSpace(Element.Text) && (s.Length() == 0)) return;
             ((IElementController) Element).SetValueFromRenderer(Entry.TextProperty, s.ToString());
         }
 
@@ -73,9 +73,7 @@ namespace Xfx.Controls.Droid.Renderers
         {
             var layout = (TextInputLayout) LayoutInflater.From(Context).Inflate(Resource.Layout.TextInputLayout, null);
             if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-            {
                 layout.EditText.ContentDescription = Element.AutomationId;
-            }
 
             SetDefaultHintColorStateList(layout.EditText.HintTextColors);
             SetDefaultTextColorStateList(layout.EditText.TextColors);
@@ -87,10 +85,7 @@ namespace Xfx.Controls.Droid.Renderers
             base.OnElementChanged(e);
 
             if (e.OldElement != null)
-            {
-                // unsubscribe
                 EditText.FocusChange -= ControlOnFocusChange;
-            }
 
             if (e.NewElement != null)
             {
@@ -103,6 +98,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetTextColor();
                 SetPlaceholderColor();
                 SetKeyboard();
+                SetBackgroundColor();
                 SetHorizontalTextAlignment();
                 SetErrorText();
                 SetFont();
@@ -123,47 +119,28 @@ namespace Xfx.Controls.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName == XfxEntry.ErrorTextProperty.PropertyName)
-            {
+            if (e.PropertyName == Entry.PlaceholderProperty.PropertyName)
+                SetHintText();
+            else if (e.PropertyName == XfxEntry.ErrorTextProperty.PropertyName)
                 SetErrorText();
-            }
-
-            if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
-            {
-                SetIsPassword();
-            }
-
-            if (e.PropertyName == Entry.TextProperty.PropertyName)
-            {
-                SetText();
-            }
-
-            if (e.PropertyName == Entry.TextColorProperty.PropertyName)
-            {
+            else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
                 SetTextColor();
-            }
-
-            if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
-            {
+            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+                SetBackgroundColor();
+            else if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
+                SetIsPassword();
+            else if (e.PropertyName == Entry.TextProperty.PropertyName)
+                SetText();
+            else if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
                 SetPlaceholderColor();
-            }
-
-            if (e.PropertyName == InputView.KeyboardProperty.PropertyName)
-            {
+            else if (e.PropertyName == InputView.KeyboardProperty.PropertyName)
                 SetKeyboard();
-            }
-
-            if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
-            {
+            else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
                 SetHorizontalTextAlignment();
-            }
-
-            if (e.PropertyName == Entry.FontAttributesProperty.PropertyName ||
-                e.PropertyName == Entry.FontFamilyProperty.PropertyName ||
-                e.PropertyName == Entry.FontSizeProperty.PropertyName)
-            {
+            else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
+                     (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
+                     (e.PropertyName == Entry.FontSizeProperty.PropertyName))
                 SetFont();
-            }
         }
 
         private void ControlOnFocusChange(object sender, FocusChangeEventArgs args)
@@ -173,13 +150,18 @@ namespace Xfx.Controls.Droid.Renderers
                 var manager = (InputMethodManager) Application.Context.GetSystemService(Context.InputMethodService);
 
                 EditText.PostDelayed(() =>
-                {
-                    EditText.RequestFocus();
-                    manager.ShowSoftInput(EditText, 0);
-                },
+                    {
+                        EditText.RequestFocus();
+                        manager.ShowSoftInput(EditText, 0);
+                    },
                     100);
                 // TODO : Florell, Chase (Contractor) 02/21/17 focus
             }
+        }
+        
+        private void SetBackgroundColor()
+        {
+            Element.BackgroundColor = Element.BackgroundColor.ToAndroid().ToColor();
         }
 
         private void SetText()
@@ -188,9 +170,7 @@ namespace Xfx.Controls.Droid.Renderers
             {
                 EditText.Text = Element.Text;
                 if (EditText.IsFocused)
-                {
                     EditText.SetSelection(EditText.Text.Length);
-                }
             }
         }
 
@@ -202,25 +182,17 @@ namespace Xfx.Controls.Droid.Renderers
         private void SetPlaceholderColor()
         {
             if (Element.PlaceholderColor == Color.Default)
-            {
                 EditText.SetHintTextColor(_defaultHintColor);
-            }
             else
-            {
                 EditText.SetHintTextColor(Element.PlaceholderColor.ToAndroid());
-            }
         }
 
         private void SetTextColor()
         {
             if (Element.TextColor == Color.Default)
-            {
                 EditText.SetTextColor(_defaultTextColor);
-            }
             else
-            {
                 EditText.SetTextColor(Element.TextColor.ToAndroid());
-            }
         }
 
         private void SetKeyboard()

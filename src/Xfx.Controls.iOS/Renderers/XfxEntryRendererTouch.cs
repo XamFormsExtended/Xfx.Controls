@@ -65,9 +65,20 @@ namespace Xfx.Controls.iOS.Renderers
             var view = new FloatLabeledTextField();
             if (!string.IsNullOrWhiteSpace(Element.AutomationId))
                 SetAutomationId(Element.AutomationId);
-            _defaultPlaceholderColor = view.FloatingLabelTextColor;
-            _defaultTextColor = view.TextColor;
+
+            SetDefaultPlaceholderColor(view.FloatingLabelTextColor);
+            SetDefaultTextColor(view.TextColor);
             return view;
+        }
+
+        protected void SetDefaultTextColor(UIColor viewTextColor)
+        {
+            _defaultTextColor = viewTextColor;
+        }
+
+        protected void SetDefaultPlaceholderColor(UIColor viewFloatingLabelTextColor)
+        {
+            _defaultPlaceholderColor = viewFloatingLabelTextColor;
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)

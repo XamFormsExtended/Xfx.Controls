@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Xamarin.Forms;
 
 namespace Xfx
@@ -16,8 +17,8 @@ namespace Xfx
         public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(nameof(ItemsSource),
             typeof(IEnumerable<string>),
             typeof(XfxComboBox),
-            default(IEnumerable<string>));
-        
+            default(IEnumerable<string>), propertyChanged: OnItemsSourcePropertyChangedInternal);
+
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem),
             typeof(object),
             typeof(XfxComboBox),
@@ -81,7 +82,32 @@ namespace Xfx
             ItemSelected?.Invoke(sender, args);
             OnItemSelected(args);
         }
+        private static void OnItemsSourcePropertyChangedInternal(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            var combo = (XfxComboBox) bindable;
+            var observableOld = oldvalue as INotifyCollectionChanged;
+            var observableNew = newvalue as INotifyCollectionChanged;
+            combo.OnItemsSourcePropertyChanged(combo, oldvalue, newvalue);
 
+            if (observableOld != null )
+            {
+                observableOld.CollectionChanged -= combo.OnCollectionChangedInternal;
+            }
+
+            if (observableNew != null)
+            {
+                observableNew.CollectionChanged += combo.OnCollectionChangedInternal;
+            }
+        }
+
+        public event EventHandler<NotifyCollectionChangedEventArgs> CollectionChanged;
+
+        private void OnCollectionChangedInternal(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            CollectionChanged?.Invoke(sender, args);
+        }
+
+        protected virtual void OnItemsSourcePropertyChanged(XfxComboBox bindable, object oldvalue, object newvalue) { }
         protected virtual void OnItemSelected(SelectedItemChangedEventArgs args) { }
     }
 }

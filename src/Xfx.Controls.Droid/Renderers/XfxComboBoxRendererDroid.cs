@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using Android.Support.Design.Widget;
 using Android.Views;
@@ -9,17 +10,17 @@ using Xamarin.Forms.Platform.Android;
 using Xfx;
 using Xfx.Controls.Droid.Renderers;
 
-[assembly: ExportRenderer(typeof (XfxComboBox), typeof (XfxComboBoxRendererDroid))]
+[assembly: ExportRenderer(typeof(XfxComboBox), typeof(XfxComboBoxRendererDroid))]
 
 namespace Xfx.Controls.Droid.Renderers
 {
     public class XfxComboBoxRendererDroid : XfxEntryRendererDroid
     {
-        private AutoCompleteTextView AutoComplete => (AutoCompleteTextView) Control.EditText;
+        private AutoCompleteTextView AutoComplete => (AutoCompleteTextView)Control.EditText;
 
         protected override TextInputLayout CreateNativeControl()
         {
-            var layout = (TextInputLayout) LayoutInflater.From(Context).Inflate(Resource.Layout.AutoCompleteTextInputLayout, null);
+            var layout = (TextInputLayout)LayoutInflater.From(Context).Inflate(Resource.Layout.AutoCompleteTextInputLayout, null);
             if (!string.IsNullOrWhiteSpace(Element.AutomationId))
             {
                 layout.EditText.ContentDescription = Element.AutomationId;
@@ -36,6 +37,8 @@ namespace Xfx.Controls.Droid.Renderers
             {
                 // unsubscribe
                 AutoComplete.ItemClick -= AutoCompleteOnItemSelected;
+                var elm = (Xfx.XfxComboBox)e.OldElement;
+                elm.CollectionChanged -= ItemsSourceCollectionChanged;
             }
 
             if (e.NewElement != null)
@@ -43,16 +46,30 @@ namespace Xfx.Controls.Droid.Renderers
                 // subscribe
                 SetItemsSource();
                 SetThreshold();
+                KillPassword();
                 AutoComplete.ItemClick += AutoCompleteOnItemSelected;
+                var elm = (Xfx.XfxComboBox)e.NewElement;
+                elm.CollectionChanged += ItemsSourceCollectionChanged;
             }
         }
 
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
+                KillPassword();
+            if (e.PropertyName == Xfx.XfxComboBox.ItemsSourceProperty.PropertyName)
+                SetItemsSource();
+            else if (e.PropertyName == Xfx.XfxComboBox.ThresholdProperty.PropertyName)
+                SetThreshold();
+        }
 
         private void AutoCompleteOnItemSelected(object sender, AdapterView.ItemClickEventArgs args)
         {
-            var view = (AutoCompleteTextView) sender;
+            var view = (AutoCompleteTextView)sender;
             var selectedItemArgs = new SelectedItemChangedEventArgs(view.Text);
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             element.OnItemSelectedInternal(Element, selectedItemArgs);
             HideKeyboard();
             // TODO : Florell, Chase (Contractor) 02/15/17 SET FOCUS
@@ -60,32 +77,27 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetThreshold()
         {
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             AutoComplete.Threshold = element.Threshold;
         }
 
         private void SetItemsSource()
         {
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             if (element.ItemsSource == null) return;
 
-            var observable = element.ItemsSource as ObservableCollection<string>;
-            if (observable != null)
-            {
-                observable.CollectionChanged -= ItemsSourceOnCollectionChanged;
-            }
-
             ResetAdapter(element);
-
-            if (observable != null)
-            {
-                observable.CollectionChanged += ItemsSourceOnCollectionChanged;
-            }
         }
 
-        private void ItemsSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void KillPassword()
         {
-            var element = (Xfx.XfxComboBox) Element;
+            if (Element.IsPassword)
+                throw new NotImplementedException("Cannot set IsPassword on a XfxComboBox");
+        }
+
+        private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            var element = (Xfx.XfxComboBox)Element;
             ResetAdapter(element);
         }
 
@@ -97,19 +109,6 @@ namespace Xfx.Controls.Droid.Renderers
                 element.SortingAlgorithm);
             AutoComplete.Adapter = adapter;
             adapter.NotifyDataSetChanged();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            var element = (Xfx.XfxComboBox) Element;
-            if (element.ItemsSource == null || !element.ItemsSource.Any()) return;
-
-            var observable = element.ItemsSource as ObservableCollection<string>;
-            if (observable != null)
-            {
-                observable.CollectionChanged -= ItemsSourceOnCollectionChanged;
-            }
-            base.Dispose(disposing);
         }
     }
 }
