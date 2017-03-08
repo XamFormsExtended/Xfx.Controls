@@ -2,7 +2,7 @@ Please fill out either the bug or feature request section and remove whatever se
 
 ## Bug 
 
-* Version Number of Plugin:
+* Version Number of Control:
 * Device Tested On:
 * Simulator Tested On:
 
