@@ -2,8 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
+             xmlns:app="clr-namespace:Xfx.Controls.Example;assembly=Xfx.Controls.Example"
              x:Class="Xfx.Controls.Example.MainPage"
              Title="Custom Controls Example">
+    <ContentPage.BindingContext>
+        <app:MainPageModel/>
+    </ContentPage.BindingContext>
   <ScrollView Padding="8">
     <StackLayout>
       <xfx:XfxComboBox Placeholder="Enter your email address"
