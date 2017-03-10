@@ -28,16 +28,46 @@ namespace Xfx.Controls.Example
             typeof(MainPage),
             default(string));
 
-        public static readonly BindableProperty EmailSuggestionsProperty = BindableProperty.Create(nameof(EmailSuggestions),
-            typeof(ObservableCollection<string>),
-            typeof(MainPage),
-            new ObservableCollection<string>());
+        public static readonly BindableProperty EmailSuggestionsProperty =
+            BindableProperty.Create(nameof(EmailSuggestions),
+                typeof(ObservableCollection<string>),
+                typeof(MainPage),
+                new ObservableCollection<string>());
 
         public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name),
             typeof(string),
             typeof(MainPage),
             default(string),
             propertyChanged: OnNamePropertyChanged);
+
+        public static readonly BindableProperty FooProperty = BindableProperty.Create(nameof(Foo),
+            typeof(string),
+            typeof(MainPageModel),
+            default(string),
+            propertyChanged: OnFooPropertyChanged);
+
+        public static readonly BindableProperty FooErrorTextProperty = BindableProperty.Create(nameof(FooErrorText),
+            typeof(string),
+            typeof(MainPageModel),
+            default(string));
+
+        /// <summary>
+        ///     FooErrorText summary. This is a bindable property.
+        /// </summary>
+        public string FooErrorText
+        {
+            get { return (string) GetValue(FooErrorTextProperty); }
+            set { SetValue(FooErrorTextProperty, value); }
+        }
+
+        /// <summary>
+        ///     Foo summary. This is a bindable property.
+        /// </summary>
+        public string Foo
+        {
+            get { return (string) GetValue(FooProperty); }
+            set { SetValue(FooProperty, value); }
+        }
 
         /// <summary>
         ///     Name summary. This is a bindable property.
@@ -115,6 +145,16 @@ namespace Xfx.Controls.Example
 
             // don't validate like this, only for demo purposes.
             model.NameErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
+        }
+
+        private static void OnFooPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            var model = (MainPageModel) bindable;
+            // make sure we have the latest string.
+            var text = newvalue.ToString();
+
+            // don't validate like this, only for demo purposes.
+            model.FooErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
         }
     }
 }

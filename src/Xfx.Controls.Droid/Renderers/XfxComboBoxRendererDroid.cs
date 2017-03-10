@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Android.Support.Design.Widget;
-using Android.Views;
 using Android.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -20,14 +19,10 @@ namespace Xfx.Controls.Droid.Renderers
 
         protected override TextInputLayout CreateNativeControl()
         {
-            var layout = (TextInputLayout)LayoutInflater.From(Context).Inflate(Resource.Layout.AutoCompleteTextInputLayout, null);
-            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-            {
-                layout.EditText.ContentDescription = Element.AutomationId;
-            }
-            SetDefaultHintColorStateList(layout.EditText.HintTextColors);
-            SetDefaultTextColorStateList(layout.EditText.TextColors);
-            return layout;
+            var textInputLayout = new TextInputLayout(Context);
+            var autoCompleteTextView = new AutoCompleteTextView(Context);
+            textInputLayout.AddView(autoCompleteTextView);
+            return textInputLayout;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)

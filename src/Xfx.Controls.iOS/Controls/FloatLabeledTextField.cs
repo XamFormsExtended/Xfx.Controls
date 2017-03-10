@@ -63,7 +63,7 @@ namespace Xfx.Controls.iOS.Controls
 
         public UIColor FloatingLabelTextColor { get; set; }
         public UIColor FloatingLabelActiveTextColor { get; set; }
-
+        public bool FloatingLabelEnabled { get; set; } = true;
         public UIColor ErrorTextColor
         {
             get { return _errorLabel.TextColor; }
@@ -168,7 +168,7 @@ namespace Xfx.Controls.iOS.Controls
 
             Action updateLabel = () =>
             {
-                if (!string.IsNullOrEmpty(Text))
+                if (!string.IsNullOrEmpty(Text) && FloatingLabelEnabled)
                 {
                     _floatingLabel.Alpha = 1.0f;
                     _floatingLabel.Frame =
@@ -194,7 +194,7 @@ namespace Xfx.Controls.iOS.Controls
             {
                 _floatingLabel.TextColor = FloatingLabelActiveTextColor;
 
-                var shouldFloat = !string.IsNullOrEmpty(Text);
+                var shouldFloat = !string.IsNullOrEmpty(Text) && FloatingLabelEnabled;
                 var isFloating = _floatingLabel.Alpha == 1f;
 
                 if (shouldFloat == isFloating)

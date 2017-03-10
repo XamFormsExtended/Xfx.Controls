@@ -10,6 +10,20 @@ namespace Xfx
             typeof (XfxEntry),
             default(string), propertyChanged: OnErrorTextChangedInternal);
 
+        public static readonly BindableProperty FloatingHintEnabledProperty = BindableProperty.Create(nameof(FloatingHintEnabled),
+            typeof(bool),
+            typeof(XfxEntry),
+            true);
+
+        /// <summary>
+        /// <c>true</c> to float the hint into a label, otherwise <c>false</c>. This is a bindable property.
+        /// </summary>
+        public bool FloatingHintEnabled
+        {
+            get { return (bool) GetValue(FloatingHintEnabledProperty); }
+            set { SetValue(FloatingHintEnabledProperty, value); }
+        }
+
         /// <summary>
         ///    Error text for the entry. An empty string removes the error. This is a bindable property.
         /// </summary>

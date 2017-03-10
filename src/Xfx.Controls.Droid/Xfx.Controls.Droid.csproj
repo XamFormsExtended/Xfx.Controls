@@ -120,15 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <AndroidResource Include="Resources\layout\TextInputLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xfx.Controls\Xfx.Controls.csproj">
       <Name>Xfx.Controls</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\AutoCompleteTextInputLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

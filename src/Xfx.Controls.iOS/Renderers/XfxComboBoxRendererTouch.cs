@@ -36,14 +36,7 @@ namespace Xfx.Controls.iOS.Renderers
                 AutoCompleteViewSource = new MbAutoCompleteDefaultDataSource(),
                 SortingAlgorithm = element.SortingAlgorithm
             };
-            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-            {
-                SetAutomationId(Element.AutomationId);
-            }
             view.AutoCompleteViewSource.Selected += AutoCompleteViewSourceOnSelected;
-
-            SetDefaultPlaceholderColor(view.FloatingLabelTextColor);
-            SetDefaultTextColor(view.TextColor);
             return view;
         }
 

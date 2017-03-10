@@ -41,7 +41,13 @@ namespace Xfx.Controls.iOS.Renderers
             {
                 var ctrl = CreateNativeControl();
                 SetNativeControl(ctrl);
-                
+
+                if (!string.IsNullOrWhiteSpace(Element.AutomationId))
+                    SetAutomationId(Element.AutomationId);
+
+                _defaultTextColor = Control.FloatingLabelTextColor;
+                _defaultPlaceholderColor = Control.FloatingLabelTextColor;
+
                 SetIsPassword();
                 SetText();
                 SetHintText();
@@ -52,6 +58,7 @@ namespace Xfx.Controls.iOS.Renderers
                 SetHorizontalTextAlignment();
                 SetErrorText();
                 SetFont();
+                SetFloatingHintEnabled();
 
                 Control.ErrorTextIsVisible = true;
                 Control.EditingDidBegin += OnEditingDidBegin;
@@ -62,23 +69,7 @@ namespace Xfx.Controls.iOS.Renderers
 
         protected virtual FloatLabeledTextField CreateNativeControl()
         {
-            var view = new FloatLabeledTextField();
-            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-                SetAutomationId(Element.AutomationId);
-
-            SetDefaultPlaceholderColor(view.FloatingLabelTextColor);
-            SetDefaultTextColor(view.TextColor);
-            return view;
-        }
-
-        protected void SetDefaultTextColor(UIColor viewTextColor)
-        {
-            _defaultTextColor = viewTextColor;
-        }
-
-        protected void SetDefaultPlaceholderColor(UIColor viewFloatingLabelTextColor)
-        {
-            _defaultPlaceholderColor = viewFloatingLabelTextColor;
+            return new FloatLabeledTextField();
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -103,6 +94,8 @@ namespace Xfx.Controls.iOS.Renderers
                 SetKeyboard();
             else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
                 SetHorizontalTextAlignment();
+            else if (e.PropertyName == XfxEntry.FloatingHintEnabledProperty.PropertyName)
+                SetFloatingHintEnabled();
             else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
@@ -126,6 +119,11 @@ namespace Xfx.Controls.iOS.Renderers
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
         {
             ElementController?.SetValueFromRenderer(Entry.TextProperty, Control.Text);
+        }
+
+        private void SetFloatingHintEnabled()
+        {
+            Control.FloatingLabelEnabled = Element.FloatingHintEnabled;
         }
 
         private void SetErrorText()

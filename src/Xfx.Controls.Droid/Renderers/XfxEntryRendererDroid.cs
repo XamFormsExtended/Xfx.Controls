@@ -59,25 +59,12 @@ namespace Xfx.Controls.Droid.Renderers
             ((IElementController) Element).SetValueFromRenderer(Entry.TextProperty, s.ToString());
         }
 
-        protected void SetDefaultHintColorStateList(ColorStateList defaultHint)
-        {
-            _defaultHintColor = defaultHint;
-        }
-
-        protected void SetDefaultTextColorStateList(ColorStateList defaultText)
-        {
-            _defaultTextColor = defaultText;
-        }
-
         protected override TextInputLayout CreateNativeControl()
         {
-            var layout = (TextInputLayout) LayoutInflater.From(Context).Inflate(Resource.Layout.TextInputLayout, null);
-            if (!string.IsNullOrWhiteSpace(Element.AutomationId))
-                layout.EditText.ContentDescription = Element.AutomationId;
-
-            SetDefaultHintColorStateList(layout.EditText.HintTextColors);
-            SetDefaultTextColorStateList(layout.EditText.TextColors);
-            return layout;
+            var textInputLayout = new TextInputLayout(Context);
+            var editText = new EditText(Context);
+            textInputLayout.AddView(editText);
+            return textInputLayout;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
@@ -92,19 +79,15 @@ namespace Xfx.Controls.Droid.Renderers
                 var ctrl = CreateNativeControl();
                 SetNativeControl(ctrl);
 
-                SetIsPassword();
-                SetText();
-                SetHintText();
-                SetTextColor();
-                SetPlaceholderColor();
-                SetKeyboard();
-                SetBackgroundColor();
-                SetHorizontalTextAlignment();
-                SetErrorText();
-                SetFont();
+                if (!string.IsNullOrWhiteSpace(Element.AutomationId))
+                    EditText.ContentDescription = Element.AutomationId;
+
+                _defaultHintColor = EditText.HintTextColors;
+                _defaultTextColor = EditText.TextColors;
 
                 Focusable = true;
-                Control.ErrorEnabled = true;
+                Control.HintEnabled = true;
+                Control.HintAnimationEnabled = true;
                 EditText.ShowSoftInputOnFocus = true;
 
                 // Subscribe
@@ -112,6 +95,19 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.AddTextChangedListener(this);
                 EditText.SetOnEditorActionListener(this);
                 EditText.ImeOptions = ImeAction.Done;
+
+                SetIsPassword();
+                SetText();
+                SetHintText();
+                SetTextColor();
+                SetHintTextColor();
+                SetKeyboard();
+                SetHorizontalTextAlignment();
+                SetErrorText();
+                SetFont();
+                SetFloatingHintEnabled();
+
+                Control.ErrorEnabled = true;
             }
         }
 
@@ -125,18 +121,18 @@ namespace Xfx.Controls.Droid.Renderers
                 SetErrorText();
             else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
                 SetTextColor();
-            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-                SetBackgroundColor();
             else if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
                 SetIsPassword();
             else if (e.PropertyName == Entry.TextProperty.PropertyName)
                 SetText();
             else if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
-                SetPlaceholderColor();
+                SetHintTextColor();
             else if (e.PropertyName == InputView.KeyboardProperty.PropertyName)
                 SetKeyboard();
             else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
                 SetHorizontalTextAlignment();
+            else if(e.PropertyName == XfxEntry.FloatingHintEnabledProperty.PropertyName)
+                SetFloatingHintEnabled();
             else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
@@ -155,13 +151,8 @@ namespace Xfx.Controls.Droid.Renderers
                         manager.ShowSoftInput(EditText, 0);
                     },
                     100);
-                // TODO : Florell, Chase (Contractor) 02/21/17 focus
             }
-        }
-        
-        private void SetBackgroundColor()
-        {
-            Element.BackgroundColor = Element.BackgroundColor.ToAndroid().ToColor();
+            // TODO : Florell, Chase (Contractor) 02/21/17 focus
         }
 
         private void SetText()
@@ -179,7 +170,7 @@ namespace Xfx.Controls.Droid.Renderers
             Control.Hint = Element.Placeholder;
         }
 
-        private void SetPlaceholderColor()
+        private void SetHintTextColor()
         {
             if (Element.PlaceholderColor == Color.Default)
                 EditText.SetHintTextColor(_defaultHintColor);
@@ -214,6 +205,11 @@ namespace Xfx.Controls.Droid.Renderers
                     EditText.Gravity = GravityFlags.Left;
                     break;
             }
+        }
+
+        public void SetFloatingHintEnabled()
+        {
+            Control.HintEnabled = Element.FloatingHintEnabled;
         }
 
         protected void HideKeyboard()
