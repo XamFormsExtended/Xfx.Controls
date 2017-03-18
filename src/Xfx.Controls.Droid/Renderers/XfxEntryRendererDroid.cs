@@ -96,12 +96,11 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.SetOnEditorActionListener(this);
                 EditText.ImeOptions = ImeAction.Done;
 
-                SetIsPassword();
+                SetInputType();
                 SetText();
                 SetHintText();
                 SetTextColor();
                 SetHintTextColor();
-                SetKeyboard();
                 SetHorizontalTextAlignment();
                 SetErrorText();
                 SetFont();
@@ -122,13 +121,13 @@ namespace Xfx.Controls.Droid.Renderers
             else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
                 SetTextColor();
             else if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
-                SetIsPassword();
+                SetInputType();
             else if (e.PropertyName == Entry.TextProperty.PropertyName)
                 SetText();
             else if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
                 SetHintTextColor();
             else if (e.PropertyName == InputView.KeyboardProperty.PropertyName)
-                SetKeyboard();
+                SetInputType();
             else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
                 SetHorizontalTextAlignment();
             else if(e.PropertyName == XfxEntry.FloatingHintEnabledProperty.PropertyName)
@@ -186,11 +185,6 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.SetTextColor(Element.TextColor.ToAndroid());
         }
 
-        private void SetKeyboard()
-        {
-            EditText.InputType = Element.Keyboard.ToNative();
-        }
-
         private void SetHorizontalTextAlignment()
         {
             switch (Element.HorizontalTextAlignment)
@@ -238,11 +232,17 @@ namespace Xfx.Controls.Droid.Renderers
             }
         }
 
-        private void SetIsPassword()
+        private void SetInputType()
         {
-            EditText.InputType = Element.IsPassword
-                ? InputTypes.TextVariationPassword | InputTypes.ClassText
-                : EditText.InputType;
+            EditText.InputType = Element.Keyboard.ToInputType();
+            if (Element.IsPassword && ((EditText.InputType & InputTypes.ClassText) == InputTypes.ClassText))
+            {
+                EditText.InputType = EditText.InputType | InputTypes.TextVariationPassword;
+            }
+            if (Element.IsPassword && ((EditText.InputType & InputTypes.ClassNumber) == InputTypes.ClassNumber))
+            {
+                EditText.InputType = EditText.InputType | InputTypes.NumberVariationPassword;
+            }
         }
     }
 }

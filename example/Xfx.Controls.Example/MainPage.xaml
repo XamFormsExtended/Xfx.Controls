@@ -46,9 +46,10 @@
             <Label Grid.Row="2" Grid.Column="0" Text="No Floating Label" />
             <xfx:XfxEntry Grid.Row="2"
                           Grid.Column="1"
-                          Placeholder="This hint won't float"
+                          Placeholder="This hint won't float, and it's a password entry"
                           Text="{Binding Foo}"
                           ErrorText="{Binding FooErrorText}"
+                          IsPassword="True"
                           FloatingHintEnabled="False" />
         </Grid>
     </ScrollView>

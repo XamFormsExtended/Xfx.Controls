@@ -14,7 +14,9 @@ namespace Xfx.Controls.Example
             "@gmail.com",
             "@hotmail.com",
             "@me.com",
-            "@outlook.com"
+            "@outlook.com",
+            "@live.com", // does anyone care about this one? haha
+            "@yahoo.com" // seriously, does anyone use this anymore?
         };
 
         public static readonly BindableProperty EmailAddressProperty = BindableProperty.Create(nameof(EmailAddress),
