@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Xfx.Controls</id>
-    <version>1.0.1.3</version>
+    <version>1.0.1.4</version>
     <title>Xamarin Forms Extended Controls</title>
     <authors>Chase Florell</authors>
     <owners>Chase Florell</owners>
