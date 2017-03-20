@@ -19,6 +19,11 @@ namespace Xfx.Controls.Example
             "@yahoo.com" // seriously, does anyone use this anymore?
         };
 
+        public MainPageModel()
+        {
+            Name = "John Smith Jr.";
+        }
+
         public static readonly BindableProperty EmailAddressProperty = BindableProperty.Create(nameof(EmailAddress),
             typeof(string),
             typeof(MainPage),

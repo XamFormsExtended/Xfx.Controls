@@ -96,8 +96,8 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.SetOnEditorActionListener(this);
                 EditText.ImeOptions = ImeAction.Done;
 
-                SetInputType();
                 SetText();
+                SetInputType();
                 SetHintText();
                 SetTextColor();
                 SetHintTextColor();

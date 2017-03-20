@@ -7,7 +7,7 @@ namespace Xfx.Controls.Example
         public App()
         {
             // The root page of your application
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new RootPage());
         }
     }
 }
