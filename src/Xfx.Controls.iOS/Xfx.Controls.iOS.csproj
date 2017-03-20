@@ -96,10 +96,13 @@
     <Compile Include="Extensions\KeyboardExtensions.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\UIViewExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\XfxEntryRendererTouch.cs" />
     <Compile Include="Renderers\XfxComboBoxRendererTouch.cs" />
     <Compile Include="XfxControls.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xfx.Controls\Xfx.Controls.csproj">

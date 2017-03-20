@@ -111,11 +111,14 @@
     <Compile Include="XfxComboBox\XfxComboBoxArrayAdapter.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\KeyboardExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\XfxComboBoxRendererDroid.cs" />
     <Compile Include="Renderers\XfxEntryRendererDroid.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxFilter.cs" />
     <Compile Include="XfxControls.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
