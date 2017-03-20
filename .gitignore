@@ -28,6 +28,7 @@ data/
 .nuget/
 .vs/
 *.csproj.bak
+build-artifacts/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
