@@ -1,4 +1,4 @@
-#Xamarin Forms Extended Controls#
+# Xamarin Forms Extended Controls
 
 *Description*
 Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms Controls.
@@ -22,9 +22,9 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
 
 -----
 
-##Getting Started##
+## Getting Started
 
-###Android###
+### Android
 
 In your MainActivity, initialize XfxControls just before initializing Xamarin Forms
 
@@ -35,7 +35,7 @@ global::Xamarin.Forms.Forms.Init(this, bundle);
 
 *note: XfxEntry and XfxComboBox REQUIRES your app to use an AppCompat theme.*
 
-###iOS###
+### iOS
 
 In your AppDelegate, initialize XfxControls just before initializing Xamarin Forms
 
@@ -44,16 +44,16 @@ XfxControls.Init();
 global::Xamarin.Forms.Forms.Init();
 ```
 
-###Demos###
+### Demos
 
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.ios.gif)
 ![](https://github.com/XamFormsExtended/Xfx.Controls/raw/master/resources/xfx.controls.droid.gif)
 
-###Code###
+### Code
 
 Declaration is exactly the same as a Xamarin.Forms.Entry, with some added properties
 
-####XfxEntry####
+#### XfxEntry
 
 ```xml
 <!-- XfxEntry-->
@@ -64,7 +64,7 @@ Declaration is exactly the same as a Xamarin.Forms.Entry, with some added proper
 
 When the `ErrorText` property is set, the ErrorText will display, otherwise if it is null or empty, it's removed.
 
-####XfxComboBox####
+#### XfxComboBox
 
 ```xml
 <!-- XfxComboBox-->
@@ -88,11 +88,11 @@ public class MyViewModel : INotifyPropertyChanged
 ```
 
 
-##Contributions / Thanks##
+## Contributions / Thanks
 
  - [@MarcBruins](https://github.com/MarcBruins)  for: [MBAutoComplete](https://github.com/MarcBruins/MBAutoComplete)
  - [@gshackles](https://github.com/gshackles) for: [FloatLabeledEntry](https://github.com/gshackles/FloatLabeledEntry)
 
-##License##
+## License
 
 Licensed MIT, please review the [license](https://github.com/XamFormsExtended/Xfx.Controls/blob/master/LICENSE) file.
