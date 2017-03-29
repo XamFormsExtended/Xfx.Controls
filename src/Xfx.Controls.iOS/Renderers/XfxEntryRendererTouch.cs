@@ -104,14 +104,14 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
         {
-            // TODO : Florell, Chase (Contractor) 02/21/17 unfocus
+            ElementController.SetValueFromRenderer(Entry.IsFocusedProperty, false);
             _hasFocus = false;
             Control.UnderlineColor = GetUnderlineColorForState();
         }
 
         private void OnEditingDidBegin(object sender, EventArgs eventArgs)
         {
-            // TODO : Florell, Chase (Contractor) 02/21/17 focus
+            ElementController.SetValueFromRenderer(Entry.IsFocusedProperty, true);
             _hasFocus = true;
             Control.UnderlineColor = GetUnderlineColorForState();
         }
