@@ -156,7 +156,7 @@ namespace Xfx.Controls.Droid.Renderers
                     100);
             }
 
-            var isFocusedPropertyKey = Element.GetInternalPropertyKey("IsFocusedPropertyKey");
+            var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ((IElementController) Element).SetValueFromRenderer(isFocusedPropertyKey, args.HasFocus);
         }
 
