@@ -105,6 +105,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetErrorText();
                 SetFont();
                 SetFloatingHintEnabled();
+                SetIsEnabled();
 
                 Control.ErrorEnabled = true;
             }
@@ -132,6 +133,8 @@ namespace Xfx.Controls.Droid.Renderers
                 SetHorizontalTextAlignment();
             else if(e.PropertyName == XfxEntry.FloatingHintEnabledProperty.PropertyName)
                 SetFloatingHintEnabled();
+            else if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
+                SetIsEnabled();
             else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
@@ -230,6 +233,11 @@ namespace Xfx.Controls.Droid.Renderers
                 Control.Error = null;
                 Control.ErrorEnabled = false;
             }
+        }
+
+        private void SetIsEnabled()
+        {
+            EditText.Enabled = Element.IsEnabled;
         }
 
         private void SetInputType()

@@ -83,10 +83,9 @@ Task("Pack")
                                                                         new NuSpecContent {Source = touchDir.ToString() + "/Xfx.Controls.iOS.dll", Target = "lib/Xamarin.iOS10"},
                                                                         new NuSpecContent {Source = touchDir.ToString() + "/Xfx.Controls.dll", Target = "lib/Xamarin.iOS10"},
                                                                       },
-                                    Dependencies            = new [] { new NuSpecDependency{
-																		Id       = "Xamarin.Forms",
-																		Version  = "2.0"
-																	}},
+                                    Dependencies            = new [] { 
+                                                                        new NuSpecDependency { Id = "Xamarin.Forms", Version  = "2.0" }
+                                                                      },
                                     BasePath                = "./src",
                                     NoPackageAnalysis       = true,
                                     OutputDirectory         = "./.nuget"
