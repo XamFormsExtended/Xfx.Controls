@@ -9,6 +9,7 @@ using Xfx;
 using Xfx.Controls.iOS.Controls;
 using Xfx.Controls.iOS.Extensions;
 using Xfx.Controls.iOS.Renderers;
+using static Xamarin.Forms.Entry;
 
 [assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererTouch))]
 
@@ -24,11 +25,11 @@ namespace Xfx.Controls.iOS.Renderers
         private bool _hasFocus;
 
         private IElementController ElementController => Element as IElementController;
-        
+
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
-            
+
             // unsubscribe
             if (e.OldElement != null)
             {
@@ -36,7 +37,7 @@ namespace Xfx.Controls.iOS.Renderers
                 Control.EditingDidEnd -= OnEditingDidEnd;
                 Control.EditingChanged -= ViewOnEditingChanged;
             }
-            
+
             if (e.NewElement != null)
             {
                 var ctrl = CreateNativeControl();
@@ -76,29 +77,34 @@ namespace Xfx.Controls.iOS.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName == Entry.PlaceholderProperty.PropertyName)
+            if (e.PropertyName == PlaceholderProperty.PropertyName)
                 SetHintText();
             else if (e.PropertyName == XfxEntry.ErrorTextProperty.PropertyName)
                 SetErrorText();
-            else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
+            else if (e.PropertyName == TextColorProperty.PropertyName)
                 SetTextColor();
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
                 SetBackgroundColor();
-            else if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
+            else if (e.PropertyName == IsPasswordProperty.PropertyName)
                 SetIsPassword();
-            else if (e.PropertyName == Entry.TextProperty.PropertyName)
+            else if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
+            {
+                SetIsPassword();
+                SetTextColor();
+            }
+            else if (e.PropertyName == TextProperty.PropertyName)
                 SetText();
-            else if (e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
+            else if (e.PropertyName == PlaceholderColorProperty.PropertyName)
                 SetPlaceholderColor();
             else if (e.PropertyName == Xamarin.Forms.InputView.KeyboardProperty.PropertyName)
                 SetKeyboard();
-            else if (e.PropertyName == Entry.HorizontalTextAlignmentProperty.PropertyName)
+            else if (e.PropertyName == HorizontalTextAlignmentProperty.PropertyName)
                 SetHorizontalTextAlignment();
             else if (e.PropertyName == XfxEntry.FloatingHintEnabledProperty.PropertyName)
                 SetFloatingHintEnabled();
-            else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
-                     (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
-                     (e.PropertyName == Entry.FontSizeProperty.PropertyName))
+            else if ((e.PropertyName == FontAttributesProperty.PropertyName) ||
+                     (e.PropertyName == FontFamilyProperty.PropertyName) ||
+                     (e.PropertyName == FontSizeProperty.PropertyName))
                 SetFont();
         }
 
@@ -118,7 +124,7 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
         {
-            ElementController?.SetValueFromRenderer(Entry.TextProperty, Control.Text);
+            ElementController?.SetValueFromRenderer(TextProperty, Control.Text);
         }
 
         private void SetFloatingHintEnabled()
@@ -154,7 +160,17 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void SetIsPassword()
         {
-            Control.SecureTextEntry = Element.IsPassword;
+            if (Element.IsPassword && Control.IsFirstResponder)
+            {
+                Control.Enabled = false;
+                Control.SecureTextEntry = true;
+                Control.Enabled = Element.IsEnabled;
+                Control.BecomeFirstResponder();
+            }
+            else
+            {
+                Control.SecureTextEntry = Element.IsPassword;
+            }
         }
 
         private void SetHintText()
@@ -171,9 +187,10 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void SetTextColor()
         {
-            Control.TextColor = Element.TextColor == Color.Default
-                ? _defaultTextColor
-                : Element.TextColor.ToUIColor();
+            if ((Element.TextColor == Color.Default) || !Element.IsEnabled)
+                Control.TextColor = _defaultTextColor;
+            else
+                Control.TextColor = Element.TextColor.ToUIColor();
         }
 
         private void SetFont()
