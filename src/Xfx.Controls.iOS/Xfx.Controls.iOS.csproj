@@ -88,6 +88,9 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Xfx.Controls\Extensions\XamarinFormsExtensions.cs">
+      <Link>Extensions\XamarinFormsExtensions.cs</Link>
+    </Compile>
     <Compile Include="Controls\MbAutoComplete\MbAutoCompleteDefaultDataSource.cs" />
     <Compile Include="Controls\MbAutoComplete\MbAutoCompleteTextField.cs" />
     <Compile Include="Controls\FloatLabeledTextField.cs" />

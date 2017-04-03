@@ -13,6 +13,7 @@ using Xamarin.Forms.Platform.Android;
 using Xfx;
 using Xfx.Controls.Droid.Extensions;
 using Xfx.Controls.Droid.Renderers;
+using Xfx.Extensions;
 using Application = Android.App.Application;
 using FormsAppCompat = Xamarin.Forms.Platform.Android.AppCompat;
 
@@ -154,7 +155,9 @@ namespace Xfx.Controls.Droid.Renderers
                     },
                     100);
             }
-            // TODO : Florell, Chase (Contractor) 02/21/17 focus
+
+            var isFocusedPropertyKey = Element.GetInternalPropertyKey("IsFocusedPropertyKey");
+            ((IElementController) Element).SetValueFromRenderer(isFocusedPropertyKey, args.HasFocus);
         }
 
         private void SetText()

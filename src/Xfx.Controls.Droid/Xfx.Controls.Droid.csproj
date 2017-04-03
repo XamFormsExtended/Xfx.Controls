@@ -107,6 +107,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Xfx.Controls\Extensions\XamarinFormsExtensions.cs">
+      <Link>Extensions\XamarinFormsExtensions.cs</Link>
+    </Compile>
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxArrayAdapter.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />

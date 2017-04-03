@@ -31,6 +31,8 @@
             <Label Grid.Row="0" Grid.Column="0" Text="ComboBox" />
             <xfx:XfxComboBox Grid.Row="0"
                              Grid.Column="1"
+                             Focused="Email_OnFocused"
+                             Unfocused="Email_OnUnfocused"
                              Placeholder="Enter your email address"
                              Text="{Binding EmailAddress}"
                              ItemsSource="{Binding EmailSuggestions}"
