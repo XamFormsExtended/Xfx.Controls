@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using CoreGraphics;
 using UIKit;
 using Xamarin.Forms;
@@ -112,8 +111,7 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
         {
-            var isFocusedPropertyKey = Element.GetInternalPropertyKey("IsFocusedPropertyKey");
-
+            var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ElementController.SetValueFromRenderer(isFocusedPropertyKey, false);
             _hasFocus = false;
             Control.UnderlineColor = GetUnderlineColorForState();
@@ -121,7 +119,7 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void OnEditingDidBegin(object sender, EventArgs eventArgs)
         {
-            var isFocusedPropertyKey = Element.GetInternalPropertyKey("IsFocusedPropertyKey");
+            var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ElementController.SetValueFromRenderer(isFocusedPropertyKey, true);
             _hasFocus = true;
             Control.UnderlineColor = GetUnderlineColorForState();
