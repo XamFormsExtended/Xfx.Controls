@@ -39,7 +39,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{
 		resources\xfx.controls.ios.gif = resources\xfx.controls.ios.gif
 	EndProjectSection
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Xfx.Controls.Shared", "src\Xfx.Controls.Shared\Xfx.Controls.Shared.shproj", "{4761DC06-7840-4AF3-B663-28BE3AAAB996}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Xfx.Controls.Shared\Xfx.Controls.Shared.projitems*{33fdb41c-6a13-4548-954d-7a366d4b874f}*SharedItemsImports = 4
+		src\Xfx.Controls.Shared\Xfx.Controls.Shared.projitems*{4761dc06-7840-4af3-b663-28be3aaab996}*SharedItemsImports = 13
+		src\Xfx.Controls.Shared\Xfx.Controls.Shared.projitems*{ae34d725-a613-46c6-b169-6fd3e31a1615}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
