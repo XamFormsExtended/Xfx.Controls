@@ -180,3 +180,8 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 ._.DS_Store
+
+# project.json
+*.lock.json
+*.nuget.props
+*.nuget.targets

@@ -132,7 +132,7 @@
       <Name>Xfx.Controls.Droid</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Xfx.Controls\Xfx.Controls.csproj">
-      <Project>{7d05fb35-f383-48f1-bc5d-499b19f1fff4}</Project>
+      <Project>{6ed4280e-2175-47a9-a70b-3b0236a4d830}</Project>
       <Name>Xfx.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xfx.Controls.Example\Xfx.Controls.Example.csproj">

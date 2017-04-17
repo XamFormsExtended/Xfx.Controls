@@ -28,10 +28,9 @@ namespace Xfx
 
         protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
         {
-            if (Content == null)
-                return new SizeRequest(new Size(100, 100));
-
-            return base.OnMeasure(widthConstraint, heightConstraint);
+            return Content == null ? 
+                new SizeRequest(new Size(100, 100)) : 
+                base.OnMeasure(widthConstraint, heightConstraint);
         }
     }
 }

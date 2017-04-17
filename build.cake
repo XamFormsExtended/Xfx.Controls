@@ -10,15 +10,15 @@ var configuration = Argument("configuration", "Release");
 var primaryAuthor = "Chase Florell";
 
 var touchDir = MakeAbsolute(Directory("./build-artifacts/output/touch"));
-var droidDir=MakeAbsolute(Directory("./build-artifacts/output/droid"));
-
-
+var droidDir = MakeAbsolute(Directory("./build-artifacts/output/droid"));
+var coreDir  = MakeAbsolute(Directory("./build-artifacts/output/core"));
 Setup(context =>
 {
     var binsToClean = GetDirectories("./src/**/bin/");
 	var artifactsToClean = new []{
         touchDir.ToString(), 
-        droidDir.ToString()
+        droidDir.ToString(), 
+        coreDir.ToString()
 	};
 	CleanDirectories(binsToClean);
 	CleanDirectories(artifactsToClean);
@@ -28,10 +28,10 @@ Setup(context =>
 });
 
 Task("Default")
-  .IsDependentOn("Pack");
+  .IsDependentOn("Package Library");
 
-Task("Build-Droid")
-  .IsDependentOn("Patch-Assembly-Info")
+Task("Build Droid")
+  .IsDependentOn("Patch Assembly Info")
   .Does(() =>
 {
   MSBuild("./src/Xfx.Controls.Droid/Xfx.Controls.Droid.csproj", new MSBuildSettings()
@@ -39,8 +39,8 @@ Task("Build-Droid")
       .SetConfiguration(configuration));
 });
 
-Task("Build-Touch")
-  .IsDependentOn("Patch-Assembly-Info")
+Task("Build Touch")
+  .IsDependentOn("Patch Assembly Info")
   .Does(() =>
 {
   MSBuild("./src/Xfx.Controls.iOS/Xfx.Controls.iOS.csproj", new MSBuildSettings()
@@ -48,7 +48,16 @@ Task("Build-Touch")
       .SetConfiguration(configuration));
 });
 
-Task("Patch-Assembly-Info")
+Task("Build Core")
+  .IsDependentOn("Patch Assembly Info")
+  .Does(() =>
+{
+  MSBuild("./src/Xfx.Controls/Xfx.Controls.csproj", new MSBuildSettings()
+      .WithProperty("OutDir", coreDir.ToString())
+      .SetConfiguration(configuration));
+});
+
+Task("Patch Assembly Info")
     .Does(() =>
 {
     var file = "./src/SolutionInfo.cs";
@@ -63,9 +72,10 @@ Task("Patch-Assembly-Info")
     });
 });
 
-Task("Pack")
-  .IsDependentOn("Build-Droid")
-  .IsDependentOn("Build-Touch")
+Task("Package Library")
+  .IsDependentOn("Build Droid")
+  .IsDependentOn("Build Touch")
+  .IsDependentOn("Build Core")
   .Does(() => {
     var nuGetPackSettings   = new NuGetPackSettings {
                                     Id                      = appName,
@@ -75,7 +85,9 @@ Task("Pack")
                                     Description             = "Xamarin Forms Extended Controls",
                                     ProjectUrl              = new Uri("https://github.com/XamFormsExtended/Xfx.Controls"),
                                     Files                   = new [] {
-                                                                        new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/netcore45"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/netstandard1.3"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81+wp8"},
 
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.Droid.dll", Target = "lib/MonoAndroid"},
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/MonoAndroid"},
