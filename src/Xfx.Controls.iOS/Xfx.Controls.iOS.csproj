@@ -105,11 +105,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xfx.Controls\Xfx.Controls.csproj">
-      <Name>Xfx.Controls</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -133,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xfx.Controls\Xfx.Controls.csproj">
+      <Project>{6ed4280e-2175-47a9-a70b-3b0236a4d830}</Project>
+      <Name>Xfx.Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Xfx.Controls.Shared\Xfx.Controls.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

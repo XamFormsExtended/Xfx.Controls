@@ -75,7 +75,9 @@ Task("Pack")
                                     Description             = "Xamarin Forms Extended Controls",
                                     ProjectUrl              = new Uri("https://github.com/XamFormsExtended/Xfx.Controls"),
                                     Files                   = new [] {
-                                                                        new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81"},
+                                                                        new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/netcore45"},
+                                                                        new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/netstandard1.3"},
+                                                                        new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81+wp8"},
 
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.Droid.dll", Target = "lib/MonoAndroid"},
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/MonoAndroid"},
