@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Renderers\XfxCardViewRendererDroid.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxArrayAdapter.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\KeyboardExtensions.cs" />

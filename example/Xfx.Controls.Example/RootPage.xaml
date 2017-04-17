@@ -1,7 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
              x:Class="Xfx.Controls.Example.RootPage">
-    <!-- this is here so that we can debug the controls... it allows us to recreate the page without rebuilding the app-->
-    <Button Text="Go to Main Page" Clicked="Button_OnClicked"/>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
+    <ScrollView Padding="8">
+        <xfx:XfxCardView CornerRadius="10">
+            <StackLayout Padding="0" Margin="0">
+                <Image Source="http://lorempixel.com/1024/200/nature/" HorizontalOptions="Fill" Aspect="Fill" />
+                <Label Margin="8">
+                    <Label.Text>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum. 
+
+Aliquam et consectetur est, eu feugiat magna. In consequat consequat consequat. Aenean porta efficitur lectus a cursus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                    </Label.Text>
+                </Label>
+                <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
+            </StackLayout>
+        </xfx:XfxCardView>
+    </ScrollView>
 </ContentPage>
