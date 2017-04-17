@@ -6,7 +6,7 @@ First of all, thank you for your willingness to contribute to Xfx.Controls. This
 
 ### Coding Style
 
-The coding style is quite simple. Please use the Visual Studio defauls for everything (SPACES NOT TABS), and also if you're running Resharper, try your best to get a green checkmark on every file you touch. R#'s default formatting can be acheived on a per-file basis by running `<kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>shift</kbd> + <kbd>f</kbd>.
+The coding style is quite simple. Please use the Visual Studio defauls for everything (SPACES NOT TABS), and also if you're running Resharper, try your best to get a green checkmark on every file you touch. R#'s default formatting can be acheived on a per-file basis by running <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>shift</kbd> + <kbd>f</kbd>.
 
 ### Renderer Approach
 
@@ -21,7 +21,7 @@ ElementController.SetValueFromRenderer(isFocusedPropertyKey, true/false);
 ``` 
 
 **Events**  
-A personal preference of mine is to not use the MessagingCenter. Instead I subscribe to `internal` events within the core library (these events are exposed to the other platforms via `InternalsVisibleTo`).
+A personal preference of mine is to not use the `MessagingCenter`. Instead I subscribe to `internal` events within the core library (these events are exposed to the other platforms via `InternalsVisibleTo`).
 Please avoid using the MessagingCenter in favor of event subscriptions.
 
 DON'T FORGET TO UNSUBSCRIBE FROM EVENTS
