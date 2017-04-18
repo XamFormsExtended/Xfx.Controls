@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CoreGraphics;
 using UIKit;
 
@@ -6,37 +7,38 @@ namespace Xfx.Controls.iOS.Controls
 {
     public class UICardView : UIView
     {
-        private readonly UIView _shadowLayer;
-        private bool _isAdded;
-
-        public UICardView()
-        {
-            _shadowLayer = new UIView {BackgroundColor = UIColor.Red};
-            _shadowLayer.Layer.ShadowColor = UIColor.LightGray.CGColor;
-            _shadowLayer.Layer.ShadowOffset = new CGSize(0.0f, 2.0f);
-            _shadowLayer.Layer.ShadowOpacity = 0.5f;
-            _shadowLayer.Layer.MasksToBounds = false;
-            _shadowLayer.Layer.BorderColor = UIColor.LightGray.CGColor;
-            _shadowLayer.Layer.BorderWidth = 0.1f;
-
-            Layer.MasksToBounds = true;
-        }
+        private UIView _shadowLayer;
 
         public override void MovedToSuperview()
         {
-            if (_isAdded) return;
-            Superview.InsertSubviewBelow(this, _shadowLayer);
-            _isAdded = true;
+            if (_shadowLayer != null) return;
+
+            _shadowLayer = new UIView { BackgroundColor = UIColor.Red };
+            _shadowLayer.Layer.ShadowColor = UIColor.DarkGray.CGColor;
+            _shadowLayer.Layer.ShadowOffset = new CGSize(0.0f, 1f);
+            _shadowLayer.Layer.ShadowOpacity = 1f;
+            _shadowLayer.Layer.ShadowRadius = 3f;
+            _shadowLayer.Layer.MasksToBounds = false;
+            _shadowLayer.Layer.ShouldRasterize = true;
+            _shadowLayer.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+            Superview.InsertSubviewBelow(_shadowLayer, this);
         }
 
         protected void DrawBorder(CGRect rect, nfloat radius)
         {
             _shadowLayer.Frame = rect;
-            _shadowLayer.Layer.ShadowRadius = radius;
             _shadowLayer.Layer.CornerRadius = radius;
+            //var bounds = _shadowLayer.Layer.Bounds;
+            //_shadowLayer.Layer.ShadowPath = UIBezierPath.FromRoundedRect(bounds, radius).CGPath;
 
-            Frame = new UIEdgeInsets(20, 40, 40, 20).InsetRect(rect);
+            //LayoutMargins = new UIEdgeInsets(20, 40, 40, 20);
+            Frame = rect;
+            Layer.BorderColor = UIColor.LightGray.CGColor;
+            Layer.BorderWidth = 0.1f;
+            Layer.MasksToBounds = true;
             Layer.CornerRadius = radius;
+            Layer.ShouldRasterize = true;
+            Layer.RasterizationScale = UIScreen.MainScreen.Scale;
         }
     }
 }

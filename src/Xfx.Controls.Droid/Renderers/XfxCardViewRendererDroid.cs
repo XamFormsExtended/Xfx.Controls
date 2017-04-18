@@ -8,18 +8,20 @@ using Xfx;
 using Xfx.Controls.Droid.Renderers;
 
 [assembly: ExportRenderer(typeof(XfxCardView), typeof(XfxCardViewRendererDroid))]
+
 namespace Xfx.Controls.Droid.Renderers
 {
     public class XfxCardViewRendererDroid : CardView, IVisualElementRenderer
     {
-        private ViewGroup _packed; // James Montemagno, why is this here?
-
         public XfxCardViewRendererDroid() : base(Forms.Context)
         {
         }
 
         public VisualElementPackager Packager { get; private set; }
-
+        private XfxCardView XCard => (XfxCardView) Element;
+        public VisualElementTracker Tracker { get; private set; }
+        public ViewGroup ViewGroup => this;
+        public VisualElement Element { get; private set; }
         public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
 
         public void SetElement(VisualElement element)
@@ -27,11 +29,15 @@ namespace Xfx.Controls.Droid.Renderers
             var oldElement = Element;
 
             if (oldElement != null)
+            {
                 oldElement.PropertyChanged -= HandlePropertyChanged;
+            }
 
             Element = element;
             if (Element != null)
+            {
                 Element.PropertyChanged += HandlePropertyChanged;
+            }
 
             ViewGroup.RemoveAllViews();
             Tracker = new VisualElementTracker(this);
@@ -40,28 +46,22 @@ namespace Xfx.Controls.Droid.Renderers
             Packager.Load();
 
             UseCompatPadding = true;
-
-            var view =  Element as XfxCardView;
+            var view = Element as XfxCardView;
             if (view == null) return;
 
-            SetContentPadding((int)view.Padding.Left,
-                (int)view.Padding.Top,
-                (int)view.Padding.Right,
-                (int)view.Padding.Bottom);
-
-            Radius = view.CornerRadius;
-
-            SetCardBackgroundColor(view.BackgroundColor.ToAndroid());
+            UpdatePadding();
+            UpdateRadius();
+            UpdateBackgroundColor();
             ElementChanged?.Invoke(this, new VisualElementChangedEventArgs(oldElement, Element));
         }
 
         public SizeRequest GetDesiredSize(int widthConstraint, int heightConstraint)
         {
-            // James Montemagno, is this not null?
-            _packed.Measure(widthConstraint, heightConstraint);
+            // this was never constructed!?!? 
+            //_packed.Measure(widthConstraint, heightConstraint);
 
             //Measure child here and determine size
-            return new SizeRequest(new Size(_packed.MeasuredWidth, _packed.MeasuredHeight));
+            return new SizeRequest(new Size(MeasuredWidth, MeasuredHeight));
         }
 
         public void UpdateLayout()
@@ -69,27 +69,35 @@ namespace Xfx.Controls.Droid.Renderers
             Tracker?.UpdateLayout();
         }
 
-        public VisualElementTracker Tracker { get; private set; }
-
-        public ViewGroup ViewGroup => this;
-
-        public VisualElement Element { get; private set; }
-
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var view = (XfxCardView) Element;
             if (e.PropertyName == ContentView.ContentProperty.PropertyName)
-                Tracker.UpdateLayout();
+                UpdateLayout();
             else if (e.PropertyName == Xamarin.Forms.Layout.PaddingProperty.PropertyName)
-                SetContentPadding((int)view.Padding.Left,
-                    (int)view.Padding.Top,
-                    (int)view.Padding.Right,
-                    (int)view.Padding.Bottom);
+                UpdatePadding();
             else if (e.PropertyName == XfxCardView.CornerRadiusProperty.PropertyName)
-                Radius = view.CornerRadius;
+                UpdateRadius();
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-                SetCardBackgroundColor(view.BackgroundColor.ToAndroid());
+                UpdateBackgroundColor();
+        }
+
+        private void UpdateBackgroundColor()
+        {
+            SetCardBackgroundColor(XCard.BackgroundColor.ToAndroid());
+        }
+
+        private void UpdateRadius()
+        {
+            Radius = XCard.CornerRadius;
+        }
+
+        private void UpdatePadding()
+        {
+            SetContentPadding((int) XCard.Padding.Left,
+                (int) XCard.Padding.Top,
+                (int) XCard.Padding.Right,
+                (int) XCard.Padding.Bottom);
         }
     }
 }

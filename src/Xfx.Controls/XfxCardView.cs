@@ -8,7 +8,7 @@ namespace Xfx
         {
             BackgroundColor = Color.White;
             Padding = 0;
-            HorizontalOptions=LayoutOptions.Start;
+            HorizontalOptions=LayoutOptions.Fill;
             VerticalOptions=LayoutOptions.Start;
         }
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius),
