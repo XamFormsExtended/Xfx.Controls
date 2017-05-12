@@ -93,9 +93,11 @@
     <Compile Include="Controls\FloatLabeledTextField.cs" />
     <Compile Include="Controls\MbAutoComplete\MbAutoCompleteTableView.cs" />
     <Compile Include="Controls\MbAutoComplete\MbAutoCompleteViewSource.cs" />
+    <Compile Include="Controls\UICardView.cs" />
     <Compile Include="Extensions\KeyboardExtensions.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\UIViewExtensions.cs" />
+    <Compile Include="Renderers\XfxCardViewRendererTouch.cs" />
     <Compile Include="Renderers\XfxEntryRendererTouch.cs" />
     <Compile Include="Renderers\XfxComboBoxRendererTouch.cs" />
     <Compile Include="XfxControls.cs" />

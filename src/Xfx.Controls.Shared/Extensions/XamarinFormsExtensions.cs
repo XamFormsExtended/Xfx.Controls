@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Xamarin.Forms;
 
+// ReSharper disable once CheckNamespace
 namespace Xfx.Extensions
 {
     public static class XamarinFormsExtensions

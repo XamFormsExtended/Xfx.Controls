@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 
 namespace Xfx.Controls.Example
 {
@@ -7,6 +8,7 @@ namespace Xfx.Controls.Example
         public RootPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this,false);
         }
 
         private async void Button_OnClicked(object sender, EventArgs e)
