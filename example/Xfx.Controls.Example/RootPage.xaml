@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,7 +9,7 @@
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
     </ContentPage.Padding>
     <ScrollView Padding="0">
-        <StackLayout Padding="20">
+        <StackLayout Padding="20" Spacing="10">
             <xfx:XfxCardView CornerRadius="3">
                 <StackLayout Padding="0" Margin="0">
                     <Image Source="http://lorempixel.com/1024/200/abstract" HorizontalOptions="Fill" Aspect="Fill" />
@@ -21,7 +21,6 @@
                     <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
                 </StackLayout>
             </xfx:XfxCardView>
-            <BoxView Color="Gray" HeightRequest="10" HorizontalOptions="Fill"/>
             <xfx:XfxCardView CornerRadius="10">
                 <StackLayout Padding="0" Margin="0">
                     <Image Source="http://lorempixel.com/1024/200/sports" HorizontalOptions="Fill" Aspect="Fill" />
