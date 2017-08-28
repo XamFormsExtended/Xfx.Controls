@@ -63,7 +63,7 @@ namespace Xfx.Controls.Droid.Renderers
         protected override TextInputLayout CreateNativeControl()
         {
             var textInputLayout = new TextInputLayout(Context);
-            var editText = new EditText(Context);
+            var editText = new TextInputEditText(Context);
             textInputLayout.AddView(editText);
             return textInputLayout;
         }
@@ -73,7 +73,8 @@ namespace Xfx.Controls.Droid.Renderers
             base.OnElementChanged(e);
 
             if (e.OldElement != null)
-                EditText.FocusChange -= ControlOnFocusChange;
+                if(Control != null)
+                    EditText.FocusChange -= ControlOnFocusChange;
 
             if (e.NewElement != null)
             {

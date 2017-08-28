@@ -67,7 +67,6 @@ namespace Xfx.Controls.Droid.Renderers
             var element = (Xfx.XfxComboBox)Element;
             element.OnItemSelectedInternal(Element, selectedItemArgs);
             HideKeyboard();
-            // TODO : Florell, Chase (Contractor) 02/15/17 SET FOCUS
         }
 
         private void SetThreshold()
