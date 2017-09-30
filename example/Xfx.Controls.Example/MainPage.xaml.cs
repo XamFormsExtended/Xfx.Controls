@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using Xamarin.Forms;
 
 namespace Xfx.Controls.Example
@@ -8,16 +8,12 @@ namespace Xfx.Controls.Example
         public MainPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this,false);
         }
 
-        private void Email_OnFocused(object sender, FocusEventArgs e)
+        private async void Button_OnClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Email Focused");
-        }
-
-        private void Email_OnUnfocused(object sender, FocusEventArgs e)
-        {
-            Debug.WriteLine("Email Unfocused");
+            await Navigation.PushAsync(new ControlsPage());
         }
     }
 }
