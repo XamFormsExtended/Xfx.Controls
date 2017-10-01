@@ -7,6 +7,7 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
 | ------------- |:------------------:|:------------------:|:---:|:---:|
 | XfxEntry      | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | XfxComboBox   | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| XfxCardView   | :white_check_mark: | :white_check_mark: | :x: | :x: |
 
 -----
 
@@ -17,6 +18,7 @@ Xfx Controls are just a few controls that differ from the baked in Xamarin.Forms
  - [Code](#code)
      - [XfxEntry](#xfxentry)
      - [XfxComboBox](#xfxcombobox)
+     - [XfxCardView](#xfxcardview)
  - [Contributions / Thanks](#contributions--thanks)
  - [License](#license)
 
@@ -69,9 +71,9 @@ When the `ErrorText` property is set, the ErrorText will display, otherwise if i
 ```xml
 <!-- XfxComboBox-->
 <xfx:XfxComboBox Placeholder="Enter your email address"
-                Text="{Binding EmailAddress}"
-                ItemsSource="{Binding EmailSuggestions}"
-                SortingAlgorithm="{Binding SortingAlgorithm}"/>
+                 Text="{Binding EmailAddress}"
+                 ItemsSource="{Binding EmailSuggestions}"
+                 SortingAlgorithm="{Binding SortingAlgorithm}"/>
 ```
 The XfxComboBox extends the XfxEntry and therefore also includes the `ErrorText` property.  
 Beyond that there is an `ItemsSource` property, `SelectedItem` property, and a `SortingAlgorithm` property.  
@@ -87,6 +89,23 @@ public class MyViewModel : INotifyPropertyChanged
 }
 ```
 
+#### XfxCardView
+
+```xml
+<!-- XfxCardView -->
+<xfx:XfxCardView CornerRadius="3" Elevation="3">
+    <StackLayout Padding="0" Margin="0">
+        <Image Source="http://lorempixel.com/1024/200/abstract" HorizontalOptions="Fill" Aspect="Fill" />
+        <Label Margin="8">
+            <Label.Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
+            </Label.Text>
+        </Label>
+        <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
+    </StackLayout>
+</xfx:XfxCardView>
+
+```
 
 ## Contributions / Thanks
 
