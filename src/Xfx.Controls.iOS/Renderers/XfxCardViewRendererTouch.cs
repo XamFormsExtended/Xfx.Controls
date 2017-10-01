@@ -17,9 +17,17 @@ namespace Xfx.Controls.iOS.Renderers
         public VisualElementTracker Tracker { get; private set; }
         public VisualElementPackager Packager { get; private set; }
         public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
+        public event EventHandler<PropertyChangedEventArgs> ElementPropertyChanged;
         public VisualElement Element { get; private set; }
         public UIView NativeView => this;
         public UIViewController ViewController => null;
+        public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint) => NativeView.GetSizeRequest(widthConstraint, heightConstraint, 44.0, 44.0);
+        public void SetElementSize(Size size) => Element.Layout(new Rectangle(Element.X, Element.Y, size.Width, size.Height));
+        protected XfxCardView CardView => (XfxCardView)Element;
+        protected virtual void OnElementChanged(object sender, VisualElementChangedEventArgs args) { }
+        protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args) { }
+        private void SetElevation() => SetElevation(CardView.Elevation);
+        private void SetCardBackgroundColor() => BackgroundColor = CardView.BackgroundColor.ToUIColor();
 
         public void SetElement(VisualElement element)
         {
@@ -43,19 +51,9 @@ namespace Xfx.Controls.iOS.Renderers
             Packager.Load();
             var view = Element as XfxCardView;
             if (view == null) return;
-            SetCardBackgroundColor(view.BackgroundColor.ToUIColor());
-            ElementChanged?.Invoke(this, new VisualElementChangedEventArgs(oldElement, Element));
-        }
-        
-        public SizeRequest GetDesiredSize(double widthConstraint, double heightConstraint)
-        {
-            var size = NativeView.GetSizeRequest(widthConstraint, heightConstraint, 44.0, 44.0);
-            return size;
-        }
-
-        public void SetElementSize(Size size)
-        {
-            Element.Layout(new Rectangle(Element.X, Element.Y, size.Width, size.Height));
+            SetCardBackgroundColor();
+            SetElevation();
+            RaiseElementChanged(new VisualElementChangedEventArgs(oldElement, Element));
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -71,28 +69,38 @@ namespace Xfx.Controls.iOS.Renderers
                 (e.PropertyName == VisualElement.HeightProperty.PropertyName) ||
                 (e.PropertyName == VisualElement.XProperty.PropertyName) ||
                 (e.PropertyName == VisualElement.YProperty.PropertyName) ||
-                (e.PropertyName == XfxCardView.CornerRadiusProperty.PropertyName))
+                (e.PropertyName == XfxCardView.CornerRadiusProperty.PropertyName) ||
+                (e.PropertyName == XfxCardView.ElevationProperty.PropertyName))
             {
                 Element.Layout(Element.Bounds);
 
                 var radius = ((XfxCardView)Element).CornerRadius;
                 var bound = Element.Bounds;
                 var rect = new CGRect(bound.X, bound.Y, bound.Width, bound.Height);
+                var elevation = ((XfxCardView)Element).Elevation;
                 DrawBorder(rect, radius);
             }
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-            {
-                SetCardBackgroundColor(view.BackgroundColor.ToUIColor());
-            }
+                SetCardBackgroundColor();
+            else if (e.PropertyName == XfxCardView.ElevationProperty.PropertyName)
+                SetElevation();
+            RaiseElementPropertyChanged(e);
         }
 
-        private void SetCardBackgroundColor(UIColor color)
+        private void RaiseElementPropertyChanged(PropertyChangedEventArgs args)
         {
-            BackgroundColor = color;
+            ElementPropertyChanged?.Invoke(this, args);
+            OnElementPropertyChanged(this, args);
+        }
+
+        private void RaiseElementChanged(VisualElementChangedEventArgs args)
+        {
+            ElementChanged?.Invoke(this, args);
+            OnElementChanged(this, args);
         }
     }
 
-    internal static class Extensions
+    static class Extensions
     {
         internal static void RemoveAllSubviews(this UIView super)
         {

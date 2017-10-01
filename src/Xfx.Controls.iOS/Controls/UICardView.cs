@@ -8,7 +8,7 @@ namespace Xfx.Controls.iOS.Controls
     public class UICardView : UIView
     {
         private UIView _shadowLayer;
-
+        private float _requestedElevation = -1f;
         public override void MovedToSuperview()
         {
             if (_shadowLayer != null) return;
@@ -17,7 +17,7 @@ namespace Xfx.Controls.iOS.Controls
             _shadowLayer.Layer.ShadowColor = UIColor.DarkGray.CGColor;
             _shadowLayer.Layer.ShadowOffset = new CGSize(0.0f, 1f);
             _shadowLayer.Layer.ShadowOpacity = 1f;
-            _shadowLayer.Layer.ShadowRadius = 3f;
+            _shadowLayer.Layer.ShadowRadius = _requestedElevation < 0f ? 3f:_requestedElevation;
             _shadowLayer.Layer.MasksToBounds = false;
             _shadowLayer.Layer.ShouldRasterize = true;
             _shadowLayer.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
@@ -39,6 +39,13 @@ namespace Xfx.Controls.iOS.Controls
             Layer.CornerRadius = radius;
             Layer.ShouldRasterize = true;
             Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+        }
+
+        public void SetElevation(float elevation)
+        {
+            _requestedElevation = elevation/2;
+            if (_shadowLayer?.Layer?.ShadowRadius == null) return;
+            _shadowLayer.Layer.ShadowRadius = elevation / 2;
         }
     }
 }

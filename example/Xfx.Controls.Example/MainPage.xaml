@@ -23,7 +23,7 @@
                     <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
                 </StackLayout>
             </xfx:XfxCardView>
-            <xfx:XfxCardView CornerRadius="10">
+            <xfx:XfxCardView CornerRadius="10" Elevation="30">
                 <StackLayout Padding="0" Margin="0">
                     <Image Source="http://lorempixel.com/1024/200/sports" HorizontalOptions="Fill" Aspect="Fill" />
                     <Label Margin="8">

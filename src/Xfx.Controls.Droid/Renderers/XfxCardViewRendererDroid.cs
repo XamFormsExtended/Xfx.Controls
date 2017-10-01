@@ -13,22 +13,31 @@ namespace Xfx.Controls.Droid.Renderers
 {
     public class XfxCardViewRendererDroid : CardView, IVisualElementRenderer
     {
+        private float _defaultElevation;
+        private float _defaultCornerRadius;
+
         public XfxCardViewRendererDroid() : base(Forms.Context)
         {
         }
 
-        protected XfxCardView CardView => (XfxCardView)Element;
-        public VisualElementPackager Packager { get; private set; }
-        public Android.Views.View View => this;
-        public VisualElementTracker Tracker { get; private set; }
-        public VisualElement Element { get; private set; }
         [Obsolete("ViewGroup is obsolete as of version 2.3.5. Please use View instead.")]
         public ViewGroup ViewGroup => this;
-
+        public Android.Views.View View => this;
+        public VisualElementPackager Packager { get; private set; }
+        public VisualElementTracker Tracker { get; private set; }
+        public VisualElement Element { get; private set; }
         public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
         public event EventHandler<PropertyChangedEventArgs> ElementPropertyChanged;
+        public void SetLabelFor(int? id) { }
+        public void UpdateLayout() => Tracker?.UpdateLayout();
+        protected XfxCardView CardView => (XfxCardView)Element;
+        protected virtual void OnElementChanged(object sender, VisualElementChangedEventArgs args) { }
+        protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args) { }
+        private void SetCardElevation() => Elevation = CardView.Elevation < 0 ? _defaultElevation : CardView.Elevation;
+        private void SetCardRadius() => Radius = CardView.CornerRadius < 0 ? _defaultCornerRadius : CardView.CornerRadius;
+        private void SetCardBackgroundColor() => SetCardBackgroundColor(CardView.BackgroundColor.ToAndroid());
 
-        public void SetElement(VisualElement element)
+        void IVisualElementRenderer.SetElement(VisualElement element)
         {
             var oldElement = Element;
 
@@ -46,27 +55,18 @@ namespace Xfx.Controls.Droid.Renderers
             Packager.Load();
             UseCompatPadding = true;
 
-            SetContentPadding((int)CardView.Padding.Left,
-                (int)CardView.Padding.Top,
-                (int)CardView.Padding.Right,
-                (int)CardView.Padding.Bottom);
-
-            Radius = CardView.CornerRadius;
-
-            SetCardBackgroundColor(CardView.BackgroundColor.ToAndroid());
+            _defaultElevation = Elevation;
+            _defaultCornerRadius = Radius;
+            SetContentPadding();
+            SetCardRadius();
+            SetCardBackgroundColor();
+            SetCardElevation();
             RaiseElementChanged(new VisualElementChangedEventArgs(oldElement, Element));
-        }
-
-        public void SetLabelFor(int? id)
-        {
         }
 
         public SizeRequest GetDesiredSize(int widthConstraint, int heightConstraint)
         {
-            // James Montemagno, is this not null?
             View.Measure(widthConstraint, heightConstraint);
-
-            //Measure child here and determine size
             return new SizeRequest(new Size(View.MeasuredWidth, View.MeasuredHeight));
         }
 
@@ -75,21 +75,34 @@ namespace Xfx.Controls.Droid.Renderers
             if (e.PropertyName == "Content")
                 Tracker.UpdateLayout();
             else if (e.PropertyName == Xamarin.Forms.Layout.PaddingProperty.PropertyName)
-                SetContentPadding((int)CardView.Padding.Left,
-                    (int)CardView.Padding.Top,
-                    (int)CardView.Padding.Right,
-                    (int)CardView.Padding.Bottom);
+                SetContentPadding();
             else if (e.PropertyName == XfxCardView.CornerRadiusProperty.PropertyName)
-                Radius = CardView.CornerRadius;
+                SetCardRadius();
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-                SetCardBackgroundColor(CardView.BackgroundColor.ToAndroid());
+                SetCardBackgroundColor();            
+            else if (e.PropertyName == XfxCardView.ElevationProperty.PropertyName)
+                SetCardElevation();
             RaiseElementPropertyChanged(e);
         }
 
-        public void UpdateLayout() => Tracker?.UpdateLayout();
+        private void SetContentPadding()
+        {
+            SetContentPadding((int)CardView.Padding.Left,
+                    (int)CardView.Padding.Top,
+                    (int)CardView.Padding.Right,
+                    (int)CardView.Padding.Bottom);
+        }
 
-        private void RaiseElementChanged(VisualElementChangedEventArgs args) => ElementChanged?.Invoke(this, args);
+        private void RaiseElementChanged(VisualElementChangedEventArgs args)
+        {
+            ElementChanged?.Invoke(this, args);
+            OnElementChanged(this, args);
+        }
 
-        private void RaiseElementPropertyChanged(PropertyChangedEventArgs args) => ElementPropertyChanged?.Invoke(this, args);
+        private void RaiseElementPropertyChanged(PropertyChangedEventArgs args)
+        {
+            ElementPropertyChanged?.Invoke(this, args);
+            OnElementPropertyChanged(this, args);
+        }
     }
 }
