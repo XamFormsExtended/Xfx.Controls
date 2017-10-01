@@ -32,7 +32,7 @@ namespace Xfx
         }
 
         /// <summary>
-        /// Distance drop shadow will be from the CardView. This is a bindalbe property. Default is -1f
+        ///     Distance drop shadow will be from the CardView. This is a bindalbe property. Default is -1f
         /// </summary>
         /// <value>The elevation.</value>
         public float Elevation
@@ -40,7 +40,6 @@ namespace Xfx
             get { return (float)GetValue(ElevationProperty); }
             set{SetValue(ElevationProperty, value);}
         }
-
 
         protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
         {
