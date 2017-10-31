@@ -57,12 +57,17 @@ namespace Xfx.Controls.iOS.Controls
             ErrorTextColor = UIColor.Red;
             ErrorTextIsVisible = false;
             FloatingLabelTextColor = UIColor.DarkGray;
-            FloatingLabelActiveTextColor = UIColor.Blue;
             FloatingLabelFont = UIFont.BoldSystemFontOfSize(12);
         }
 
         public UIColor FloatingLabelTextColor { get; set; }
-        public UIColor FloatingLabelActiveTextColor { get; set; }
+        public UIColor FloatingLabelActiveTextColor
+        {
+            get
+            {
+                return this.TintColor;
+            }
+        }
         public bool FloatingLabelEnabled { get; set; } = true;
         public UIColor ErrorTextColor
         {
