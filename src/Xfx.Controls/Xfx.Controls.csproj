@@ -4,6 +4,6 @@
         <TargetFramework>netstandard1.3</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Xamarin.Forms" Version="2.4.0.282" />
+      <PackageReference Include="Xamarin.Forms" Version="2.4.0.38779" />
     </ItemGroup>
 </Project>
