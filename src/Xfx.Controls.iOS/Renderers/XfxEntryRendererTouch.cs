@@ -19,7 +19,13 @@ namespace Xfx.Controls.iOS.Renderers
     public class XfxEntryRendererTouch : ViewRenderer<XfxEntry, FloatLabeledTextField>
     {
         private readonly CGColor _defaultLineColor = Color.FromHex("#666666").ToCGColor();
-        private readonly CGColor _editingUnderlineColor = UIColor.Blue.CGColor;
+        private CGColor _editingUnderlineColor
+        {
+            get
+            {
+                return UITextView.Appearance.TintColor.CGColor;
+            }
+        }
         private UIColor _defaultPlaceholderColor;
         private UIColor _defaultTextColor;
         private bool _hasError;
