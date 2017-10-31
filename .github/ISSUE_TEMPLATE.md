@@ -12,6 +12,9 @@ Please fill out either the bug or feature request section and remove whatever se
 
 ### Steps to reproduce the Behavior
 
+### Link to Github Reproduction (optional but recommended)
+
+[Repro]()
 
 ## Feature Request:
 Please fill in what you would like
