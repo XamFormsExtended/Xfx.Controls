@@ -25,8 +25,6 @@ namespace Xfx.Controls.iOS.Renderers
         private bool _hasError;
         private bool _hasFocus;
 
-        private IElementController ElementController => Element as IElementController;
-
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
@@ -112,7 +110,7 @@ namespace Xfx.Controls.iOS.Renderers
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
         {
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
-            ElementController.SetValueFromRenderer(isFocusedPropertyKey, false);
+            Element.SetValueFromRenderer(isFocusedPropertyKey, false);
             _hasFocus = false;
             Control.UnderlineColor = GetUnderlineColorForState();
         }
@@ -120,14 +118,14 @@ namespace Xfx.Controls.iOS.Renderers
         private void OnEditingDidBegin(object sender, EventArgs eventArgs)
         {
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
-            ElementController.SetValueFromRenderer(isFocusedPropertyKey, true);
+            Element.SetValueFromRenderer(isFocusedPropertyKey, true);
             _hasFocus = true;
             Control.UnderlineColor = GetUnderlineColorForState();
         }
 
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
         {
-            ElementController?.SetValueFromRenderer(TextProperty, Control.Text);
+            Element?.SetValueFromRenderer(TextProperty, Control.Text);
         }
 
         private void SetFloatingHintEnabled()
