@@ -21,9 +21,10 @@
             <Grid RowSpacing="0" ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
@@ -48,14 +49,22 @@
                               Text="{Binding Name}"
                               ErrorText="{Binding NameErrorText}" />
 
-                <Label Grid.Row="2" Grid.Column="0" Text="No Floating Label" />
+                <Label Grid.Row="2" Grid.Column="0" Text="No Error Message" />
                 <xfx:XfxEntry Grid.Row="2"
+                              Grid.Column="1"
+                              Placeholder="Enter your name (error message won't show)"
+                              ErrorDisplay="None"
+                              Text="{Binding Name}"
+                              ErrorText="{Binding NameErrorText}" />
+
+            <Label Grid.Row="3" Grid.Column="0" Text="No Floating Label" />
+                <xfx:XfxEntry Grid.Row="3"
                               Grid.Column="1"
                               Placeholder="This hint won't float, and it's a password entry"
                               Text="{Binding Foo}"
                               ErrorText="{Binding FooErrorText}"
                               IsPassword="True"
                               FloatingHintEnabled="False" />
-            </Grid>
+        </Grid>
     </ScrollView>
 </ContentPage>
