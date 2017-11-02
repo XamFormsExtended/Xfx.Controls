@@ -108,8 +108,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetFont();
                 SetFloatingHintEnabled();
                 SetIsEnabled();
-
-                Control.ErrorEnabled = true;
+                SetErrorDisplay();
             }
         }
 
@@ -213,6 +212,19 @@ namespace Xfx.Controls.Droid.Renderers
             Control.HintEnabled = Element.FloatingHintEnabled;
         }
 
+        public void SetErrorDisplay()
+        {
+            switch(Element.ErrorDisplay)
+            {
+                case ErrorDisplay.None:
+                    Control.ErrorEnabled = false;
+                    break;
+                case ErrorDisplay.Underline:
+                    Control.ErrorEnabled = true;
+                    break;
+            }
+        }
+
         protected void HideKeyboard()
         {
             var manager = (InputMethodManager) Application.Context.GetSystemService(Context.InputMethodService);
@@ -229,13 +241,11 @@ namespace Xfx.Controls.Droid.Renderers
         {
             if (!string.IsNullOrEmpty(Element.ErrorText))
             {
-                Control.ErrorEnabled = true;
                 Control.Error = Element.ErrorText;
             }
             else
             {
                 Control.Error = null;
-                Control.ErrorEnabled = false;
             }
         }
 

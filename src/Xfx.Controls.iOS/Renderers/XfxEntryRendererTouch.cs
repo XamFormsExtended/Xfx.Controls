@@ -59,8 +59,9 @@ namespace Xfx.Controls.iOS.Renderers
                 SetErrorText();
                 SetFont();
                 SetFloatingHintEnabled();
+                SetErrorDisplay();
 
-                Control.ErrorTextIsVisible = true;
+                Control.UnderlineErrorTextIsVisible = Element.ErrorDisplay == ErrorDisplay.Underline;
                 Control.EditingDidBegin += OnEditingDidBegin;
                 Control.EditingDidEnd += OnEditingDidEnd;
                 Control.EditingChanged += ViewOnEditingChanged;
@@ -133,11 +134,27 @@ namespace Xfx.Controls.iOS.Renderers
             Control.FloatingLabelEnabled = Element.FloatingHintEnabled;
         }
 
+        public void SetErrorDisplay()
+        {
+            switch (Element.ErrorDisplay)
+            {
+                case ErrorDisplay.None:
+                    Control.UnderlineErrorSpaceEnabled = false;
+                    Control.UnderlineErrorTextIsVisible = false;
+                    break;
+                case ErrorDisplay.Underline:
+                    Control.UnderlineErrorSpaceEnabled = true;
+                    _hasError = !string.IsNullOrEmpty(Element.ErrorText);
+                    Control.UnderlineErrorTextIsVisible = _hasError;
+                    break;
+            }
+        }
+
         private void SetErrorText()
         {
             _hasError = !string.IsNullOrEmpty(Element.ErrorText);
             Control.UnderlineColor = GetUnderlineColorForState();
-            Control.ErrorTextIsVisible = _hasError;
+            Control.UnderlineErrorTextIsVisible = _hasError && (Element.ErrorDisplay == ErrorDisplay.Underline);
             Control.ErrorText = Element.ErrorText;
         }
 

@@ -55,7 +55,7 @@ namespace Xfx.Controls.iOS.Controls
 
             BorderStyle = UITextBorderStyle.None;
             ErrorTextColor = UIColor.Red;
-            ErrorTextIsVisible = false;
+            UnderlineErrorTextIsVisible = false;
             FloatingLabelTextColor = UIColor.DarkGray;
             FloatingLabelFont = UIFont.BoldSystemFontOfSize(12);
         }
@@ -69,13 +69,23 @@ namespace Xfx.Controls.iOS.Controls
             }
         }
         public bool FloatingLabelEnabled { get; set; } = true;
+
+        public bool UnderlineErrorSpaceEnabled { get; set; } = true;
+
+        public float UnderlineSpace
+        {
+            get
+            {
+                return UnderlineErrorSpaceEnabled ? 22 : 4;
+            }
+        }
         public UIColor ErrorTextColor
         {
             get { return _errorLabel.TextColor; }
             set { _errorLabel.TextColor = value; }
         }
 
-        public bool ErrorTextIsVisible
+        public bool UnderlineErrorTextIsVisible
         {
             get { return !_errorLabel.Hidden; }
             set
@@ -136,7 +146,7 @@ namespace Xfx.Controls.iOS.Controls
             {
                 return base.TextRect(forBounds);
             }
-            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, 22, 0));
+            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
         }
 
         public override CGRect EditingRect(CGRect forBounds)
@@ -146,7 +156,7 @@ namespace Xfx.Controls.iOS.Controls
                 return base.EditingRect(forBounds);
             }
 
-            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, 22, 0));
+            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
         }
 
         public override CGRect ClearButtonRect(CGRect forBounds)
@@ -169,7 +179,7 @@ namespace Xfx.Controls.iOS.Controls
         {
             base.LayoutSubviews();
 
-            _underline.Frame = new CGRect(0f, Frame.Height - 20, Frame.Width, 1f);
+            _underline.Frame = new CGRect(0f, Frame.Height - UnderlineSpace + 2, Frame.Width, 1f);
 
             Action updateLabel = () =>
             {

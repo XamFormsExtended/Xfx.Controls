@@ -25,11 +25,16 @@ namespace Xfx
         }
 
         /// <summary>
+        /// Gets or Sets whether or not the Error Style is 'Underline' or 'Tooltip'
+        /// </summary>
+        public ErrorDisplay ErrorDisplay { get; set; } = ErrorDisplay.Underline;
+
+        /// <summary>
         ///    Error text for the entry. An empty string removes the error. This is a bindable property.
         /// </summary>
         public string ErrorText
         {
-            get { return (string) GetValue(ErrorTextProperty); }
+            get { return (string)GetValue(ErrorTextProperty); }
             set { SetValue(ErrorTextProperty, value); }
         }
 
@@ -46,5 +51,11 @@ namespace Xfx
         }
 
         protected virtual void OnErrorTextChanged(BindableObject bindable, object oldvalue, object newvalue) { }
+    }
+
+    public enum ErrorDisplay
+    {
+        Underline,
+        None
     }
 }
