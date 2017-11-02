@@ -72,7 +72,7 @@ namespace Xfx.Controls.iOS.Controls
 
         public bool UnderlineErrorSpaceEnabled { get; set; } = true;
 
-        public float ErrorLabelSpace
+        public float UnderlineSpace
         {
             get
             {
@@ -146,7 +146,7 @@ namespace Xfx.Controls.iOS.Controls
             {
                 return base.TextRect(forBounds);
             }
-            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, ErrorLabelSpace, 0));
+            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
         }
 
         public override CGRect EditingRect(CGRect forBounds)
@@ -156,7 +156,7 @@ namespace Xfx.Controls.iOS.Controls
                 return base.EditingRect(forBounds);
             }
 
-            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, ErrorLabelSpace, 0));
+            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
         }
 
         public override CGRect ClearButtonRect(CGRect forBounds)
@@ -179,7 +179,7 @@ namespace Xfx.Controls.iOS.Controls
         {
             base.LayoutSubviews();
 
-            _underline.Frame = new CGRect(0f, Frame.Height - ErrorLabelSpace + 2, Frame.Width, 1f);
+            _underline.Frame = new CGRect(0f, Frame.Height - UnderlineSpace + 2, Frame.Width, 1f);
 
             Action updateLabel = () =>
             {
