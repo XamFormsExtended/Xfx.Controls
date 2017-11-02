@@ -76,7 +76,7 @@ namespace Xfx.Controls.iOS.Controls
         {
             get
             {
-                return UnderlineErrorSpaceEnabled ? 22 : 0;
+                return UnderlineErrorSpaceEnabled ? 22 : 4;
             }
         }
         public UIColor ErrorTextColor
