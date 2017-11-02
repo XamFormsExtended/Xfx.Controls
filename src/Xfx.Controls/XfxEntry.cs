@@ -25,7 +25,7 @@ namespace Xfx
         }
 
         /// <summary>
-        /// Gets or Sets whether or not the Error Style is 'Underline' or 'Tooltip'
+        /// Gets or Sets whether or not the Error Style is 'Underline' or 'None'
         /// </summary>
         public ErrorDisplay ErrorDisplay { get; set; } = ErrorDisplay.Underline;
 
