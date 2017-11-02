@@ -72,7 +72,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Content")
+            if (e.PropertyName == ContentView.ContentProperty.PropertyName)
                 Tracker.UpdateLayout();
             else if (e.PropertyName == Xamarin.Forms.Layout.PaddingProperty.PropertyName)
                 SetContentPadding();
