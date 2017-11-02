@@ -13,7 +13,7 @@ namespace Xfx.Controls.Example
 
         private async void Button_OnClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ControlsPage());
+            await Navigation.PushAsync(new Features.Controls.ControlsPage());
         }
     }
 }

@@ -3,8 +3,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
-             xmlns:app="clr-namespace:Xfx.Controls.Example;assembly=Xfx.Controls.Example"
-             x:Class="Xfx.Controls.Example.ControlsPage"
+             xmlns:app="clr-namespace:Xfx.Controls.Example.Features.Controls;assembly=Xfx.Controls.Example"
+             x:Class="Xfx.Controls.Example.Features.Controls.ControlsPage"
              Title="Custom Controls Example">
     <ContentPage.BindingContext>
         <app:MainPageModel />
@@ -32,9 +32,11 @@
                 <Label Grid.Row="0" Grid.Column="0" Text="ComboBox" />
                 <xfx:XfxComboBox Grid.Row="0"
                                  Grid.Column="1"
+                                 Placeholder="Enter your email address"
+                                 ItemSelected="Email_ItemSelected"
                                  Focused="Email_OnFocused"
                                  Unfocused="Email_OnUnfocused"
-                                 Placeholder="Enter your email address"
+                                 SelectedItem="{Binding SelectedItem}"
                                  Text="{Binding EmailAddress}"
                                  ItemsSource="{Binding EmailSuggestions}"
                                  SortingAlgorithm="{Binding SortingAlgorithm}" />
