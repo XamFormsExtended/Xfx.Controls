@@ -134,12 +134,16 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void SetUnfocusedColor()
         {
-            Control.FloatingLabelTextColor = Element.UnfocusedColor.ToUIColor();
+            Control.FloatingLabelTextColor = Element.UnfocusedColor == Color.Default
+                ? Control.TextColor
+                : Element.UnfocusedColor.ToUIColor();
         }
 
         private void SetFocusedColor()
         {
-            Control.FloatingLabelActiveTextColor = Element.FocusedColor == Color.Accent ? Control.TintColor : Element.FocusedColor.ToUIColor();
+            Control.FloatingLabelActiveTextColor = Element.FocusedColor == Color.Accent
+                ? Control.TintColor
+                : Element.FocusedColor.ToUIColor();
         }
 
         private void SetFloatingHintEnabled()
@@ -174,7 +178,13 @@ namespace Xfx.Controls.iOS.Renderers
         private CGColor GetUnderlineColorForState()
         {
             if (_hasError) return UIColor.Red.CGColor;
-            return _hasFocus ? Element.FocusedColor.ToCGColor() : Element.UnfocusedColor.ToCGColor();
+            return _hasFocus
+                ? (Element.FocusedColor == Color.Accent 
+                    ? Control.TintColor.CGColor 
+                    : Element.FocusedColor.ToCGColor())
+                : (Element.UnfocusedColor == Color.Default 
+                    ? Control.TextColor.CGColor 
+                    : Element.UnfocusedColor.ToCGColor());
         }
 
         private void SetBackgroundColor()
