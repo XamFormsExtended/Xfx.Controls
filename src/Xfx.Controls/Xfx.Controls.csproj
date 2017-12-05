@@ -2,8 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard1.3</TargetFramework>
+        <RootNamespace>Xfx</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Xamarin.Forms" Version="2.4.0.38779" />
+      <PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
     </ItemGroup>
 </Project>

@@ -15,6 +15,34 @@ namespace Xfx
             typeof(XfxEntry),
             true);
 
+        public static readonly BindableProperty FocusedColorProperty = BindableProperty.Create(nameof(FocusedColor),
+            typeof(Color),
+            typeof(XfxEntry),
+            Color.Accent);
+
+        public static readonly BindableProperty UnfocusedColorProperty = BindableProperty.Create(nameof(UnfocusedColor),
+            typeof(Color),
+            typeof(XfxEntry),
+            Color.Default);
+
+        /// <summary>
+        /// FocusedColor summary. This is a bindable property.
+        /// </summary>
+        public Color FocusedColor
+        {
+            get { return (Color) GetValue(FocusedColorProperty); }
+            set { SetValue(FocusedColorProperty, value); }
+        }
+
+        /// <summary>
+        /// UnfocusedColor summary. This is a bindable property.
+        /// </summary>
+        public Color UnfocusedColor
+        {
+            get { return (Color) GetValue(UnfocusedColorProperty); }
+            set { SetValue(UnfocusedColorProperty, value); }
+        }
+
         /// <summary>
         /// <c>true</c> to float the hint into a label, otherwise <c>false</c>. This is a bindable property.
         /// </summary>

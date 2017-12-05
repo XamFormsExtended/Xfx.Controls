@@ -3,17 +3,24 @@ using System.Diagnostics;
 using System.Linq;
 using UIKit;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace Xfx.Controls.iOS.Extensions
 {
     public static class FontExtensions
     {
-        static readonly Dictionary<ToUIFontKey, UIFont> _toUiFont = new Dictionary<ToUIFontKey, UIFont>();
+        private static readonly Dictionary<ToUIFontKey, UIFont> _toUiFont = new Dictionary<ToUIFontKey, UIFont>();
+
+        public static bool IsDefault(this Span self)
+        {
+            return self.FontFamily == null &&
+                   self.FontAttributes == FontAttributes.None;
+        }
+
         public static UIFont ToUIFont(this Font self)
         {
-            var size = (float)self.FontSize;
+            var size = (float) self.FontSize;
             if (self.UseNamedSize)
-            {
                 switch (self.NamedSize)
                 {
                     case NamedSize.Micro:
@@ -32,13 +39,11 @@ namespace Xfx.Controls.iOS.Extensions
                         size = 17;
                         break;
                 }
-            }
 
             var bold = self.FontAttributes.HasFlag(FontAttributes.Bold);
             var italic = self.FontAttributes.HasFlag(FontAttributes.Italic);
 
             if (self.FontFamily != null)
-            {
                 try
                 {
                     if (UIFont.FamilyNames.Contains(self.FontFamily))
@@ -47,7 +52,7 @@ namespace Xfx.Controls.iOS.Extensions
 
                         if (bold || italic)
                         {
-                            var traits = (UIFontDescriptorSymbolicTraits)0;
+                            var traits = (UIFontDescriptorSymbolicTraits) 0;
                             if (bold)
                                 traits = traits | UIFontDescriptorSymbolicTraits.Bold;
                             if (italic)
@@ -64,7 +69,6 @@ namespace Xfx.Controls.iOS.Extensions
                 {
                     Debug.WriteLine("Could not load font named: {0}", self.FontFamily);
                 }
-            }
             if (bold && italic)
             {
                 var defaultFont = UIFont.SystemFontOfSize(size);
@@ -81,25 +85,18 @@ namespace Xfx.Controls.iOS.Extensions
             return UIFont.SystemFontOfSize(size);
         }
 
-        internal static bool IsDefault(this Span self)
+
+        public static UIFont ToUIFont(this Entry element)
         {
-            return self.FontFamily == null &&
-                    self.FontAttributes == FontAttributes.None;
+            return ToUIFont(element.FontFamily, (float) element.FontSize, element.FontAttributes);
         }
 
-
-        internal static UIFont ToUIFont(this Entry element)
-        {
-            return ToUIFont(element.FontFamily, (float)element.FontSize, element.FontAttributes);
-        }
-
-        static UIFont _ToUIFont(string family, float size, FontAttributes attributes)
+        private static UIFont _ToUIFont(string family, float size, FontAttributes attributes)
         {
             var bold = (attributes & FontAttributes.Bold) != 0;
             var italic = (attributes & FontAttributes.Italic) != 0;
 
             if (family != null)
-            {
                 try
                 {
                     UIFont result;
@@ -110,7 +107,7 @@ namespace Xfx.Controls.iOS.Extensions
 
                         if (bold || italic)
                         {
-                            var traits = (UIFontDescriptorSymbolicTraits)0;
+                            var traits = (UIFontDescriptorSymbolicTraits) 0;
                             if (bold)
                                 traits = traits | UIFontDescriptorSymbolicTraits.Bold;
                             if (italic)
@@ -132,7 +129,6 @@ namespace Xfx.Controls.iOS.Extensions
                 {
                     Debug.WriteLine("Could not load font named: {0}", family);
                 }
-            }
 
             if (bold && italic)
             {
@@ -151,7 +147,7 @@ namespace Xfx.Controls.iOS.Extensions
             return UIFont.SystemFontOfSize(size);
         }
 
-        static UIFont ToUIFont(string family, float size, FontAttributes attributes)
+        private static UIFont ToUIFont(string family, float size, FontAttributes attributes)
         {
             var key = new ToUIFontKey(family, size, attributes);
 
@@ -173,7 +169,7 @@ namespace Xfx.Controls.iOS.Extensions
             }
         }
 
-        struct ToUIFontKey
+        private struct ToUIFontKey
         {
             internal ToUIFontKey(string family, float size, FontAttributes attributes)
             {
@@ -183,12 +179,28 @@ namespace Xfx.Controls.iOS.Extensions
             }
 #pragma warning disable 0414 // these are not called explicitly, but they are used to establish uniqueness. allow it!
             // ReSharper disable once NotAccessedField.Local
-            string _family;
+            private string _family;
+
             // ReSharper disable once NotAccessedField.Local
-            float _size;
+            private float _size;
+
             // ReSharper disable once NotAccessedField.Local
-            FontAttributes _attributes;
+            private FontAttributes _attributes;
 #pragma warning restore 0414
+        }
+
+        public static UIFont ToUIFont(this Label label)
+
+        {
+            var values = label.GetValues(Label.FontFamilyProperty, Label.FontSizeProperty, Label.FontAttributesProperty);
+            return ToUIFont((string) values[0], (float) (double) values[1], (FontAttributes) values[2]) ??
+                   UIFont.SystemFontOfSize(UIFont.LabelFontSize);
+        }
+
+
+        public static UIFont ToUIFont(this IFontElement element)
+        {
+            return ToUIFont(element.FontFamily, (float) element.FontSize, element.FontAttributes);
         }
     }
 }
