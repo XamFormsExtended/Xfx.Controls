@@ -4,13 +4,14 @@ using System.Drawing;
 using CoreGraphics;
 using UIKit;
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
 using Xfx;
 using Xfx.Controls.iOS.Controls;
 using Xfx.Controls.iOS.Extensions;
 using Xfx.Controls.iOS.Renderers;
 using Xfx.Extensions;
 using static Xamarin.Forms.Entry;
+using ColorExtensions = Xfx.Controls.iOS.Extensions.ColorExtensions;
+using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererTouch))]
 
@@ -18,12 +19,9 @@ namespace Xfx.Controls.iOS.Renderers
 {
     public class XfxEntryRendererTouch : ViewRenderer<XfxEntry, FloatLabeledTextField>
     {
-        private readonly CGColor _defaultLineColor = Color.FromHex("#666666").ToCGColor();
-        private CGColor _editingUnderlineColor => Color.Accent.ToCGColor();
-        private UIColor _defaultPlaceholderColor;
-        private UIColor _defaultTextColor;
         private bool _hasError;
         private bool _hasFocus;
+        private UIColor _defaultTextColor;
 
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
@@ -46,7 +44,6 @@ namespace Xfx.Controls.iOS.Renderers
                     SetAutomationId(Element.AutomationId);
 
                 _defaultTextColor = Control.FloatingLabelTextColor;
-                _defaultPlaceholderColor = Control.FloatingLabelTextColor;
 
                 SetIsPassword();
                 SetText();
@@ -60,6 +57,8 @@ namespace Xfx.Controls.iOS.Renderers
                 SetFont();
                 SetFloatingHintEnabled();
                 SetErrorDisplay();
+                SetFocusedColor();
+                SetUnfocusedColor();
 
                 Control.UnderlineErrorTextIsVisible = Element.ErrorDisplay == ErrorDisplay.Underline;
                 Control.EditingDidBegin += OnEditingDidBegin;
@@ -106,6 +105,10 @@ namespace Xfx.Controls.iOS.Renderers
                      (e.PropertyName == FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == FontSizeProperty.PropertyName))
                 SetFont();
+            else if (e.PropertyName == XfxEntry.FocusedColorProperty.PropertyName)
+                SetFocusedColor();
+            else if (e.PropertyName == XfxEntry.UnfocusedColorProperty.PropertyName)
+                SetUnfocusedColor();
         }
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
@@ -127,6 +130,20 @@ namespace Xfx.Controls.iOS.Renderers
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
         {
             Element?.SetValueFromRenderer(TextProperty, Control.Text);
+        }
+
+        private void SetUnfocusedColor()
+        {
+            Control.FloatingLabelTextColor = Element.UnfocusedColor == Color.Default
+                ? Control.TextColor
+                : Element.UnfocusedColor.ToUIColor();
+        }
+
+        private void SetFocusedColor()
+        {
+            Control.FloatingLabelActiveTextColor = Element.FocusedColor == Color.Accent
+                ? Control.TintColor
+                : Element.FocusedColor.ToUIColor();
         }
 
         private void SetFloatingHintEnabled()
@@ -161,13 +178,19 @@ namespace Xfx.Controls.iOS.Renderers
         private CGColor GetUnderlineColorForState()
         {
             if (_hasError) return UIColor.Red.CGColor;
-            return _hasFocus ? _editingUnderlineColor : _defaultLineColor;
+            return _hasFocus
+                ? (Element.FocusedColor == Color.Accent 
+                    ? Control.TintColor.CGColor 
+                    : Element.FocusedColor.ToCGColor())
+                : (Element.UnfocusedColor == Color.Default 
+                    ? Control.TextColor.CGColor 
+                    : Element.UnfocusedColor.ToCGColor());
         }
 
         private void SetBackgroundColor()
         {
             NativeView.BackgroundColor = Element.BackgroundColor.ToUIColor();
-            Control.UnderlineColor = _defaultLineColor;
+            Control.UnderlineColor = Element.UnfocusedColor.ToCGColor();
         }
 
         private void SetText()
@@ -196,11 +219,21 @@ namespace Xfx.Controls.iOS.Renderers
             Control.Placeholder = Element.Placeholder;
         }
 
+        // taken from Xamarin.Forms codebase
         private void SetPlaceholderColor()
         {
-            Control.FloatingLabelTextColor = Element.PlaceholderColor == Color.Default
-                ? _defaultPlaceholderColor
-                : Element.PlaceholderColor.ToUIColor();
+            var formatted = (FormattedString)Element.Placeholder;
+
+            if (formatted == null)
+                return;
+
+            var targetColor = Element.PlaceholderColor;
+
+            // Placeholder default color is 70% gray
+            // https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UITextField_Class/index.html#//apple_ref/occ/instp/UITextField/placeholder
+
+            var color = Element.IsEnabled && !targetColor.IsDefault ? targetColor : ColorExtensions.SeventyPercentGrey.ToColor();
+            Control.AttributedPlaceholder = formatted.ToAttributed(Element, color);
         }
 
         private void SetTextColor()
@@ -242,7 +275,7 @@ namespace Xfx.Controls.iOS.Renderers
 
         private UIToolbar NumberpadAccessoryView()
         {
-            return new UIToolbar(new RectangleF(0.0f, 0.0f, (float) Control.Frame.Size.Width, 44.0f))
+            return new UIToolbar(new RectangleF(0.0f, 0.0f, (float)Control.Frame.Size.Width, 44.0f))
             {
                 Items = new[]
                 {
@@ -255,7 +288,7 @@ namespace Xfx.Controls.iOS.Renderers
         private bool InvokeCompleted(UITextField textField)
         {
             Control.ResignFirstResponder();
-            ((IEntryController) Element).SendCompleted();
+            ((IEntryController)Element).SendCompleted();
             return true;
         }
     }

@@ -23,7 +23,6 @@
 //  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using CoreAnimation;
 using CoreGraphics;
 using UIKit;
@@ -35,6 +34,8 @@ namespace Xfx.Controls.iOS.Controls
         private readonly UILabel _errorLabel;
         private readonly UILabel _floatingLabel;
         private readonly CALayer _underline;
+        private UIColor _floatingLabelTextColor;
+        private UIColor _floatingLabelActiveTextColor;
 
         public FloatLabeledTextField()
         {
@@ -60,14 +61,32 @@ namespace Xfx.Controls.iOS.Controls
             FloatingLabelFont = UIFont.BoldSystemFontOfSize(12);
         }
 
-        public UIColor FloatingLabelTextColor { get; set; }
-        public UIColor FloatingLabelActiveTextColor
+        public UIColor FloatingLabelTextColor
         {
-            get
+            get { return _floatingLabelTextColor; }
+            set
             {
-                return this.TintColor;
+                _floatingLabelTextColor = value;
+                if (!IsFirstResponder)
+                {
+                    _floatingLabel.TextColor = value;
+                }
             }
         }
+
+        public UIColor FloatingLabelActiveTextColor
+        {
+            get { return _floatingLabelActiveTextColor; }
+            set
+            {
+                _floatingLabelActiveTextColor = value;
+                if (IsFirstResponder)
+                {
+                    _floatingLabel.TextColor = value;
+                }
+            }
+        }
+
         public bool FloatingLabelEnabled { get; set; } = true;
 
         public bool UnderlineErrorSpaceEnabled { get; set; } = true;
@@ -177,33 +196,23 @@ namespace Xfx.Controls.iOS.Controls
 
         public override void LayoutSubviews()
         {
-            base.LayoutSubviews();
 
             _underline.Frame = new CGRect(0f, Frame.Height - UnderlineSpace + 2, Frame.Width, 1f);
 
-            Action updateLabel = () =>
+            // local function
+            void UpdateLabel()
             {
                 if (!string.IsNullOrEmpty(Text) && FloatingLabelEnabled)
                 {
                     _floatingLabel.Alpha = 1.0f;
-                    _floatingLabel.Frame =
-                        new CGRect(
-                            _floatingLabel.Frame.Location.X,
-                            2.0f,
-                            _floatingLabel.Frame.Size.Width,
-                            _floatingLabel.Frame.Size.Height);
+                    _floatingLabel.Frame = new CGRect(_floatingLabel.Frame.Location.X, 2.0f, _floatingLabel.Frame.Size.Width, _floatingLabel.Frame.Size.Height);
                 }
                 else
                 {
                     _floatingLabel.Alpha = 0.0f;
-                    _floatingLabel.Frame =
-                        new CGRect(
-                            _floatingLabel.Frame.Location.X,
-                            _floatingLabel.Font.LineHeight,
-                            _floatingLabel.Frame.Size.Width,
-                            _floatingLabel.Frame.Size.Height);
+                    _floatingLabel.Frame = new CGRect(_floatingLabel.Frame.Location.X, _floatingLabel.Font.LineHeight, _floatingLabel.Frame.Size.Width, _floatingLabel.Frame.Size.Height);
                 }
-            };
+            }
 
             if (IsFirstResponder)
             {
@@ -214,7 +223,7 @@ namespace Xfx.Controls.iOS.Controls
 
                 if (shouldFloat == isFloating)
                 {
-                    updateLabel();
+                    UpdateLabel();
                 }
                 else
                 {
@@ -223,7 +232,7 @@ namespace Xfx.Controls.iOS.Controls
                         0.0f,
                         UIViewAnimationOptions.BeginFromCurrentState
                         | UIViewAnimationOptions.CurveEaseOut,
-                        () => updateLabel(),
+                        UpdateLabel,
                         () => { });
                 }
             }
@@ -231,8 +240,9 @@ namespace Xfx.Controls.iOS.Controls
             {
                 _floatingLabel.TextColor = FloatingLabelTextColor;
 
-                updateLabel();
+                UpdateLabel();
             }
+            base.LayoutSubviews();
         }
 
         private static CGRect InsetRect(CGRect rect, UIEdgeInsets insets)
