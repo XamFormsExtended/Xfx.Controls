@@ -105,7 +105,7 @@ namespace Xfx.Controls.iOS.Renderers
                      (e.PropertyName == FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == FontSizeProperty.PropertyName))
                 SetFont();
-            else if (e.PropertyName == XfxEntry.FocusedColorProperty.PropertyName)
+            else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName)
                 SetFocusedColor();
             else if (e.PropertyName == XfxEntry.UnfocusedColorProperty.PropertyName)
                 SetUnfocusedColor();
@@ -141,9 +141,9 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void SetFocusedColor()
         {
-            Control.FloatingLabelActiveTextColor = Element.FocusedColor == Color.Accent
+            Control.FloatingLabelActiveTextColor = Element.ActivePlaceholderColor == Color.Accent
                 ? Control.TintColor
-                : Element.FocusedColor.ToUIColor();
+                : Element.ActivePlaceholderColor.ToUIColor();
         }
 
         private void SetFloatingHintEnabled()
@@ -179,9 +179,9 @@ namespace Xfx.Controls.iOS.Renderers
         {
             if (_hasError) return UIColor.Red.CGColor;
             return _hasFocus
-                ? (Element.FocusedColor == Color.Accent 
+                ? (Element.ActivePlaceholderColor == Color.Accent 
                     ? Control.TintColor.CGColor 
-                    : Element.FocusedColor.ToCGColor())
+                    : Element.ActivePlaceholderColor.ToCGColor())
                 : (Element.UnfocusedColor == Color.Default 
                     ? Control.TextColor.CGColor 
                     : Element.UnfocusedColor.ToCGColor());

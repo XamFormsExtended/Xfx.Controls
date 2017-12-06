@@ -71,9 +71,8 @@
                 <xfx:XfxEntry Grid.Row="4"
                               Grid.Column="1"
                               Placeholder="Change Colors"
-                              PlaceholderColor="CadetBlue"
-                              FocusedColor="BlueViolet"
-                              UnfocusedColor="DarkCyan"
+                              PlaceholderColor="DodgerBlue"
+                              ActivePlaceholderColor="BlueViolet"
                               Text="{Binding Foo}" />
         </Grid>
     </ScrollView>
