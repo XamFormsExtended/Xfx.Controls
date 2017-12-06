@@ -200,16 +200,7 @@ namespace Xfx.Controls.Droid.Renderers
             var background = EditText.Background; // get current EditText drawable 
             background.SetColorFilter(color, PorterDuff.Mode.SrcAtop); // change the drawable color
             DrawableCompat.SetTint(background, color);
-
-
-            if (Build.VERSION.SdkInt > BuildVersionCodes.JellyBean)
-            {
-                EditText.SetBackground(background); // set the new drawable to EditText
-            }
-            else
-            {
-                EditText.SetBackgroundDrawable(background); // use setBackgroundDrawable because setBackground required API 16
-            }
+            EditText.SetBackground(background); // set the new drawable to EditText
         }
 
         private void SetHintLabelActiveColor(AColor activeColor)

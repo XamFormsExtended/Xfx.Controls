@@ -94,7 +94,10 @@ namespace Xfx.Controls.iOS.Renderers
             else if (e.PropertyName == TextProperty.PropertyName)
                 SetText();
             else if (e.PropertyName == PlaceholderColorProperty.PropertyName)
+            {
+                SetUnfocusedColor();
                 SetPlaceholderColor();
+            }
             else if (e.PropertyName == Xamarin.Forms.InputView.KeyboardProperty.PropertyName)
                 SetKeyboard();
             else if (e.PropertyName == HorizontalTextAlignmentProperty.PropertyName)
@@ -107,8 +110,6 @@ namespace Xfx.Controls.iOS.Renderers
                 SetFont();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName)
                 SetFocusedColor();
-            else if (e.PropertyName == XfxEntry.UnfocusedColorProperty.PropertyName)
-                SetUnfocusedColor();
         }
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
@@ -134,9 +135,9 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void SetUnfocusedColor()
         {
-            Control.FloatingLabelTextColor = Element.UnfocusedColor == Color.Default
+            Control.FloatingLabelTextColor = Element.PlaceholderColor == Color.Default
                 ? Control.TextColor
-                : Element.UnfocusedColor.ToUIColor();
+                : Element.PlaceholderColor.ToUIColor();
         }
 
         private void SetFocusedColor()
@@ -179,18 +180,18 @@ namespace Xfx.Controls.iOS.Renderers
         {
             if (_hasError) return UIColor.Red.CGColor;
             return _hasFocus
-                ? (Element.ActivePlaceholderColor == Color.Accent 
-                    ? Control.TintColor.CGColor 
+                ? (Element.ActivePlaceholderColor == Color.Accent
+                    ? Control.TintColor.CGColor
                     : Element.ActivePlaceholderColor.ToCGColor())
-                : (Element.UnfocusedColor == Color.Default 
-                    ? Control.TextColor.CGColor 
-                    : Element.UnfocusedColor.ToCGColor());
+                : (Element.PlaceholderColor == Color.Default
+                    ? Control.TextColor.CGColor
+                    : Element.PlaceholderColor.ToCGColor());
         }
 
         private void SetBackgroundColor()
         {
             NativeView.BackgroundColor = Element.BackgroundColor.ToUIColor();
-            Control.UnderlineColor = Element.UnfocusedColor.ToCGColor();
+            Control.UnderlineColor = Element.PlaceholderColor.ToCGColor();
         }
 
         private void SetText()
