@@ -29,7 +29,6 @@ namespace Xfx
             set { SetValue(ActivePlaceholderColorProperty, value); }
         }
 
-
         /// <summary>
         /// <c>true</c> to float the hint into a label, otherwise <c>false</c>. This is a bindable property.
         /// </summary>

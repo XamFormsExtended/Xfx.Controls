@@ -166,10 +166,6 @@ namespace Xfx.Controls.Droid.Renderers
                     },
                     100);
             }
-            else
-            {
-                SetHintLabelDefaultColor(defaultColor);
-            }
 
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, args.HasFocus);
@@ -184,7 +180,7 @@ namespace Xfx.Controls.Droid.Renderers
         {
             var defaultColor = GetPlaceholderColor();
             var activeColor = GetActivePlaceholderColor();
-
+            
             SetHintLabelDefaultColor(defaultColor);
             SetHintLabelActiveColor(activeColor);
             SetUnderlineColor(_hasFocus ? activeColor : defaultColor);
