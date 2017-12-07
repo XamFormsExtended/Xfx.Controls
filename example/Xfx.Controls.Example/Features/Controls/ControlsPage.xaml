@@ -73,6 +73,7 @@
                               Placeholder="Change Colors"
                               PlaceholderColor="DodgerBlue"
                               ActivePlaceholderColor="BlueViolet"
+                              TextColor="Crimson"
                               Text="{Binding Foo}" />
         </Grid>
     </ScrollView>

@@ -33,6 +33,7 @@ namespace Xfx.Controls.Droid.Renderers
         TextView.IOnEditorActionListener
     {
         private bool _hasFocus;
+        private ColorStateList _defaultTextColor;
 
         public XfxEntryRendererDroid(Context context) : base(context)
         {
@@ -91,7 +92,7 @@ namespace Xfx.Controls.Droid.Renderers
                     EditText.ContentDescription = Element.AutomationId;
 
                 //_defaultHintColor = EditText.HintTextColors;
-                //_defaultTextColor = EditText.TextColors;
+                 _defaultTextColor = EditText.TextColors;
                 //_defaultBackgroundColor = EditText.BackgroundTintList;
 
                 Focusable = true;
@@ -109,7 +110,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetText();
                 SetInputType();
                 SetHintText();
-                //SetTextColor();
+                SetTextColor();
                 SetHorizontalTextAlignment();
                 SetErrorText();
                 SetFloatingHintEnabled();
@@ -144,9 +145,10 @@ namespace Xfx.Controls.Droid.Renderers
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
                 SetFont();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName ||
-                     e.PropertyName == Entry.PlaceholderColorProperty.PropertyName ||
-                     e.PropertyName == Entry.TextColorProperty.PropertyName)
+                     e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
                 SetLabelAndUnderlineColor();
+            else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
+                SetTextColor();
         }
 
         private void ControlOnFocusChange(object sender, FocusChangeEventArgs args)
@@ -180,7 +182,7 @@ namespace Xfx.Controls.Droid.Renderers
         {
             var defaultColor = GetPlaceholderColor();
             var activeColor = GetActivePlaceholderColor();
-            
+
             SetHintLabelDefaultColor(defaultColor);
             SetHintLabelActiveColor(activeColor);
             SetUnderlineColor(_hasFocus ? activeColor : defaultColor);
@@ -199,19 +201,18 @@ namespace Xfx.Controls.Droid.Renderers
             EditText.SetBackground(background); // set the new drawable to EditText
         }
 
-        private void SetHintLabelActiveColor(AColor activeColor)
+        private void SetHintLabelActiveColor(AColor color)
         {
             var hintText = Control.Class.GetDeclaredField("mFocusedTextColor");
             hintText.Accessible = true;
-            hintText.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { activeColor }));
+            hintText.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
         }
 
-        private void SetHintLabelDefaultColor(AColor inactiveColor)
+        private void SetHintLabelDefaultColor(AColor color)
         {
-            var defaultColor = string.IsNullOrEmpty(EditText.Text) ? Color.FromHex("80000000") : Color.Black;
             var hint = Control.Class.GetDeclaredField("mDefaultTextColor");
             hint.Accessible = true;
-            hint.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { inactiveColor }));
+            hint.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
         }
 
         private void SetText()
@@ -229,21 +230,17 @@ namespace Xfx.Controls.Droid.Renderers
             Control.Hint = Element.Placeholder;
         }
 
-        //private void SetHintTextColor()
-        //{
-        //    //if (Element.PlaceholderColor == Color.Default)
-        //    //    EditText.SetHintTextColor(_defaultHintColor);
-        //    //else
-        //    //    EditText.SetHintTextColor(Element.PlaceholderColor.ToAndroid());
-        //}
-
-        //private void SetTextColor()
-        //{
-        //    if (Element.TextColor == Color.Default)
-        //        EditText.SetTextColor(_defaultTextColor);
-        //    else
-        //        EditText.SetTextColor(Element.TextColor.ToAndroid());
-        //}
+        private void SetTextColor()
+        {
+            if (Element.TextColor == Color.Default)
+            {
+                EditText.SetTextColor(_defaultTextColor);
+            }
+            else
+            {
+                EditText.SetTextColor(Element.TextColor.ToAndroid());
+            }
+        }
 
         private void SetHorizontalTextAlignment()
         {
