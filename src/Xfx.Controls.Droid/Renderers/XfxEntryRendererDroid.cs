@@ -2,10 +2,10 @@
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
-using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V4.View;
 using Android.Text;
 using Android.Text.Method;
 using Android.Util;
@@ -106,7 +106,6 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.SetOnEditorActionListener(this);
                 EditText.ImeOptions = ImeAction.Done;
 
-                SetLabelAndUnderlineColor();
                 SetText();
                 SetInputType();
                 SetHintText();
@@ -154,10 +153,7 @@ namespace Xfx.Controls.Droid.Renderers
         private void ControlOnFocusChange(object sender, FocusChangeEventArgs args)
         {
             _hasFocus = args.HasFocus;
-
-            var defaultColor = GetPlaceholderColor();
-            var activeColor = GetActivePlaceholderColor();
-            if (args.HasFocus)
+            if (_hasFocus)
             {
                 var manager = (InputMethodManager)Application.Context.GetSystemService(Context.InputMethodService);
 
@@ -170,8 +166,8 @@ namespace Xfx.Controls.Droid.Renderers
             }
 
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
-            ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, args.HasFocus);
-            SetUnderlineColor(_hasFocus ? defaultColor : activeColor);
+            ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, _hasFocus);
+            SetUnderlineColor(_hasFocus ? GetPlaceholderColor() : GetActivePlaceholderColor());
         }
 
         private AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
@@ -186,19 +182,15 @@ namespace Xfx.Controls.Droid.Renderers
             SetHintLabelDefaultColor(defaultColor);
             SetHintLabelActiveColor(activeColor);
             SetUnderlineColor(_hasFocus ? activeColor : defaultColor);
-
-            //By Setting the value as 0, the color of the cursor will be same as the text color.
-            var intPtrtextViewClass = JNIEnv.FindClass(typeof(EditText));
-            var mCursorDrawableResProperty = JNIEnv.GetFieldID(intPtrtextViewClass, "mCursorDrawableRes", "I");
-            JNIEnv.SetField(EditText.Handle, mCursorDrawableResProperty, 0);
         }
 
         private void SetUnderlineColor(AColor color)
         {
-            var background = EditText.Background; // get current EditText drawable 
-            background.SetColorFilter(color, PorterDuff.Mode.SrcAtop); // change the drawable color
-            DrawableCompat.SetTint(background, color);
-            EditText.SetBackground(background); // set the new drawable to EditText
+            var bg = EditText.Background;
+            DrawableCompat.SetTint(bg,color);
+            EditText.SetBackground(bg);
+            //var csl = ColorStateList.ValueOf(color);
+            //ViewCompat.SetBackgroundTintList(EditText,csl);
         }
 
         private void SetHintLabelActiveColor(AColor color)
@@ -291,14 +283,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetErrorText()
         {
-            if (!string.IsNullOrEmpty(Element.ErrorText))
-            {
-                Control.Error = Element.ErrorText;
-            }
-            else
-            {
-                Control.Error = null;
-            }
+            Control.Error = !string.IsNullOrEmpty(Element.ErrorText) ? Element.ErrorText : null;
         }
 
         private void SetIsEnabled()
