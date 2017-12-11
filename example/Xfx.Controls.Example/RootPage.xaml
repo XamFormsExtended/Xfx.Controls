@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Xfx.Controls.Example.RootPage">
-    <!-- this is here so that we can debug the controls... it allows us to recreate the page without rebuilding the app-->
-    <Button Text="Go to Main Page" Clicked="Button_OnClicked"/>
-</ContentPage>

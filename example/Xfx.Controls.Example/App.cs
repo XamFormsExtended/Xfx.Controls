@@ -1,5 +1,7 @@
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Xfx.Controls.Example
 {
     public class App : Application
@@ -7,7 +9,7 @@ namespace Xfx.Controls.Example
         public App()
         {
             // The root page of your application
-            MainPage = new NavigationPage(new RootPage());
+            MainPage = new NavigationPage(new MainPage());
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
 
-namespace Xfx.Controls.Example
+namespace Xfx.Controls.Example.Features.Controls
 {
     public class MainPageModel : BindableObject
     {
@@ -57,6 +58,23 @@ namespace Xfx.Controls.Example
             typeof(string),
             typeof(MainPageModel),
             default(string));
+
+        public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem),
+            typeof(object),
+            typeof(MainPageModel));
+
+        /// <summary>
+        /// SelectedItem summary. This is a bindable property.
+        /// </summary>
+        public object SelectedItem
+        {
+            get { return GetValue(SelectedItemProperty); }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+                Debug.WriteLine($"Selected Item from ViewModel {value}");
+            }
+        }
 
         /// <summary>
         ///     FooErrorText summary. This is a bindable property.

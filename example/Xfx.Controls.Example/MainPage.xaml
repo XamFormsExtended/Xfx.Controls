@@ -1,58 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xfx="clr-namespace:Xfx;assembly=Xfx.Controls"
-             xmlns:app="clr-namespace:Xfx.Controls.Example;assembly=Xfx.Controls.Example"
              x:Class="Xfx.Controls.Example.MainPage"
-             Title="Custom Controls Example">
-    <ContentPage.BindingContext>
-        <app:MainPageModel />
-    </ContentPage.BindingContext>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Label">
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <ScrollView Padding="8">
-        <Grid RowSpacing="0" ColumnSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" Text="ComboBox" />
-            <xfx:XfxComboBox Grid.Row="0"
-                             Grid.Column="1"
-                             Focused="Email_OnFocused"
-                             Unfocused="Email_OnUnfocused"
-                             Placeholder="Enter your email address"
-                             Text="{Binding EmailAddress}"
-                             ItemsSource="{Binding EmailSuggestions}"
-                             SortingAlgorithm="{Binding SortingAlgorithm}" />
-
-            <Label Grid.Row="1" Grid.Column="0" Text="Material Entry" />
-            <xfx:XfxEntry Grid.Row="1"
-                          Grid.Column="1"
-                          Placeholder="Enter your name"
-                          Text="{Binding Name}"
-                          ErrorText="{Binding NameErrorText}" />
-
-            <Label Grid.Row="2" Grid.Column="0" Text="No Floating Label" />
-            <xfx:XfxEntry Grid.Row="2"
-                          Grid.Column="1"
-                          Placeholder="This hint won't float, and it's a password entry"
-                          Text="{Binding Foo}"
-                          ErrorText="{Binding FooErrorText}"
-                          IsPassword="True"
-                          FloatingHintEnabled="False" />
-        </Grid>
+             BackgroundColor="White">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0"/>
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ScrollView Padding="0">
+        <StackLayout Padding="20" Spacing="10">
+            <xfx:XfxCardView CornerRadius="3">
+                <StackLayout Padding="0" Margin="0">
+                    <Image Source="http://lorempixel.com/1024/200/abstract" HorizontalOptions="Fill" Aspect="Fill" />
+                    <Label Margin="8">
+                        <Label.Text>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
+                        </Label.Text>
+                    </Label>
+                    <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
+                </StackLayout>
+            </xfx:XfxCardView>
+            <xfx:XfxCardView CornerRadius="10" Elevation="30">
+                <StackLayout Padding="0" Margin="0">
+                    <Image Source="http://lorempixel.com/1024/200/sports" HorizontalOptions="Fill" Aspect="Fill" />
+                    <Label Margin="8">
+                        <Label.Text>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
+                        </Label.Text>
+                    </Label>
+                    <Button Text="Go to Main Page" Clicked="Button_OnClicked" Margin="8" />
+                </StackLayout>
+            </xfx:XfxCardView>
+        </StackLayout>
     </ScrollView>
 </ContentPage>

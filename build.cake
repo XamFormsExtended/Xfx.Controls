@@ -34,7 +34,10 @@ Task("Build Droid")
   .IsDependentOn("Patch Assembly Info")
   .Does(() =>
 {
-  MSBuild("./src/Xfx.Controls.Droid/Xfx.Controls.Droid.csproj", new MSBuildSettings()
+  MSBuild("./src/Xfx.Controls.Droid/Xfx.Controls.Droid.csproj", new MSBuildSettings
+      {
+	      ToolVersion = MSBuildToolVersion.VS2017
+	  }
       .WithProperty("OutDir", droidDir.ToString())
       .SetConfiguration(configuration));
 });
@@ -43,7 +46,11 @@ Task("Build Touch")
   .IsDependentOn("Patch Assembly Info")
   .Does(() =>
 {
-  MSBuild("./src/Xfx.Controls.iOS/Xfx.Controls.iOS.csproj", new MSBuildSettings()
+  MSBuild("./src/Xfx.Controls.iOS/Xfx.Controls.iOS.csproj", new MSBuildSettings
+      {
+	      ToolVersion = MSBuildToolVersion.VS2017,
+		  MSBuildPlatform = (Cake.Common.Tools.MSBuild.MSBuildPlatform)1
+	  }
       .WithProperty("OutDir", touchDir.ToString())
       .SetConfiguration(configuration));
 });
@@ -52,7 +59,10 @@ Task("Build Core")
   .IsDependentOn("Patch Assembly Info")
   .Does(() =>
 {
-  MSBuild("./src/Xfx.Controls/Xfx.Controls.csproj", new MSBuildSettings()
+  MSBuild("./src/Xfx.Controls/Xfx.Controls.csproj", new MSBuildSettings
+      {
+	      ToolVersion = MSBuildToolVersion.VS2017
+	  }
       .WithProperty("OutDir", coreDir.ToString())
       .SetConfiguration(configuration));
 });
@@ -85,9 +95,9 @@ Task("Package Library")
                                     Description             = "Xamarin Forms Extended Controls",
                                     ProjectUrl              = new Uri("https://github.com/XamFormsExtended/Xfx.Controls"),
                                     Files                   = new [] {
-                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/netcore45"},
-                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/netstandard1.3"},
-                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81+wp8"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls.dll", Target = "lib/netcore45"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls.dll", Target = "lib/netstandard1.3"},
+                                                                        new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls.dll", Target = "lib/portable-net45+win8+wpa81+wp8"},
 
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.Droid.dll", Target = "lib/MonoAndroid"},
                                                                         new NuSpecContent {Source = droidDir.ToString() + "/Xfx.Controls.dll", Target = "lib/MonoAndroid"},

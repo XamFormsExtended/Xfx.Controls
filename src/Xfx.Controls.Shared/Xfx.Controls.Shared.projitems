@@ -9,6 +9,6 @@
     <Import_RootNamespace>Xfx.Controls.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)XamarinFormsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\XamarinFormsExtensions.cs" />
   </ItemGroup>
 </Project>
