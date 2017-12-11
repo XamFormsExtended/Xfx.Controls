@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
 using Android.Content;
 using Android.Content.Res;
-using Android.Graphics;
-using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V4.View;
+using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
 using Android.Util;
@@ -33,6 +32,7 @@ namespace Xfx.Controls.Droid.Renderers
         TextView.IOnEditorActionListener
     {
         private bool _hasFocus;
+        private ColorStateList _efaultTextColor;
         private ColorStateList _defaultTextColor;
 
         public XfxEntryRendererDroid(Context context) : base(context)
@@ -70,7 +70,10 @@ namespace Xfx.Controls.Droid.Renderers
         protected override TextInputLayout CreateNativeControl()
         {
             var textInputLayout = new TextInputLayout(Context);
-            var editText = new TextInputEditText(Context);
+            var editText = new AppCompatEditText(Context)
+            {
+                SupportBackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
+            };
             textInputLayout.AddView(editText);
             return textInputLayout;
         }
@@ -90,10 +93,8 @@ namespace Xfx.Controls.Droid.Renderers
 
                 if (!string.IsNullOrWhiteSpace(Element.AutomationId))
                     EditText.ContentDescription = Element.AutomationId;
-
-                //_defaultHintColor = EditText.HintTextColors;
-                 _defaultTextColor = EditText.TextColors;
-                //_defaultBackgroundColor = EditText.BackgroundTintList;
+                
+                _defaultTextColor = EditText.TextColors;
 
                 Focusable = true;
                 Control.HintEnabled = true;
@@ -167,10 +168,10 @@ namespace Xfx.Controls.Droid.Renderers
 
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, _hasFocus);
-            SetUnderlineColor(_hasFocus ? GetPlaceholderColor() : GetActivePlaceholderColor());
+            SetUnderlineColor(_hasFocus ?  GetActivePlaceholderColor(): GetPlaceholderColor());
         }
 
-        private AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
+        protected AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
 
         private AColor GetActivePlaceholderColor() => Element.ActivePlaceholderColor.ToAndroid(global::Android.Resource.Attribute.ColorAccent, Context);
 
@@ -186,11 +187,8 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetUnderlineColor(AColor color)
         {
-            var bg = EditText.Background;
-            DrawableCompat.SetTint(bg,color);
-            EditText.SetBackground(bg);
-            //var csl = ColorStateList.ValueOf(color);
-            //ViewCompat.SetBackgroundTintList(EditText,csl);
+            var element = (ITintableBackgroundView)EditText;
+            element.SupportBackgroundTintList = ColorStateList.ValueOf(color);
         }
 
         private void SetHintLabelActiveColor(AColor color)

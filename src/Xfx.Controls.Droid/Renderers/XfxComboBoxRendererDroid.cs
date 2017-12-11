@@ -3,7 +3,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using Android.Content;
+using Android.Content.Res;
 using Android.Support.Design.Widget;
+using Android.Support.V7.Widget;
 using Android.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -22,13 +24,16 @@ namespace Xfx.Controls.Droid.Renderers
         {
         }
 
-        private AutoCompleteTextView AutoComplete => (AutoCompleteTextView) Control.EditText;
+        private AppCompatAutoCompleteTextView AutoComplete => (AppCompatAutoCompleteTextView)Control.EditText;
 
         protected override TextInputLayout CreateNativeControl()
         {
             var textInputLayout = new TextInputLayout(Context);
-            var autoCompleteTextView = new AutoCompleteTextView(Context);
-            textInputLayout.AddView(autoCompleteTextView);
+            var autoComplete = new AppCompatAutoCompleteTextView(Context)
+            {
+                BackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
+            };
+            textInputLayout.AddView(autoComplete);
             return textInputLayout;
         }
 

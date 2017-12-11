@@ -35,6 +35,7 @@
                 <xfx:XfxComboBox Grid.Row="0"
                                  Grid.Column="1"
                                  Placeholder="Enter your email address"
+                                 ActivePlaceholderColor="BlueViolet"
                                  ItemSelected="Email_ItemSelected"
                                  Focused="Email_OnFocused"
                                  Unfocused="Email_OnUnfocused"
