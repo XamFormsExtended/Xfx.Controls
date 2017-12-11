@@ -15,32 +15,18 @@ namespace Xfx
             typeof(XfxEntry),
             true);
 
-        public static readonly BindableProperty FocusedColorProperty = BindableProperty.Create(nameof(FocusedColor),
+        public static readonly BindableProperty ActivePlaceholderColorProperty = BindableProperty.Create(nameof(ActivePlaceholderColor),
             typeof(Color),
             typeof(XfxEntry),
             Color.Accent);
 
-        public static readonly BindableProperty UnfocusedColorProperty = BindableProperty.Create(nameof(UnfocusedColor),
-            typeof(Color),
-            typeof(XfxEntry),
-            Color.Default);
-
         /// <summary>
-        /// FocusedColor summary. This is a bindable property.
+        /// ActivePlaceholderColor summary. This is a bindable property.
         /// </summary>
-        public Color FocusedColor
+        public Color ActivePlaceholderColor
         {
-            get { return (Color) GetValue(FocusedColorProperty); }
-            set { SetValue(FocusedColorProperty, value); }
-        }
-
-        /// <summary>
-        /// UnfocusedColor summary. This is a bindable property.
-        /// </summary>
-        public Color UnfocusedColor
-        {
-            get { return (Color) GetValue(UnfocusedColorProperty); }
-            set { SetValue(UnfocusedColorProperty, value); }
+            get { return (Color) GetValue(ActivePlaceholderColorProperty); }
+            set { SetValue(ActivePlaceholderColorProperty, value); }
         }
 
         /// <summary>
