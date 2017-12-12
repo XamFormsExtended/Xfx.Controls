@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Content.Res;
 using Android.Support.Design.Widget;
-using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V4.View;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -32,7 +31,6 @@ namespace Xfx.Controls.Droid.Renderers
         TextView.IOnEditorActionListener
     {
         private bool _hasFocus;
-        private ColorStateList _efaultTextColor;
         private ColorStateList _defaultTextColor;
 
         public XfxEntryRendererDroid(Context context) : base(context)
@@ -116,7 +114,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetFloatingHintEnabled();
                 SetIsEnabled();
                 SetErrorDisplay();
-                SetFont();
+                SetFontAttributesSizeAndFamily();
                 SetLabelAndUnderlineColor();
             }
         }
@@ -143,7 +141,7 @@ namespace Xfx.Controls.Droid.Renderers
             else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
-                SetFont();
+                SetFontAttributesSizeAndFamily();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName ||
                      e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
                 SetLabelAndUnderlineColor();
@@ -169,6 +167,7 @@ namespace Xfx.Controls.Droid.Renderers
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, _hasFocus);
             SetUnderlineColor(_hasFocus ?  GetActivePlaceholderColor(): GetPlaceholderColor());
+            SetFontAttributesSizeAndFamily();
         }
 
         protected AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
@@ -272,7 +271,7 @@ namespace Xfx.Controls.Droid.Renderers
             manager.HideSoftInputFromWindow(EditText.WindowToken, 0);
         }
 
-        private void SetFont()
+        private void SetFontAttributesSizeAndFamily()
         {
             var tf = Element.ToTypeface();
             EditText.Typeface = Control.Typeface = tf;
