@@ -72,6 +72,7 @@ namespace Xfx.Controls.Droid.Renderers
             {
                 SupportBackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
             };
+            editText.SetTextSize(ComplexUnitType.Sp, (float)Element.FontSize);
             textInputLayout.AddView(editText);
             return textInputLayout;
         }
@@ -106,15 +107,15 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.ImeOptions = ImeAction.Done;
 
                 SetText();
-                SetInputType();
                 SetHintText();
+                SetErrorText();
+                SetFontAttributesSizeAndFamily();
+                SetInputType();
                 SetTextColor();
                 SetHorizontalTextAlignment();
-                SetErrorText();
                 SetFloatingHintEnabled();
                 SetIsEnabled();
                 SetErrorDisplay();
-                SetFontAttributesSizeAndFamily();
                 SetLabelAndUnderlineColor();
             }
         }
@@ -167,7 +168,6 @@ namespace Xfx.Controls.Droid.Renderers
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             ((IElementController)Element).SetValueFromRenderer(isFocusedPropertyKey, _hasFocus);
             SetUnderlineColor(_hasFocus ?  GetActivePlaceholderColor(): GetPlaceholderColor());
-            SetFontAttributesSizeAndFamily();
         }
 
         protected AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
@@ -273,8 +273,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetFontAttributesSizeAndFamily()
         {
-            var tf = Element.ToTypeface();
-            EditText.Typeface = Control.Typeface = tf;
+            EditText.Typeface = Control.Typeface = Element.ToTypeface();
             EditText.SetTextSize(ComplexUnitType.Sp, (float)Element.FontSize);
         }
 
