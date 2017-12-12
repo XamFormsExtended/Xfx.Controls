@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Content.Res;
 using Android.Support.Design.Widget;
-using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V4.View;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -32,7 +31,6 @@ namespace Xfx.Controls.Droid.Renderers
         TextView.IOnEditorActionListener
     {
         private bool _hasFocus;
-        private ColorStateList _efaultTextColor;
         private ColorStateList _defaultTextColor;
 
         public XfxEntryRendererDroid(Context context) : base(context)
@@ -74,6 +72,7 @@ namespace Xfx.Controls.Droid.Renderers
             {
                 SupportBackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
             };
+            editText.SetTextSize(ComplexUnitType.Sp, (float)Element.FontSize);
             textInputLayout.AddView(editText);
             return textInputLayout;
         }
@@ -108,15 +107,15 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.ImeOptions = ImeAction.Done;
 
                 SetText();
-                SetInputType();
                 SetHintText();
+                SetErrorText();
+                SetFontAttributesSizeAndFamily();
+                SetInputType();
                 SetTextColor();
                 SetHorizontalTextAlignment();
-                SetErrorText();
                 SetFloatingHintEnabled();
                 SetIsEnabled();
                 SetErrorDisplay();
-                SetFont();
                 SetLabelAndUnderlineColor();
             }
         }
@@ -143,7 +142,7 @@ namespace Xfx.Controls.Droid.Renderers
             else if ((e.PropertyName == Entry.FontAttributesProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontFamilyProperty.PropertyName) ||
                      (e.PropertyName == Entry.FontSizeProperty.PropertyName))
-                SetFont();
+                SetFontAttributesSizeAndFamily();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName ||
                      e.PropertyName == Entry.PlaceholderColorProperty.PropertyName)
                 SetLabelAndUnderlineColor();
@@ -272,10 +271,9 @@ namespace Xfx.Controls.Droid.Renderers
             manager.HideSoftInputFromWindow(EditText.WindowToken, 0);
         }
 
-        private void SetFont()
+        private void SetFontAttributesSizeAndFamily()
         {
-            var tf = Element.ToTypeface();
-            EditText.Typeface = Control.Typeface = tf;
+            EditText.Typeface = Control.Typeface = Element.ToTypeface();
             EditText.SetTextSize(ComplexUnitType.Sp, (float)Element.FontSize);
         }
 
