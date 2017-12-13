@@ -96,8 +96,6 @@ namespace Xfx.Controls.Droid.Renderers
                 _defaultTextColor = EditText.TextColors;
 
                 Focusable = true;
-                Control.HintEnabled = true;
-                Control.HintAnimationEnabled = true;
                 EditText.ShowSoftInputOnFocus = true;
 
                 // Subscribe
@@ -250,6 +248,8 @@ namespace Xfx.Controls.Droid.Renderers
         public void SetFloatingHintEnabled()
         {
             Control.HintEnabled = Element.FloatingHintEnabled;
+            Control.HintAnimationEnabled = Element.FloatingHintEnabled;
+            SetFontAttributesSizeAndFamily();
         }
 
         public void SetErrorDisplay()
