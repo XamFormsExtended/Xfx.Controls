@@ -14,7 +14,11 @@
         <StackLayout Padding="20" Spacing="10">
             <xfx:XfxCardView CornerRadius="3">
                 <StackLayout Padding="0" Margin="0">
-                    <Image Source="http://lorempixel.com/1024/200/abstract" HorizontalOptions="Fill" Aspect="Fill" />
+                    <Image Source="http://placehold.it/512x150/4286f4/ffffff?text=Image" 
+                           WidthRequest="512"
+                           HeightRequest="150"
+                           HorizontalOptions="Fill"
+                           Aspect="Fill" />
                     <Label Margin="8">
                         <Label.Text>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
@@ -25,7 +29,11 @@
             </xfx:XfxCardView>
             <xfx:XfxCardView CornerRadius="10" Elevation="30">
                 <StackLayout Padding="0" Margin="0">
-                    <Image Source="http://lorempixel.com/1024/200/sports" HorizontalOptions="Fill" Aspect="Fill" />
+                    <Image Source="http://placehold.it/512x150/4286f4/ffffff?text=Image+Corners+Cropped+By+CardView" 
+                           WidthRequest="512"
+                           HeightRequest="150"
+                           HorizontalOptions="Fill" 
+                           Aspect="Fill" />
                     <Label Margin="8">
                         <Label.Text>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
