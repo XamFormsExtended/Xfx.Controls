@@ -114,4 +114,4 @@ public class MyViewModel : INotifyPropertyChanged
 
 ## License
 
-Licensed MIT, please review the [license](https://github.com/XamFormsExtended/Xfx.Controls/blob/master/LICENSE) file.
+Licensed MIT, please review the [license](https://github.com/XamFormsExtended/Xfx.Controls/blob/master/LICENSE.md) file.
