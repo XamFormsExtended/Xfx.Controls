@@ -6,7 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Xfx;
 using Xfx.Controls.Droid.Renderers;
-
+using AContext = Android.Content.Context;
 [assembly: ExportRenderer(typeof(XfxCardView), typeof(XfxCardViewRendererDroid))]
 
 namespace Xfx.Controls.Droid.Renderers
@@ -16,7 +16,7 @@ namespace Xfx.Controls.Droid.Renderers
         private float _defaultElevation;
         private float _defaultCornerRadius;
 
-        public XfxCardViewRendererDroid() : base(Forms.Context)
+        public XfxCardViewRendererDroid(AContext context) : base(context)
         {
         }
 
