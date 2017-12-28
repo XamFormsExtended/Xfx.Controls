@@ -20,7 +20,7 @@ namespace Xfx
         public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
             typeof(float),
             typeof(XfxCardView),
-            default(float));
+            -1f);
 
         /// <summary>
         ///    Corner Radius. This is a bindable property. Default is 3.0f

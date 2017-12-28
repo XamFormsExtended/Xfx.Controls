@@ -37,6 +37,8 @@
                     <Label Margin="8">
                         <Label.Text>
                             Tap this card to navigate to the next page
+                            
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla turpis turpis, id lobortis dolor vestibulum condimentum.
                         </Label.Text>
                     </Label>
                 </StackLayout>
