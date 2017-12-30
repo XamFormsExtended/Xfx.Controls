@@ -122,6 +122,13 @@
   <ItemGroup>
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Renderers\XfxCardViewRendererDroid.cs" />
+    <Compile Include="Forms.Internals\InnerScaleListener.cs" />
+    <Compile Include="Forms.Internals\PinchGestureHandler.cs" />
+    <Compile Include="Forms.Internals\PanGestureHandler.cs" />
+    <Compile Include="Forms.Internals\TapGestureHandler.cs" />
+    <Compile Include="Forms.Internals\InnerGestureListener.cs" />
+    <Compile Include="Forms.Internals\GestureManager.cs" />
+    <Compile Include="XfxVisualElementManager.cs" />
     <Compile Include="XfxComboBox\XfxComboBoxArrayAdapter.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\KeyboardExtensions.cs" />

@@ -100,6 +100,7 @@
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UIViewExtensions.cs" />
+    <Compile Include="InvalidRendererException.cs" />
     <Compile Include="XfxVisualElementManager.cs" />
     <Compile Include="Renderers\XfxCardViewRendererTouch.cs" />
     <Compile Include="Renderers\XfxEntryRendererTouch.cs" />

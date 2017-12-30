@@ -1,24 +1,23 @@
 using System;
-using UIKit;
-using Xamarin.Forms.Platform.iOS;
+using Android.Views;
+using Xamarin.Forms.Platform.Android;
+using Xfx.Controls.Droid.Forms.Internals;
 
-namespace Xfx.Controls.iOS
+namespace Xfx.Controls.Droid
 {
-    /// <summary>
-    /// Used to add Gesture Recognizers and other Forms features to a Renderer.
-    /// </summary>
     public class XfxVisualElementManager : IDisposable
     {
-        private EventTracker _events;
-        private VisualElementRendererFlags _flags;
         private VisualElementPackager _packager;
+        private VisualElementRendererFlags _flags;
         private VisualElementTracker _tracker;
+        private GestureManager _gestureManager;
 
         public bool AutoPackage => (_flags & VisualElementRendererFlags.AutoPackage) != 0;
 
         public bool AutoTrack => (_flags & VisualElementRendererFlags.AutoTrack) != 0;
 
         protected bool IsDisposed => _flags.HasFlag(VisualElementRendererFlags.Disposed);
+        public VisualElementTracker Tracker => _tracker;
 
         public void Dispose()
         {
@@ -35,11 +34,6 @@ namespace Xfx.Controls.iOS
 
             _flags |= VisualElementRendererFlags.Disposed;
 
-            if (_events != null)
-            {
-                _events.Dispose();
-                _events = null;
-            }
             if (_tracker != null)
             {
                 _tracker.Dispose();
@@ -52,30 +46,24 @@ namespace Xfx.Controls.iOS
             }
         }
 
-        public void Init(IVisualElementRenderer renderer, VisualElementRendererFlags flags = VisualElementRendererFlags.AutoPackage | VisualElementRendererFlags.AutoTrack)
+        public void Init(IVisualElementRenderer renderer, VisualElementRendererFlags flags = VisualElementRendererFlags.AutoPackage|VisualElementRendererFlags.AutoTrack)
         {
+
             _flags = flags;
             _packager = new VisualElementPackager(renderer);
-            _events = new EventTracker(renderer);
             _tracker = new VisualElementTracker(renderer);
-            _tracker.NativeControlUpdated += OnNativeControlUpdated;
-
-            if (AutoTrack)
-            {
-                if (renderer is UIView uiView)
-                    _events.LoadEvents(uiView);
-                else
-                    throw new InvalidRendererException("IVisualElementRenderer must be of type 'UIView'");
-            }
+            _gestureManager = new GestureManager(renderer);
 
             if (AutoPackage)
                 _packager?.Load();
         }
 
-        protected virtual void UpdateNativeWidget()
+        public void UpdateLayout()
         {
+            if(AutoTrack)
+                _tracker?.UpdateLayout();
         }
 
-        private void OnNativeControlUpdated(object sender, EventArgs e) => UpdateNativeWidget();
+        public bool OnTouchEvent(MotionEvent motionEvent) => _gestureManager.OnTouchEvent(motionEvent);
     }
 }

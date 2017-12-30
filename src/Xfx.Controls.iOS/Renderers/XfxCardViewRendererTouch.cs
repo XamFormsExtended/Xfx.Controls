@@ -58,7 +58,7 @@ namespace Xfx.Controls.iOS.Renderers
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            _xfxVisualElementManager.Dispose();
+            _xfxVisualElementManager?.Dispose();
         }
 
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
