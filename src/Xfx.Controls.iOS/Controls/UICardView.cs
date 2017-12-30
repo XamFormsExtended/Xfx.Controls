@@ -24,7 +24,7 @@ namespace Xfx.Controls.iOS.Controls
             Superview.InsertSubviewBelow(_shadowLayer, this);
         }
 
-        protected void DrawBorder(CGRect rect, nfloat radius)
+        public void DrawBorder(CGRect rect, nfloat radius)
         {
             _shadowLayer.Frame = rect;
             _shadowLayer.Layer.CornerRadius = radius;

@@ -6,6 +6,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Xfx;
 using Xfx.Controls.Droid.Renderers;
+using AContext = Android.Content.Context;
+using AView = Android.Views.View;
 
 [assembly: ExportRenderer(typeof(XfxCardView), typeof(XfxCardViewRendererDroid))]
 
@@ -15,21 +17,21 @@ namespace Xfx.Controls.Droid.Renderers
     {
         private float _defaultElevation;
         private float _defaultCornerRadius;
+        private XfxVisualElementManager _visualElementManager;
 
-        public XfxCardViewRendererDroid() : base(Forms.Context)
+        public XfxCardViewRendererDroid(AContext context) : base(context)
         {
         }
 
         [Obsolete("ViewGroup is obsolete as of version 2.3.5. Please use View instead.")]
         public ViewGroup ViewGroup => this;
-        public Android.Views.View View => this;
-        public VisualElementPackager Packager { get; private set; }
-        public VisualElementTracker Tracker { get; private set; }
+        public AView View => this;
+        VisualElementTracker IVisualElementRenderer.Tracker => _visualElementManager.Tracker;
         public VisualElement Element { get; private set; }
         public event EventHandler<VisualElementChangedEventArgs> ElementChanged;
         public event EventHandler<PropertyChangedEventArgs> ElementPropertyChanged;
         public void SetLabelFor(int? id) { }
-        public void UpdateLayout() => Tracker?.UpdateLayout();
+        public void UpdateLayout() => _visualElementManager?.UpdateLayout();
         protected XfxCardView CardView => (XfxCardView)Element;
         protected virtual void OnElementChanged(object sender, VisualElementChangedEventArgs args) { }
         protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args) { }
@@ -50,9 +52,8 @@ namespace Xfx.Controls.Droid.Renderers
 
             //sizes to match the forms view
             //updates properties, handles visual element properties
-            Tracker = new VisualElementTracker(this);
-            Packager = new VisualElementPackager(this);
-            Packager.Load();
+            _visualElementManager = new XfxVisualElementManager();
+            _visualElementManager.Init(this);
             UseCompatPadding = true;
 
             _defaultElevation = Elevation;
@@ -64,6 +65,8 @@ namespace Xfx.Controls.Droid.Renderers
             RaiseElementChanged(new VisualElementChangedEventArgs(oldElement, Element));
         }
 
+
+
         public SizeRequest GetDesiredSize(int widthConstraint, int heightConstraint)
         {
             View.Measure(widthConstraint, heightConstraint);
@@ -73,7 +76,7 @@ namespace Xfx.Controls.Droid.Renderers
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == ContentView.ContentProperty.PropertyName)
-                Tracker.UpdateLayout();
+                ((IVisualElementRenderer) this).Tracker.UpdateLayout();
             else if (e.PropertyName == Xamarin.Forms.Layout.PaddingProperty.PropertyName)
                 SetContentPadding();
             else if (e.PropertyName == XfxCardView.CornerRadiusProperty.PropertyName)
@@ -99,10 +102,21 @@ namespace Xfx.Controls.Droid.Renderers
             OnElementChanged(this, args);
         }
 
+        public override bool OnTouchEvent(MotionEvent e)
+        {
+            return _visualElementManager.OnTouchEvent(e) || base.OnTouchEvent(e);
+        }
+
         private void RaiseElementPropertyChanged(PropertyChangedEventArgs args)
         {
             ElementPropertyChanged?.Invoke(this, args);
             OnElementPropertyChanged(this, args);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _visualElementManager?.Dispose();
         }
     }
 }
