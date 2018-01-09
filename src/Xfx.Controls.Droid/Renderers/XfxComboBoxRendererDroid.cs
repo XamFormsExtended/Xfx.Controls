@@ -31,7 +31,7 @@ namespace Xfx.Controls.Droid.Renderers
             var textInputLayout = new TextInputLayout(Context);
             var autoComplete = new AppCompatAutoCompleteTextView(Context)
             {
-                BackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
+                SupportBackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
             };
             textInputLayout.AddView(autoComplete);
             return textInputLayout;
