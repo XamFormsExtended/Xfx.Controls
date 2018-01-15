@@ -51,7 +51,7 @@
                           Grid.Column="1"
                           Placeholder="Enter your name"
                           Text="{Binding Name}"
-                          ErrorText="{Binding NameErrorText}" />
+                          xfx:XfxBinding.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="2" Grid.Column="0" Text="No Error Message" />
             <xfx:XfxEntry Grid.Row="2"
@@ -59,14 +59,14 @@
                           Placeholder="Enter your name (error message won't show)"
                           ErrorDisplay="None"
                           Text="{Binding Name}"
-                          ErrorText="{Binding NameErrorText}" />
+                          xfx:XfxBinding.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="3" Grid.Column="0" Text="No Floating Label" />
             <xfx:XfxEntry Grid.Row="3"
                           Grid.Column="1"
                           Placeholder="This hint won't float, and it's a password entry"
                           Text="{Binding Foo}"
-                          ErrorText="{Binding FooErrorText}"
+                          xfx:XfxBinding.ValidatesOnDataErrors="True"
                           IsPassword="True"
                           FloatingHintEnabled="False" />
 
