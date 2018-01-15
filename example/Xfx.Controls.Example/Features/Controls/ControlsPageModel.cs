@@ -20,27 +20,22 @@ namespace Xfx.Controls.Example.Features.Controls
             "@yahoo.com" // seriously, does anyone use this anymore?
         };
 
-        public MainPageModel()
-        {
-            Name = "John Smith Jr.";
-        }
-
         public static readonly BindableProperty EmailAddressProperty = BindableProperty.Create(nameof(EmailAddress),
             typeof(string),
             typeof(MainPage),
             default(string),
             propertyChanged: EmailAddressPropertyChanged);
 
-        public static readonly BindableProperty NameErrorTextProperty = BindableProperty.Create(nameof(NameErrorText),
-            typeof(string),
-            typeof(MainPage),
-            default(string));
-
         public static readonly BindableProperty EmailSuggestionsProperty =
             BindableProperty.Create(nameof(EmailSuggestions),
                 typeof(ObservableCollection<string>),
                 typeof(MainPage),
                 new ObservableCollection<string>());
+
+        public static readonly BindableProperty NameErrorTextProperty = BindableProperty.Create(nameof(NameErrorText),
+            typeof(string),
+            typeof(MainPage),
+            default(string));
 
         public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name),
             typeof(string),
@@ -59,30 +54,32 @@ namespace Xfx.Controls.Example.Features.Controls
             typeof(MainPageModel),
             default(string));
 
+
         public static readonly BindableProperty SelectedItemProperty = BindableProperty.Create(nameof(SelectedItem),
             typeof(object),
             typeof(MainPageModel));
 
-        /// <summary>
-        /// SelectedItem summary. This is a bindable property.
-        /// </summary>
-        public object SelectedItem
+        public MainPageModel()
         {
-            get { return GetValue(SelectedItemProperty); }
-            set
-            {
-                SetValue(SelectedItemProperty, value);
-                Debug.WriteLine($"Selected Item from ViewModel {value}");
-            }
+            Name = "John Smith Jr.";
         }
 
         /// <summary>
-        ///     FooErrorText summary. This is a bindable property.
+        ///     Text . This is a bindable property.
         /// </summary>
-        public string FooErrorText
+        public string EmailAddress
         {
-            get { return (string) GetValue(FooErrorTextProperty); }
-            set { SetValue(FooErrorTextProperty, value); }
+            get => (string) GetValue(EmailAddressProperty);
+            set => SetValue(EmailAddressProperty, value);
+        }
+
+        /// <summary>
+        ///     Email Suggestions collection . This is a bindable property.
+        /// </summary>
+        public ObservableCollection<string> EmailSuggestions
+        {
+            get => (ObservableCollection<string>) GetValue(EmailSuggestionsProperty);
+            set => SetValue(EmailSuggestionsProperty, value);
         }
 
         /// <summary>
@@ -90,8 +87,17 @@ namespace Xfx.Controls.Example.Features.Controls
         /// </summary>
         public string Foo
         {
-            get { return (string) GetValue(FooProperty); }
-            set { SetValue(FooProperty, value); }
+            get => (string) GetValue(FooProperty);
+            set => SetValue(FooProperty, value);
+        }
+
+        /// <summary>
+        ///     FooErrorText summary. This is a bindable property.
+        /// </summary>
+        public string FooErrorText
+        {
+            get => (string) GetValue(FooErrorTextProperty);
+            set => SetValue(FooErrorTextProperty, value);
         }
 
         /// <summary>
@@ -99,8 +105,30 @@ namespace Xfx.Controls.Example.Features.Controls
         /// </summary>
         public string Name
         {
-            get { return (string) GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
+            get => (string) GetValue(NameProperty);
+            set => SetValue(NameProperty, value);
+        }
+
+        /// <summary>
+        ///     Error Text . This is a bindable property.
+        /// </summary>
+        public string NameErrorText
+        {
+            get => (string) GetValue(NameErrorTextProperty);
+            set => SetValue(NameErrorTextProperty, value);
+        }
+
+        /// <summary>
+        ///     SelectedItem summary. This is a bindable property.
+        /// </summary>
+        public object SelectedItem
+        {
+            get => GetValue(SelectedItemProperty);
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+                Debug.WriteLine($"Selected Item from ViewModel {value}");
+            }
         }
 
         // you can customize your sorting algorithim to however you want it to work.
@@ -109,33 +137,6 @@ namespace Xfx.Controls.Example.Features.Controls
                 .Where(x => x.ToLower().StartsWith(text.ToLower()))
                 .OrderBy(x => x)
                 .ToList();
-
-        /// <summary>
-        ///     Email Suggestions collection . This is a bindable property.
-        /// </summary>
-        public ObservableCollection<string> EmailSuggestions
-        {
-            get { return (ObservableCollection<string>) GetValue(EmailSuggestionsProperty); }
-            set { SetValue(EmailSuggestionsProperty, value); }
-        }
-
-        /// <summary>
-        ///     Error Text . This is a bindable property.
-        /// </summary>
-        public string NameErrorText
-        {
-            get { return (string) GetValue(NameErrorTextProperty); }
-            set { SetValue(NameErrorTextProperty, value); }
-        }
-
-        /// <summary>
-        ///     Text . This is a bindable property.
-        /// </summary>
-        public string EmailAddress
-        {
-            get { return (string) GetValue(EmailAddressProperty); }
-            set { SetValue(EmailAddressProperty, value); }
-        }
 
         private static void EmailAddressPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
@@ -162,16 +163,6 @@ namespace Xfx.Controls.Example.Features.Controls
                 model.EmailSuggestions.Add($"{text}{_emails[i]}");
         }
 
-        private static void OnNamePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
-        {
-            var model = (MainPageModel) bindable;
-            // make sure we have the latest string.
-            var text = newvalue.ToString();
-
-            // don't validate like this, only for demo purposes.
-            model.NameErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
-        }
-
         private static void OnFooPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             var model = (MainPageModel) bindable;
@@ -180,6 +171,16 @@ namespace Xfx.Controls.Example.Features.Controls
 
             // don't validate like this, only for demo purposes.
             model.FooErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
+        }
+
+        private static void OnNamePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            var model = (MainPageModel) bindable;
+            // make sure we have the latest string.
+            var text = newvalue.ToString();
+
+            // don't validate like this, only for demo purposes.
+            model.NameErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
         }
     }
 }

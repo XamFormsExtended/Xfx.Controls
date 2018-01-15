@@ -43,7 +43,8 @@
                              SelectedItem="{Binding SelectedItem}"
                              Text="{Binding EmailAddress}"
                              ItemsSource="{Binding EmailSuggestions}"
-                             SortingAlgorithm="{Binding SortingAlgorithm}" />
+                             SortingAlgorithm="{Binding SortingAlgorithm}"
+                             xfx:XfxBinding.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="1" Grid.Column="0" Text="Material Entry" />
             <xfx:XfxEntry Grid.Row="1"
