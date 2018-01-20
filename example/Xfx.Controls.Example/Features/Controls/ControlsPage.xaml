@@ -44,14 +44,14 @@
                              Text="{Binding EmailAddress}"
                              ItemsSource="{Binding EmailSuggestions}"
                              SortingAlgorithm="{Binding SortingAlgorithm}"
-                             xfx:XfxBinding.ValidatesOnDataErrors="True"/>
+                             xfx:XfxValidation.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="1" Grid.Column="0" Text="Material Entry" />
             <xfx:XfxEntry Grid.Row="1"
                           Grid.Column="1"
                           Placeholder="Enter your name"
                           Text="{Binding Name}"
-                          xfx:XfxBinding.ValidatesOnDataErrors="True"/>
+                          xfx:XfxValidation.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="2" Grid.Column="0" Text="No Error Message" />
             <xfx:XfxEntry Grid.Row="2"
@@ -59,14 +59,14 @@
                           Placeholder="Enter your name (error message won't show)"
                           ErrorDisplay="None"
                           Text="{Binding Name}"
-                          xfx:XfxBinding.ValidatesOnDataErrors="True"/>
+                          xfx:XfxValidation.ValidatesOnDataErrors="True"/>
 
             <Label Grid.Row="3" Grid.Column="0" Text="No Floating Label" />
             <xfx:XfxEntry Grid.Row="3"
                           Grid.Column="1"
                           Placeholder="This hint won't float, and it's a password entry"
                           Text="{Binding Foo}"
-                          xfx:XfxBinding.ValidatesOnDataErrors="True"
+                          xfx:XfxValidation.ValidatesOnDataErrors="True"
                           IsPassword="True"
                           FloatingHintEnabled="False" />
 

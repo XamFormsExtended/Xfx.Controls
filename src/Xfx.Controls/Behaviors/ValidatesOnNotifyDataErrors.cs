@@ -24,8 +24,7 @@ namespace Xfx.Behaviors
         protected override void OnDetachingFrom(BindableObject bindable)
         {
             base.OnDetachingFrom(bindable);
-            var vm = bindable.BindingContext as INotifyDataErrorInfo;
-            if (vm != null)
+            if (bindable.BindingContext is INotifyDataErrorInfo vm)
             {
                 vm.ErrorsChanged -= ModelOnErrorsChanged;
             }
@@ -36,8 +35,7 @@ namespace Xfx.Behaviors
         private void BindableOnBindingContextChanged(object sender, EventArgs eventArgs)
         {
             var element = (BindableObject)sender;
-            var vm = element.BindingContext as INotifyDataErrorInfo;
-            if (vm != null)
+            if (element.BindingContext is INotifyDataErrorInfo vm)
             {
                 vm.ErrorsChanged += ModelOnErrorsChanged;
             }
