@@ -24,7 +24,7 @@ namespace Xfx.Controls.Droid.Renderers
         {
         }
 
-        private AppCompatAutoCompleteTextView AutoComplete => (AppCompatAutoCompleteTextView)Control.EditText;
+        private AppCompatAutoCompleteTextView AutoComplete => (AppCompatAutoCompleteTextView)Control?.EditText;
 
         protected override TextInputLayout CreateNativeControl()
         {
@@ -40,12 +40,17 @@ namespace Xfx.Controls.Droid.Renderers
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
+
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
+                return;
+
             if (e.OldElement != null)
             {
                 // unsubscribe
                 AutoComplete.ItemClick -= AutoCompleteOnItemSelected;
-                var elm = (Xfx.XfxComboBox) e.OldElement;
-                elm.CollectionChanged -= ItemsSourceCollectionChanged;
+
+                if (e.OldElement is Xfx.XfxComboBox elm)
+                    elm.CollectionChanged -= ItemsSourceCollectionChanged;
             }
 
             if (e.NewElement != null)
@@ -55,14 +60,18 @@ namespace Xfx.Controls.Droid.Renderers
                 SetThreshold();
                 KillPassword();
                 AutoComplete.ItemClick += AutoCompleteOnItemSelected;
-                var elm = (Xfx.XfxComboBox) e.NewElement;
-                elm.CollectionChanged += ItemsSourceCollectionChanged;
+
+                if (e.NewElement is Xfx.XfxComboBox elm)
+                    elm.CollectionChanged += ItemsSourceCollectionChanged;
             }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
+
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
+                return;
 
             if (e.PropertyName == Entry.IsPasswordProperty.PropertyName)
                 KillPassword();
@@ -74,6 +83,10 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void AutoCompleteOnItemSelected(object sender, AdapterView.ItemClickEventArgs args)
         {
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
+                return;
+
             var view = (AutoCompleteTextView) sender;
             var selectedItemArgs = new SelectedItemChangedEventArgs(view.Text);
             var element = (Xfx.XfxComboBox) Element;
@@ -83,6 +96,10 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
+                return;
+
             var element = (Xfx.XfxComboBox) Element;
             ResetAdapter(element);
         }

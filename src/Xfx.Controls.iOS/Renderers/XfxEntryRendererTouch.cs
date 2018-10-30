@@ -4,6 +4,7 @@ using System.Drawing;
 using CoreGraphics;
 using UIKit;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 using Xfx;
 using Xfx.Controls.iOS.Controls;
 using Xfx.Controls.iOS.Extensions;
@@ -11,7 +12,6 @@ using Xfx.Controls.iOS.Renderers;
 using Xfx.Extensions;
 using static Xamarin.Forms.Entry;
 using ColorExtensions = Xfx.Controls.iOS.Extensions.ColorExtensions;
-using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererTouch))]
 
@@ -26,6 +26,9 @@ namespace Xfx.Controls.iOS.Renderers
         protected override void OnElementChanged(ElementChangedEventArgs<XfxEntry> e)
         {
             base.OnElementChanged(e);
+
+            if (Element == null || Control == null)
+                return;
 
             // unsubscribe
             if (e.OldElement != null)
@@ -61,6 +64,8 @@ namespace Xfx.Controls.iOS.Renderers
                 SetUnfocusedColor();
 
                 Control.UnderlineErrorTextIsVisible = Element.ErrorDisplay == ErrorDisplay.Underline;
+
+                // subscribe
                 Control.EditingDidBegin += OnEditingDidBegin;
                 Control.EditingDidEnd += OnEditingDidEnd;
                 Control.EditingChanged += ViewOnEditingChanged;
@@ -75,6 +80,9 @@ namespace Xfx.Controls.iOS.Renderers
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
+
+            if (Element == null || Control == null)
+                return;
 
             if (e.PropertyName == PlaceholderProperty.PropertyName)
                 SetHintText();
@@ -114,6 +122,10 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
         {
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null)
+                return;
+
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             Element.SetValueFromRenderer(isFocusedPropertyKey, false);
             _hasFocus = false;
@@ -122,6 +134,10 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void OnEditingDidBegin(object sender, EventArgs eventArgs)
         {
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null)
+                return;
+
             var isFocusedPropertyKey = Element.GetInternalField<BindablePropertyKey>("IsFocusedPropertyKey");
             Element.SetValueFromRenderer(isFocusedPropertyKey, true);
             _hasFocus = true;
@@ -130,7 +146,11 @@ namespace Xfx.Controls.iOS.Renderers
 
         private void ViewOnEditingChanged(object sender, EventArgs eventArgs)
         {
-            Element?.SetValueFromRenderer(TextProperty, Control.Text);
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null)
+                return;
+
+            Element.SetValueFromRenderer(TextProperty, Control.Text);
         }
 
         private void SetUnfocusedColor()
