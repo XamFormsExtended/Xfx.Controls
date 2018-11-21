@@ -35,7 +35,7 @@ namespace Xfx.Controls.Droid.Renderers
         protected XfxCardView CardView => (XfxCardView)Element;
         protected virtual void OnElementChanged(object sender, VisualElementChangedEventArgs args) { }
         protected virtual void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args) { }
-        private void SetCardElevation() => Elevation = CardView.Elevation < 0 ? _defaultElevation : CardView.Elevation;
+        private void SetCardElevation() => CardElevation = CardView.Elevation < 0 ? _defaultElevation : CardView.Elevation;
         private void SetCardRadius() => Radius = CardView.CornerRadius < 0 ? _defaultCornerRadius : CardView.CornerRadius;
         private void SetCardBackgroundColor() => SetCardBackgroundColor(CardView.BackgroundColor.ToAndroid());
 
@@ -56,7 +56,7 @@ namespace Xfx.Controls.Droid.Renderers
             _visualElementManager.Init(this);
             UseCompatPadding = true;
 
-            _defaultElevation = Elevation;
+            _defaultElevation = CardElevation;
             _defaultCornerRadius = Radius;
             SetContentPadding();
             SetCardRadius();
