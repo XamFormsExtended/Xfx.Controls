@@ -190,16 +190,50 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetHintLabelActiveColor(AColor color)
         {
-            var hintText = Control.Class.GetDeclaredField("mFocusedTextColor");
-            hintText.Accessible = true;
-            hintText.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
+            // design library 28.0.0 and later changed the field from mFocusedTextColor to focusedTextColor.
+            // Assume using design library >= 28 by checking for the new field name first.
+            var field = GetDeclaredField("focusedTextColor") ?? GetDeclaredField("mFocusedTextColor");
+            if (field == null)
+            {
+                throw new NoSuchFieldException($"No field `focusedTextColor` or `mFocusedTextColor` in class {Control.Class.Name}");
+            }
+
+            SetHintLabelColor(field, color);
         }
 
         private void SetHintLabelDefaultColor(AColor color)
         {
-            var hint = Control.Class.GetDeclaredField("mDefaultTextColor");
+            // design library 28.0.0 and later changed the field from mDefaultTextColor to defaultHintTextColor.  
+            // Assume using design library >= 28 by checking for the new field name first.
+            var field = GetDeclaredField("defaultHintTextColor") ?? GetDeclaredField("mDefaultTextColor");
+            if (field == null)
+            {
+                throw new NoSuchFieldException($"No field `defaultHintTextColor` or `mDefaultTextColor` in class {Control.Class.Name}");
+            }
+
+            SetHintLabelColor(field, color);
+        }
+
+        private void SetHintLabelColor(Java.Lang.Reflect.Field hint, AColor color)
+        {
             hint.Accessible = true;
             hint.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
+        }
+
+        private Java.Lang.Reflect.Field GetDeclaredField(string fieldName)
+        {
+            Java.Lang.Reflect.Field field = null;
+
+            try
+            {
+                field = Control.Class.GetDeclaredField(fieldName);
+            }
+            catch (NoSuchFieldException)
+            {
+                Log.Info("XfxEntryRendererDroid", $"Swallowing NoSuchFieldException - {fieldName}.");
+            }
+
+            return field;
         }
 
         private void SetText()
