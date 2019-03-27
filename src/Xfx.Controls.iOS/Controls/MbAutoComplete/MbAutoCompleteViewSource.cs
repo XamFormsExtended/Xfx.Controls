@@ -4,6 +4,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 using Xamarin.Forms;
+using Xfx;
 
 namespace MBAutoComplete
 {
@@ -22,15 +23,18 @@ namespace MBAutoComplete
             return Suggestions.Count;
         }
 
-        public event EventHandler<SelectedItemChangedEventArgs> Selected;
+        public event EventHandler<XfxSelectedItemChangedEventArgs> Selected;
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
             AutoCompleteTextField.Text = Suggestions.ElementAt(indexPath.Row);
             AutoCompleteTextField.AutoCompleteTableView.Hidden = true;
             AutoCompleteTextField.ResignFirstResponder();
-            var item = Suggestions.ToList()[(int)indexPath.Item];
-            Selected?.Invoke(tableView, new SelectedItemChangedEventArgs(item));
+
+            int index = (int)indexPath.Item;
+            var item = Suggestions.ToList()[index];
+
+            Selected?.Invoke(tableView, new XfxSelectedItemChangedEventArgs(item, index));
             // don't call base.RowSelected
         }
     }

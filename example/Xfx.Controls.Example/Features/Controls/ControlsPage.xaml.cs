@@ -20,9 +20,10 @@ namespace Xfx.Controls.Example.Features.Controls
             Debug.WriteLine("Email Unfocused");
         }
 
-        private void Email_ItemSelected(object sender, SelectedItemChangedEventArgs args)
+        private void Email_ItemSelected(object sender, XfxSelectedItemChangedEventArgs args)
         {
             Debug.WriteLine($"Selected Item from Event: {args.SelectedItem}");
+            Debug.WriteLine($"Selected Item index from Event: {args.SelectedItemIndex}");
         }
     }
 }

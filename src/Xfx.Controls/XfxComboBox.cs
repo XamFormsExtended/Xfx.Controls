@@ -74,9 +74,9 @@ namespace Xfx
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
+        public event EventHandler<XfxSelectedItemChangedEventArgs> ItemSelected;
 
-        internal void OnItemSelectedInternal(object sender, SelectedItemChangedEventArgs args)
+        internal void OnItemSelectedInternal(object sender, XfxSelectedItemChangedEventArgs args)
         {
             SelectedItem = args.SelectedItem;
             ItemSelected?.Invoke(sender, args);
@@ -108,6 +108,6 @@ namespace Xfx
         }
 
         protected virtual void OnItemsSourcePropertyChanged(XfxComboBox bindable, object oldvalue, object newvalue) { }
-        protected virtual void OnItemSelected(SelectedItemChangedEventArgs args) { }
+        protected virtual void OnItemSelected(XfxSelectedItemChangedEventArgs args) { }
     }
 }

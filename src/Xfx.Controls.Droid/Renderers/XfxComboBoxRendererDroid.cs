@@ -75,7 +75,7 @@ namespace Xfx.Controls.Droid.Renderers
         private void AutoCompleteOnItemSelected(object sender, AdapterView.ItemClickEventArgs args)
         {
             var view = (AutoCompleteTextView) sender;
-            var selectedItemArgs = new SelectedItemChangedEventArgs(view.Text);
+            var selectedItemArgs = new XfxSelectedItemChangedEventArgs(view.Text, args.Position);
             var element = (Xfx.XfxComboBox) Element;
             element.OnItemSelectedInternal(Element, selectedItemArgs);
             HideKeyboard();

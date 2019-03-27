@@ -111,7 +111,7 @@ namespace Xfx.Controls.iOS.Renderers
             return scrollView ?? GetParentScrollView(element.Superview);
         }
 
-        private void AutoCompleteViewSourceOnSelected(object sender, SelectedItemChangedEventArgs args)
+        private void AutoCompleteViewSourceOnSelected(object sender, XfxSelectedItemChangedEventArgs args)
         {
             ComboBox.OnItemSelectedInternal(Element, args);
             // TODO : Florell, Chase (Contractor) 02/15/17 SET FOCUS
