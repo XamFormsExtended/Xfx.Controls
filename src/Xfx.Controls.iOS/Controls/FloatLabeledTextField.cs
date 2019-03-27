@@ -163,19 +163,19 @@ namespace Xfx.Controls.iOS.Controls
         {
             if (_floatingLabel == null)
             {
-                return base.TextRect(forBounds);
+                return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0));
             }
-            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
+            return InsetRect(base.TextRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace + 4, 0));
         }
 
         public override CGRect EditingRect(CGRect forBounds)
         {
             if (_floatingLabel == null)
             {
-                return base.EditingRect(forBounds);
+                return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0));
             }
 
-            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace, 0));
+            return InsetRect(base.EditingRect(forBounds), new UIEdgeInsets(_floatingLabel.Font.LineHeight, 0, UnderlineSpace + 4, 0));
         }
 
         public override CGRect ClearButtonRect(CGRect forBounds)
@@ -205,7 +205,7 @@ namespace Xfx.Controls.iOS.Controls
                 if (!string.IsNullOrEmpty(Text) && FloatingLabelEnabled)
                 {
                     _floatingLabel.Alpha = 1.0f;
-                    _floatingLabel.Frame = new CGRect(_floatingLabel.Frame.Location.X, 2.0f, _floatingLabel.Frame.Size.Width, _floatingLabel.Frame.Size.Height);
+                    _floatingLabel.Frame = new CGRect(_floatingLabel.Frame.Location.X, -4.0f, _floatingLabel.Frame.Size.Width, _floatingLabel.Frame.Size.Height);
                 }
                 else
                 {
