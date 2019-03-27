@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Android.Content;
 using Android.Content.Res;
 using Android.Support.Design.Widget;
@@ -17,9 +18,9 @@ using Xfx;
 using Xfx.Controls.Droid.Extensions;
 using Xfx.Controls.Droid.Renderers;
 using Xfx.Extensions;
+using AColor = Android.Graphics.Color;
 using Application = Android.App.Application;
 using Color = Xamarin.Forms.Color;
-using AColor = Android.Graphics.Color;
 using FormsAppCompat = Xamarin.Forms.Platform.Android.AppCompat;
 
 [assembly: ExportRenderer(typeof(XfxEntry), typeof(XfxEntryRendererDroid))]
@@ -38,16 +39,20 @@ namespace Xfx.Controls.Droid.Renderers
             AutoPackage = false;
         }
 
-        protected EditText EditText => Control.EditText;
+        protected EditText EditText => Control?.EditText;
 
         public bool OnEditorAction(TextView v, ImeAction actionId, KeyEvent e)
         {
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return false;
+
             if ((actionId == ImeAction.Done) || ((actionId == ImeAction.ImeNull) && (e.KeyCode == Keycode.Enter)))
             {
                 Control.ClearFocus();
                 HideKeyboard();
                 ((IEntryController)Element).SendCompleted();
             }
+
             return true;
         }
 
@@ -61,8 +66,10 @@ namespace Xfx.Controls.Droid.Renderers
 
         public virtual void OnTextChanged(ICharSequence s, int start, int before, int count)
         {
-            if (string.IsNullOrWhiteSpace(Element.Text) && (s.Length() == 0)) return;
-            ((IElementController)Element).SetValueFromRenderer(Entry.TextProperty, s.ToString());
+            if (Element == null || (string.IsNullOrWhiteSpace(Element.Text) && (s.Length() == 0)) || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return;
+
+            ((IElementController)Element)?.SetValueFromRenderer(Entry.TextProperty, s.ToString());
         }
 
         protected override TextInputLayout CreateNativeControl()
@@ -81,9 +88,11 @@ namespace Xfx.Controls.Droid.Renderers
         {
             base.OnElementChanged(e);
 
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return;
+
             if (e.OldElement != null)
-                if (Control != null)
-                    EditText.FocusChange -= ControlOnFocusChange;
+                EditText.FocusChange -= ControlOnFocusChange;
 
             if (e.NewElement != null)
             {
@@ -120,6 +129,9 @@ namespace Xfx.Controls.Droid.Renderers
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return;
+
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == Entry.PlaceholderProperty.PropertyName)
@@ -150,13 +162,24 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void ControlOnFocusChange(object sender, FocusChangeEventArgs args)
         {
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return;
+
             _hasFocus = args.HasFocus;
             if (_hasFocus)
             {
                 var manager = (InputMethodManager)Application.Context.GetSystemService(Context.InputMethodService);
 
+                if (manager == null || manager.Handle == IntPtr.Zero)
+                    return;
+
                 EditText.PostDelayed(() =>
                     {
+                        // Double check for null and disposed objects because this call is delayed.
+                        if (manager == null || manager.Handle == IntPtr.Zero || Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                            return;
+
                         EditText.RequestFocus();
                         manager.ShowSoftInput(EditText, 0);
                     },
@@ -168,9 +191,9 @@ namespace Xfx.Controls.Droid.Renderers
             SetUnderlineColor(_hasFocus ?  GetActivePlaceholderColor(): GetPlaceholderColor());
         }
 
-        protected AColor GetPlaceholderColor() => Element.PlaceholderColor.ToAndroid(Color.FromHex("#80000000"));
+        protected AColor GetPlaceholderColor() => Element?.PlaceholderColor.ToAndroid(Color.FromHex("#80000000")) ?? Color.FromHex("#80000000").ToAndroid();
 
-        private AColor GetActivePlaceholderColor() => Element.ActivePlaceholderColor.ToAndroid(global::Android.Resource.Attribute.ColorAccent, Context);
+        private AColor GetActivePlaceholderColor() => Element?.ActivePlaceholderColor.ToAndroid(Android.Resource.Attribute.ColorAccent, Context) ?? new AColor(Android.Resource.Attribute.ColorAccent);
 
         protected virtual void SetLabelAndUnderlineColor()
         {
@@ -185,21 +208,57 @@ namespace Xfx.Controls.Droid.Renderers
         private void SetUnderlineColor(AColor color)
         {
             var element = (ITintableBackgroundView)EditText;
-            element.SupportBackgroundTintList = ColorStateList.ValueOf(color);
+
+            if (element != null && element.Handle != IntPtr.Zero)
+                element.SupportBackgroundTintList = ColorStateList.ValueOf(color);
         }
 
         private void SetHintLabelActiveColor(AColor color)
         {
-            var hintText = Control.Class.GetDeclaredField("mFocusedTextColor");
-            hintText.Accessible = true;
-            hintText.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
+            // design library 28.0.0 and later changed the field from mFocusedTextColor to focusedTextColor.
+            // Assume using design library >= 28 by checking for the new field name first.
+            var field = GetDeclaredField("focusedTextColor") ?? GetDeclaredField("mFocusedTextColor");
+            if (field == null)
+            {
+                throw new NoSuchFieldException($"No field `focusedTextColor` or `mFocusedTextColor` in class {Control.Class.Name}");
+            }
+
+            SetHintLabelColor(field, color);
         }
 
         private void SetHintLabelDefaultColor(AColor color)
         {
-            var hint = Control.Class.GetDeclaredField("mDefaultTextColor");
+            // design library 28.0.0 and later changed the field from mDefaultTextColor to defaultHintTextColor.  
+            // Assume using design library >= 28 by checking for the new field name first.
+            var field = GetDeclaredField("defaultHintTextColor") ?? GetDeclaredField("mDefaultTextColor");
+            if (field == null)
+            {
+                throw new NoSuchFieldException($"No field `defaultHintTextColor` or `mDefaultTextColor` in class {Control.Class.Name}");
+            }
+
+            SetHintLabelColor(field, color);
+        }
+
+        private void SetHintLabelColor(Java.Lang.Reflect.Field hint, AColor color)
+        {
             hint.Accessible = true;
             hint.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
+        }
+
+        private Java.Lang.Reflect.Field GetDeclaredField(string fieldName)
+        {
+            Java.Lang.Reflect.Field field = null;
+
+            try
+            {
+                field = Control.Class.GetDeclaredField(fieldName);
+            }
+            catch (NoSuchFieldException)
+            {
+                Log.Info("XfxEntryRendererDroid", $"Swallowing NoSuchFieldException - {fieldName}.");
+            }
+
+            return field;
         }
 
         private void SetText()
@@ -245,14 +304,14 @@ namespace Xfx.Controls.Droid.Renderers
             }
         }
 
-        public void SetFloatingHintEnabled()
+        private void SetFloatingHintEnabled()
         {
             Control.HintEnabled = Element.FloatingHintEnabled;
             Control.HintAnimationEnabled = Element.FloatingHintEnabled;
             SetFontAttributesSizeAndFamily();
         }
 
-        public void SetErrorDisplay()
+        private void SetErrorDisplay()
         {
             switch (Element.ErrorDisplay)
             {
@@ -268,6 +327,11 @@ namespace Xfx.Controls.Droid.Renderers
         protected void HideKeyboard()
         {
             var manager = (InputMethodManager)Application.Context.GetSystemService(Context.InputMethodService);
+
+            // Method is called via event subscription which could result to a call to a disposed object.
+            if (manager == null || manager.Handle == IntPtr.Zero || Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                return;
+
             manager.HideSoftInputFromWindow(EditText.WindowToken, 0);
         }
 

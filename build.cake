@@ -92,7 +92,7 @@ Task("Package Library")
                                     Version                 = version,
                                     Title                   = "Xamarin Forms Extended Controls",
                                     Authors                 = new[] {primaryAuthor},
-                                    Description             = "Xamarin Forms Extended Controls",
+                                    Description             = "Xamarin Forms Extended Controls. Provides extended controls with a 'Material Design' flare.",
                                     ProjectUrl              = new Uri("https://github.com/XamFormsExtended/Xfx.Controls"),
                                     Files                   = new [] {
                                                                         new NuSpecContent {Source = coreDir.ToString() + "/Xfx.Controls.dll", Target = "lib/netcore45"},

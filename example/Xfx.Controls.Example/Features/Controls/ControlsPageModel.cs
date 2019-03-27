@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 namespace Xfx.Controls.Example.Features.Controls
 {
-    public class MainPageModel : BindableObject
+    public class MainPageModel : BaseViewModel
     {
         // here's a list of email address suffixes that we're going to use
         private static readonly string[] _emails =
@@ -20,21 +21,11 @@ namespace Xfx.Controls.Example.Features.Controls
             "@yahoo.com" // seriously, does anyone use this anymore?
         };
 
-        public MainPageModel()
-        {
-            Name = "John Smith Jr.";
-        }
-
         public static readonly BindableProperty EmailAddressProperty = BindableProperty.Create(nameof(EmailAddress),
             typeof(string),
             typeof(MainPage),
             default(string),
             propertyChanged: EmailAddressPropertyChanged);
-
-        public static readonly BindableProperty NameErrorTextProperty = BindableProperty.Create(nameof(NameErrorText),
-            typeof(string),
-            typeof(MainPage),
-            default(string));
 
         public static readonly BindableProperty EmailSuggestionsProperty =
             BindableProperty.Create(nameof(EmailSuggestions),
@@ -45,16 +36,9 @@ namespace Xfx.Controls.Example.Features.Controls
         public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name),
             typeof(string),
             typeof(MainPage),
-            default(string),
-            propertyChanged: OnNamePropertyChanged);
+            default(string));
 
         public static readonly BindableProperty FooProperty = BindableProperty.Create(nameof(Foo),
-            typeof(string),
-            typeof(MainPageModel),
-            default(string),
-            propertyChanged: OnFooPropertyChanged);
-
-        public static readonly BindableProperty FooErrorTextProperty = BindableProperty.Create(nameof(FooErrorText),
             typeof(string),
             typeof(MainPageModel),
             default(string));
@@ -63,26 +47,27 @@ namespace Xfx.Controls.Example.Features.Controls
             typeof(object),
             typeof(MainPageModel));
 
-        /// <summary>
-        /// SelectedItem summary. This is a bindable property.
-        /// </summary>
-        public object SelectedItem
+        public MainPageModel()
         {
-            get { return GetValue(SelectedItemProperty); }
-            set
-            {
-                SetValue(SelectedItemProperty, value);
-                Debug.WriteLine($"Selected Item from ViewModel {value}");
-            }
+            Name = "John Smith Jr.";
         }
 
         /// <summary>
-        ///     FooErrorText summary. This is a bindable property.
+        ///     Text . This is a bindable property.
         /// </summary>
-        public string FooErrorText
+        public string EmailAddress
         {
-            get { return (string) GetValue(FooErrorTextProperty); }
-            set { SetValue(FooErrorTextProperty, value); }
+            get => (string)GetValue(EmailAddressProperty);
+            set => SetValue(EmailAddressProperty, value);
+        }
+
+        /// <summary>
+        ///     Email Suggestions collection . This is a bindable property.
+        /// </summary>
+        public ObservableCollection<string> EmailSuggestions
+        {
+            get => (ObservableCollection<string>)GetValue(EmailSuggestionsProperty);
+            set => SetValue(EmailSuggestionsProperty, value);
         }
 
         /// <summary>
@@ -90,8 +75,12 @@ namespace Xfx.Controls.Example.Features.Controls
         /// </summary>
         public string Foo
         {
-            get { return (string) GetValue(FooProperty); }
-            set { SetValue(FooProperty, value); }
+            get => (string)GetValue(FooProperty);
+            set
+            {
+                SetValue(FooProperty, value);
+                ValidateProperty();
+            }
         }
 
         /// <summary>
@@ -99,8 +88,26 @@ namespace Xfx.Controls.Example.Features.Controls
         /// </summary>
         public string Name
         {
-            get { return (string) GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
+            get => (string)GetValue(NameProperty);
+            set
+            {
+                SetValue(NameProperty, value);
+                ValidateProperty();
+            }
+        }
+
+
+        /// <summary>
+        ///     SelectedItem summary. This is a bindable property.
+        /// </summary>
+        public object SelectedItem
+        {
+            get => GetValue(SelectedItemProperty);
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+                Debug.WriteLine($"Selected Item from ViewModel {value}");
+            }
         }
 
         // you can customize your sorting algorithim to however you want it to work.
@@ -110,36 +117,9 @@ namespace Xfx.Controls.Example.Features.Controls
                 .OrderBy(x => x)
                 .ToList();
 
-        /// <summary>
-        ///     Email Suggestions collection . This is a bindable property.
-        /// </summary>
-        public ObservableCollection<string> EmailSuggestions
-        {
-            get { return (ObservableCollection<string>) GetValue(EmailSuggestionsProperty); }
-            set { SetValue(EmailSuggestionsProperty, value); }
-        }
-
-        /// <summary>
-        ///     Error Text . This is a bindable property.
-        /// </summary>
-        public string NameErrorText
-        {
-            get { return (string) GetValue(NameErrorTextProperty); }
-            set { SetValue(NameErrorTextProperty, value); }
-        }
-
-        /// <summary>
-        ///     Text . This is a bindable property.
-        /// </summary>
-        public string EmailAddress
-        {
-            get { return (string) GetValue(EmailAddressProperty); }
-            set { SetValue(EmailAddressProperty, value); }
-        }
-
         private static void EmailAddressPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            var model = (MainPageModel) bindable;
+            var model = (MainPageModel)bindable;
             // make sure we have the latest string.
             var text = newvalue.ToString();
 
@@ -162,24 +142,53 @@ namespace Xfx.Controls.Example.Features.Controls
                 model.EmailSuggestions.Add($"{text}{_emails[i]}");
         }
 
-        private static void OnNamePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+        public override void ValidateProperty([CallerMemberName]string propertyName = null)
         {
-            var model = (MainPageModel) bindable;
-            // make sure we have the latest string.
-            var text = newvalue.ToString();
+            // I actually recommend using FluentValidation for this
+            switch (propertyName)
+            {
+                case nameof(Name):{ ValidateName(); break;}
+                case nameof(Foo):{ ValidateFoo(); break;}
+            }
 
-            // don't validate like this, only for demo purposes.
-            model.NameErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
+            IsValid = Errors.Any();
+            RaiseErrorsChanged(propertyName);
         }
 
-        private static void OnFooPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+        private void ValidateFoo()
         {
-            var model = (MainPageModel) bindable;
-            // make sure we have the latest string.
-            var text = newvalue.ToString();
+            const string nullMessage = "Foo cannot be empty";
+            var nameMessages = new List<string>();
+            if (string.IsNullOrEmpty(Foo))
+            {
+                nameMessages.Add(nullMessage);
+                Errors[nameof(Foo)] = nameMessages;
+            }
+            else
+            {
+                if (Errors.ContainsKey(nameof(Foo)))
+                {
+                    Errors.Remove(nameof(Foo));
+                }
+            }
+        }
 
-            // don't validate like this, only for demo purposes.
-            model.FooErrorText = string.IsNullOrEmpty(text) ? "Text cannot be empty" : "";
+        private void ValidateName()
+        {
+            const string nullMessage = "Name cannot be empty";
+            var nameMessages = new List<string>();
+            if (string.IsNullOrEmpty(Name))
+            {
+                nameMessages.Add(nullMessage);
+                Errors[nameof(Name)] = nameMessages;
+            }
+            else
+            {
+                if (Errors.ContainsKey(nameof(Name)))
+                {
+                    Errors.Remove(nameof(Name));
+                }
+            }
         }
     }
 }
