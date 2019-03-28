@@ -62,6 +62,7 @@ namespace Xfx.Controls.iOS.Renderers
                 SetErrorDisplay();
                 SetFocusedColor();
                 SetUnfocusedColor();
+                SetReturnType();
 
                 Control.UnderlineErrorTextIsVisible = Element.ErrorDisplay == ErrorDisplay.Underline;
 
@@ -118,6 +119,8 @@ namespace Xfx.Controls.iOS.Renderers
                 SetFont();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName)
                 SetFocusedColor();
+            else if (e.PropertyName == XfxEntry.ReturnTypeProperty.PropertyName)
+                SetReturnType();
         }
 
         private void OnEditingDidEnd(object sender, EventArgs eventArgs)
@@ -165,6 +168,34 @@ namespace Xfx.Controls.iOS.Renderers
             Control.FloatingLabelActiveTextColor = Element.ActivePlaceholderColor == Color.Accent
                 ? Control.TintColor
                 : Element.ActivePlaceholderColor.ToUIColor();
+        }
+
+        private void SetReturnType()
+        {
+            switch (Element.ReturnType)
+            {
+                case ReturnType.Done:
+                    Control.ReturnKeyType = UIReturnKeyType.Done;
+                    break;
+                case ReturnType.Default:
+                    Control.ReturnKeyType = UIReturnKeyType.Default;
+                    break;
+                case ReturnType.Go:
+                    Control.ReturnKeyType = UIReturnKeyType.Go;
+                    break;
+                case ReturnType.Next:
+                    Control.ReturnKeyType = UIReturnKeyType.Next;
+                    break;
+                case ReturnType.Search:
+                    Control.ReturnKeyType = UIReturnKeyType.Search;
+                    break;
+                case ReturnType.Send:
+                    Control.ReturnKeyType = UIReturnKeyType.Send;
+                    break;
+                default:
+                    Control.ReturnKeyType = UIReturnKeyType.Done;
+                    break;
+            }
         }
 
         private void SetFloatingHintEnabled()
