@@ -124,6 +124,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetIsEnabled();
                 SetErrorDisplay();
                 SetLabelAndUnderlineColor();
+                SetReturnType();
             }
         }
 
@@ -158,6 +159,7 @@ namespace Xfx.Controls.Droid.Renderers
                 SetLabelAndUnderlineColor();
             else if (e.PropertyName == Entry.TextColorProperty.PropertyName)
                 SetTextColor();
+            else if (e.PropertyName == Entry.ReturnTypeProperty.PropertyName) SetReturnType();
         }
 
         private void ControlOnFocusChange(object sender, FocusChangeEventArgs args)
@@ -211,6 +213,34 @@ namespace Xfx.Controls.Droid.Renderers
 
             if (element != null && element.Handle != IntPtr.Zero)
                 element.SupportBackgroundTintList = ColorStateList.ValueOf(color);
+        }
+
+        private void SetReturnType()
+        {
+            switch (Element.ReturnType)
+            {
+                case ReturnType.Done:
+                    EditText.ImeOptions = ImeAction.Done;
+                    break;
+                case ReturnType.Default:
+                    EditText.ImeOptions = ImeAction.Done;
+                    break;
+                case ReturnType.Go:
+                    EditText.ImeOptions = ImeAction.Go;
+                    break;
+                case ReturnType.Next:
+                    EditText.ImeOptions = ImeAction.Next;
+                    break;
+                case ReturnType.Search:
+                    EditText.ImeOptions = ImeAction.Search;
+                    break;
+                case ReturnType.Send:
+                    EditText.ImeOptions = ImeAction.Send;
+                    break;
+                default:
+                    EditText.ImeOptions = ImeAction.Done;
+                    break;
+            }
         }
 
         private void SetHintLabelActiveColor(AColor color)
