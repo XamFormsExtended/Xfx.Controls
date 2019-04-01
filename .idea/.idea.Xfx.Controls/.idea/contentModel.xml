@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.3/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_Xfx.Controls.-1814878113.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/Library/Developer/Xamarin/android-sdk-macosx/platforms/android-27/data/res" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p=".gitattributes" t="Include" />
+      <e p=".github/ISSUE_TEMPLATE.md" t="Include" />
+      <e p=".github/PULL_REQUEST_TEMPLATE.md" t="Include" />
+      <e p=".gitignore" t="Include" />
+      <e p="build.cake" t="Include" />
+      <e p="build.ps1" t="Include" />
+      <e p="CONTRIBUTING.md" t="Include" />
+      <e p="example" t="Include">
+        <e p="Xfx.Controls.Example" t="IncludeRecursive">
+          <e p="Annotations.cs" t="Include" />
+          <e p="App.cs" t="Include" />
+          <e p="BaseViewModel.cs" t="Include" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="Features" t="Include">
+            <e p="Controls" t="Include">
+              <e p="ControlsPage.xaml" t="Include" />
+              <e p="ControlsPage.xaml.cs" t="Include" />
+              <e p="ControlsPageModel.cs" t="Include" />
+            </e>
+          </e>
+          <e p="MainPage.xaml" t="Include" />
+          <e p="MainPage.xaml.cs" t="Include" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netstandard1.3" t="Include">
+                <e p="Xfx.Controls.Example.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Xfx.Controls.Example.csproj" t="IncludeRecursive" />
+        </e>
+        <e p="Xfx.Controls.Example.Droid" t="IncludeRecursive">
+          <e p="Assets" t="Include">
+            <e p="AboutAssets.txt" t="Include" />
+          </e>
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="MainActivity.cs" t="Include" />
+          <e p="obj" t="ExcludeRecursive" />
+          <e p="packages.config" t="Include" />
+          <e p="Properties" t="Include">
+            <e p="AndroidManifest.xml" t="Include" />
+            <e p="AssemblyInfo.cs" t="Include" />
+          </e>
+          <e p="resources" t="Include">
+            <e p="AboutResources.txt" t="Include" />
+            <e p="drawable" t="Include">
+              <e p="icon.png" t="Include" />
+            </e>
+            <e p="drawable-hdpi" t="Include">
+              <e p="icon.png" t="Include" />
+            </e>
+            <e p="drawable-xhdpi" t="Include">
+              <e p="icon.png" t="Include" />
+            </e>
+            <e p="drawable-xxhdpi" t="Include">
+              <e p="icon.png" t="Include" />
+            </e>
+            <e p="Resource.Designer.cs" t="Include" />
+          </e>
+          <e p="Xfx.Controls.Example.Droid.csproj" t="IncludeRecursive" />
+        </e>
+        <e p="Xfx.Controls.Example.iOS" t="IncludeRecursive">
+          <e p="AppDelegate.cs" t="Include" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="Entitlements.plist" t="Include" />
+          <e p="Info.plist" t="Include" />
+          <e p="iTunesArtwork" t="Include" />
+          <e p="iTunesArtwork@2x" t="Include" />
+          <e p="Main.cs" t="Include" />
+          <e p="obj" t="ExcludeRecursive" />
+          <e p="packages.config" t="Include" />
+          <e p="Properties" t="Include">
+            <e p="AssemblyInfo.cs" t="Include" />
+          </e>
+          <e p="resources" t="Include">
+            <e p="Default-568h@2x.png" t="Include" />
+            <e p="Default-Portrait.png" t="Include" />
+            <e p="Default-Portrait@2x.png" t="Include" />
+            <e p="Default.png" t="Include" />
+            <e p="Default@2x.png" t="Include" />
+            <e p="Icon-60@2x.png" t="Include" />
+            <e p="Icon-60@3x.png" t="Include" />
+            <e p="Icon-76.png" t="Include" />
+            <e p="Icon-76@2x.png" t="Include" />
+            <e p="Icon-Small-40.png" t="Include" />
+            <e p="Icon-Small-40@2x.png" t="Include" />
+            <e p="Icon-Small-40@3x.png" t="Include" />
+            <e p="Icon-Small.png" t="Include" />
+            <e p="Icon-Small@2x.png" t="Include" />
+            <e p="Icon-Small@3x.png" t="Include" />
+            <e p="LaunchScreen.storyboard" t="Include" />
+            <e p="Media.xcassets" t="Include">
+              <e p="AppIcons.appiconset" t="Include">
+                <e p="Contents.json" t="Include" />
+              </e>
+              <e p="LaunchImages.launchimage" t="Include">
+                <e p="Contents.json" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Xfx.Controls.Example.iOS.csproj" t="IncludeRecursive" />
+        </e>
+      </e>
+      <e p="LICENSE" t="Include" />
+      <e p="packages" t="ExcludeRecursive">
+        <e p="Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.Animated.Vector.Drawable.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.Core.UI.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.Design.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.Media.Compat.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.Transition.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+        <e p="Xamarin.Android.Support.v7.RecyclerView.27.0.2/proguard" t="Include">
+          <e p="proguard.txt" t="Include" />
+        </e>
+      </e>
+      <e p="readme.md" t="Include" />
+      <e p="resources/xfx.controls.droid.gif" t="Include" />
+      <e p="resources/xfx.controls.ios.gif" t="Include" />
+      <e p="sln" t="Include">
+        <e p=".github" t="Include" />
+        <e p="resources" t="Include" />
+      </e>
+      <e p="src/SolutionInfo.cs" t="Include" />
+      <e p="src/Xfx.Controls" t="IncludeRecursive">
+        <e p="Behaviors" t="Include">
+          <e p="BindableBehavior.cs" t="Include" />
+          <e p="ValidatesOnNotifyDataErrors.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="IXfxValidatableElement.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard1.3" t="Include">
+              <e p="Xfx.Controls.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Xfx.Controls.csproj" t="IncludeRecursive" />
+        <e p="XfxBinding.cs" t="Include" />
+        <e p="XfxBindingExtensions.cs" t="Include" />
+        <e p="XfxCardView.cs" t="Include" />
+        <e p="XfxComboBox.cs" t="Include" />
+        <e p="XfxEntry.cs" t="Include" />
+        <e p="XfxSelectedItemChangedEventArgs.cs" t="Include" />
+      </e>
+      <e p="src/Xfx.Controls.Droid" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="extensions" t="Include">
+          <e p="CollectionExtensions.cs" t="Include" />
+          <e p="FontExtensions.cs" t="Include" />
+          <e p="KeyboardExtensions.cs" t="Include" />
+        </e>
+        <e p="Forms.Internals" t="Include">
+          <e p="GestureManager.cs" t="Include" />
+          <e p="InnerGestureListener.cs" t="Include" />
+          <e p="InnerScaleListener.cs" t="Include" />
+          <e p="PanGestureHandler.cs" t="Include" />
+          <e p="PinchGestureHandler.cs" t="Include" />
+          <e p="TapGestureHandler.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AndroidManifest.xml" t="Include" />
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Renderers" t="Include">
+          <e p="XfxCardViewRendererDroid.cs" t="Include" />
+          <e p="XfxComboBoxRendererDroid.cs" t="Include" />
+          <e p="XfxEntryRendererDroid.cs" t="Include" />
+        </e>
+        <e p="resources" t="Include" />
+        <e p="Xfx.Controls.Droid.csproj" t="IncludeRecursive" />
+        <e p="XfxComboBox" t="Include">
+          <e p="XfxComboBoxArrayAdapter.cs" t="Include" />
+          <e p="XfxComboBoxFilter.cs" t="Include" />
+        </e>
+        <e p="XfxControls.cs" t="Include" />
+        <e p="XfxVisualElementManager.cs" t="Include" />
+      </e>
+      <e p="src/Xfx.Controls.iOS" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controls" t="Include">
+          <e p="FloatLabeledTextField.cs" t="Include" />
+          <e p="MbAutoComplete" t="Include">
+            <e p="MbAutoCompleteDefaultDataSource.cs" t="Include" />
+            <e p="MbAutoCompleteTableView.cs" t="Include" />
+            <e p="MbAutoCompleteTextField.cs" t="Include" />
+            <e p="MbAutoCompleteViewSource.cs" t="Include" />
+          </e>
+          <e p="UICardView.cs" t="Include" />
+        </e>
+        <e p="extensions" t="Include">
+          <e p="ColorExtensions.cs" t="Include" />
+          <e p="FontExtensions.cs" t="Include" />
+          <e p="KeyboardExtensions.cs" t="Include" />
+          <e p="StringExtensions.cs" t="Include" />
+          <e p="UIViewExtensions.cs" t="Include" />
+        </e>
+        <e p="InvalidRendererException.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Renderers" t="Include">
+          <e p="XfxCardViewRendererTouch.cs" t="Include" />
+          <e p="XfxComboBoxRendererTouch.cs" t="Include" />
+          <e p="XfxEntryRendererTouch.cs" t="Include" />
+        </e>
+        <e p="Xfx.Controls.iOS.csproj" t="IncludeRecursive" />
+        <e p="XfxControls.cs" t="Include" />
+        <e p="XfxVisualElementManager.cs" t="Include" />
+      </e>
+      <e p="src/Xfx.Controls.Shared" t="IncludeRecursive">
+        <e p="extensions" t="Include">
+          <e p="XamarinFormsExtensions.cs" t="Include" />
+        </e>
+        <e p="Xfx.Controls.Shared.projitems" t="Include" />
+        <e p="Xfx.Controls.Shared.shproj" t="IncludeRecursive" />
+      </e>
+      <e p="Xfx.Controls.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
