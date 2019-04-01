@@ -17,6 +17,7 @@ namespace Xfx.Controls.Example.Features.Controls
             "@hotmail.com",
             "@me.com",
             "@outlook.com",
+            "@mail.com",
             "@live.com", // does anyone care about this one? haha
             "@yahoo.com" // seriously, does anyone use this anymore?
         };

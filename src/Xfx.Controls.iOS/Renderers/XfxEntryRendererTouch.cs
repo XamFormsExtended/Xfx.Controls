@@ -27,9 +27,6 @@ namespace Xfx.Controls.iOS.Renderers
         {
             base.OnElementChanged(e);
 
-            if (Element == null || Control == null)
-                return;
-
             // unsubscribe
             if (e.OldElement != null)
             {
@@ -73,7 +70,7 @@ namespace Xfx.Controls.iOS.Renderers
             }
         }
 
-        protected virtual FloatLabeledTextField CreateNativeControl()
+        protected override FloatLabeledTextField CreateNativeControl()
         {
             return new FloatLabeledTextField();
         }
@@ -119,7 +116,7 @@ namespace Xfx.Controls.iOS.Renderers
                 SetFont();
             else if (e.PropertyName == XfxEntry.ActivePlaceholderColorProperty.PropertyName)
                 SetFocusedColor();
-            else if (e.PropertyName == XfxEntry.ReturnTypeProperty.PropertyName)
+            else if (e.PropertyName == ReturnTypeProperty.PropertyName)
                 SetReturnType();
         }
 

@@ -5,11 +5,7 @@
         <RootNamespace>Xfx</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
-    </ItemGroup>
-    <ItemGroup>
-      <Reference Include="System.ComponentModel">
-        <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile259\System.ComponentModel.dll</HintPath>
-      </Reference>
+        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
     </ItemGroup>
 </Project>

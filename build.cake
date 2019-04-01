@@ -12,13 +12,15 @@ var primaryAuthor = "Chase Florell";
 var touchDir = MakeAbsolute(Directory("./build-artifacts/output/touch"));
 var droidDir = MakeAbsolute(Directory("./build-artifacts/output/droid"));
 var coreDir  = MakeAbsolute(Directory("./build-artifacts/output/core"));
+var nugetOutDir  = MakeAbsolute(Directory("./nuget"));
 Setup(context =>
 {
     var binsToClean = GetDirectories("./src/**/bin/");
 	var artifactsToClean = new []{
         touchDir.ToString(), 
         droidDir.ToString(), 
-        coreDir.ToString()
+        coreDir.ToString(),
+        nugetOutDir.ToString()
 	};
 	CleanDirectories(binsToClean);
 	CleanDirectories(artifactsToClean);
@@ -68,6 +70,7 @@ Task("Build Core")
 });
 
 Task("Patch Assembly Info")
+    .IsDependentOn("Nuget Restore")
     .Does(() =>
 {
     var file = "./src/SolutionInfo.cs";
@@ -82,6 +85,13 @@ Task("Patch Assembly Info")
     });
 });
 
+Task("Nuget Restore")
+    .Does(() => {
+    NuGetRestore("./Xfx.Controls.sln", new NuGetRestoreSettings { NoCache = true });
+});
+
+
+
 Task("Package Library")
   .IsDependentOn("Build Droid")
   .IsDependentOn("Build Touch")
@@ -92,6 +102,7 @@ Task("Package Library")
                                     Version                 = version,
                                     Title                   = "Xamarin Forms Extended Controls",
                                     Authors                 = new[] {primaryAuthor},
+                                    LicenseUrl              = new Uri("https://raw.githubusercontent.com/XamFormsExtended/Xfx.Controls/master/LICENSE.md"),
                                     Description             = "Xamarin Forms Extended Controls. Provides extended controls with a 'Material Design' flare.",
                                     ProjectUrl              = new Uri("https://github.com/XamFormsExtended/Xfx.Controls"),
                                     Files                   = new [] {
@@ -110,7 +121,7 @@ Task("Package Library")
                                                                       },
                                     BasePath                = "./src",
                                     NoPackageAnalysis       = true,
-                                    OutputDirectory         = "./.nuget"
+                                    OutputDirectory         = nugetOutDir
                                 };
 
     NuGetPack(nuGetPackSettings);

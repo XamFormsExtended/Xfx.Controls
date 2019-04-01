@@ -88,9 +88,6 @@ namespace Xfx.Controls.Droid.Renderers
         {
             base.OnElementChanged(e);
 
-            if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
-                return;
-
             if (e.OldElement != null)
                 EditText.FocusChange -= ControlOnFocusChange;
 
@@ -179,7 +176,7 @@ namespace Xfx.Controls.Droid.Renderers
                 EditText.PostDelayed(() =>
                     {
                         // Double check for null and disposed objects because this call is delayed.
-                        if (manager == null || manager.Handle == IntPtr.Zero || Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
+                        if (manager.Handle == IntPtr.Zero || Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
                             return;
 
                         EditText.RequestFocus();
@@ -272,7 +269,7 @@ namespace Xfx.Controls.Droid.Renderers
         private void SetHintLabelColor(Java.Lang.Reflect.Field hint, AColor color)
         {
             hint.Accessible = true;
-            hint.Set(Control, new ColorStateList(new int[][] { new[] { 0 } }, new int[] { color }));
+            hint.Set(Control, new ColorStateList(new[] { new[] { 0 } }, new int[] { color }));
         }
 
         private Java.Lang.Reflect.Field GetDeclaredField(string fieldName)
