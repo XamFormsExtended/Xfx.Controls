@@ -36,7 +36,7 @@ namespace Xfx
         /// <example>
         /// <![CDATA[
         /// SortingAlgorithm = (text, values) => values
-        ///     .Where(t => t.ToLower().StartsWith(text.ToLower()))
+        ///     .Where(t => t.StartsWith(text, StringComparison.CurrentCultureIgnoreCase))
         ///     .OrderBy(x => x)
         ///     .ToList();
         /// ]]>
