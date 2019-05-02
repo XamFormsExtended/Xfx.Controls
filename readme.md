@@ -83,7 +83,7 @@ The first two are pretty self explanitory, but here's an example of how you can 
 public class MyViewModel : INotifyPropertyChanged
 {
 	public Func<string, ICollection<string>, ICollection<string>> SortingAlgorithm { get; } = (text, values) => values
-		.Where(x => x.ToLower().StartsWith(text.ToLower()))
+		.Where(x => x.StartsWith(text, StringComparison.CurrentCultureIgnoreCase)))
 		.OrderBy(x => x)
 		.ToList();
 }
