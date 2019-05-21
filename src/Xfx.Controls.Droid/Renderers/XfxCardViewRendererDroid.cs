@@ -13,6 +13,7 @@ using AView = Android.Views.View;
 
 namespace Xfx.Controls.Droid.Renderers
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public class XfxCardViewRendererDroid : CardView, IVisualElementRenderer
     {
         private float _defaultElevation;

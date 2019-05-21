@@ -5,6 +5,7 @@ using Xfx.Controls.Droid.Forms.Internals;
 
 namespace Xfx.Controls.Droid
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public class XfxVisualElementManager : IDisposable
     {
         private VisualElementPackager _packager;

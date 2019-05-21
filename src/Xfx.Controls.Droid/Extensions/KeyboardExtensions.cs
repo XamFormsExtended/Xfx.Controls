@@ -3,6 +3,7 @@ using Xamarin.Forms;
 
 namespace Xfx.Controls.Droid.Extensions
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public static class KeyboardExtensions
     {
         public static InputTypes ToNative(this Keyboard input)

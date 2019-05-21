@@ -27,6 +27,7 @@ using FormsAppCompat = Xamarin.Forms.Platform.Android.AppCompat;
 
 namespace Xfx.Controls.Droid.Renderers
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public class XfxEntryRendererDroid : FormsAppCompat.ViewRenderer<XfxEntry, TextInputLayout>,
         ITextWatcher,
         TextView.IOnEditorActionListener

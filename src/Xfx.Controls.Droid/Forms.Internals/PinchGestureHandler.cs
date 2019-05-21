@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 namespace Xfx.Controls.Droid.Forms.Internals
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class PinchGestureHandler
     {
         double _pinchStartingScale = 1;
