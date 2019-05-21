@@ -27,6 +27,7 @@ bld/
 data/
 .nuget/
 .vs/
+.idea/
 .droidres/
 *.csproj.bak
 build-artifacts/
