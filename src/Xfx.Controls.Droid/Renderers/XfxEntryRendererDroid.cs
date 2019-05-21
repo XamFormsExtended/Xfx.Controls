@@ -46,7 +46,7 @@ namespace Xfx.Controls.Droid.Renderers
             if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero)
                 return false;
 
-            if ((actionId == ImeAction.Done) || ((actionId == ImeAction.ImeNull) && (e.KeyCode == Keycode.Enter)))
+            if ((actionId != ImeAction.ImeNull) || ((actionId == ImeAction.ImeNull) && (e.KeyCode == Keycode.Enter)))
             {
                 Control.ClearFocus();
                 HideKeyboard();
