@@ -6,6 +6,7 @@ using Xamarin.Forms.Internals;
 
 namespace Xfx.Controls.Droid.Forms.Internals
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class TapGestureHandler
     {
         public TapGestureHandler(Func<View> getView)

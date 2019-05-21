@@ -18,6 +18,7 @@ using Resource = Android.Resource;
 
 namespace Xfx.Controls.Droid.Renderers
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public class XfxComboBoxRendererDroid : XfxEntryRendererDroid
     {
         public XfxComboBoxRendererDroid(Context context) : base(context)

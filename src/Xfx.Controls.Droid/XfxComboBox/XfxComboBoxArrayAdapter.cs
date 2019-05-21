@@ -5,6 +5,7 @@ using Android.Widget;
 
 namespace Xfx.Controls.Droid.XfxComboBox
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class XfxComboBoxArrayAdapter : ArrayAdapter
     {
         private readonly IList<string> _objects;

@@ -9,6 +9,7 @@ using View = Xamarin.Forms.View;
 
 namespace Xfx.Controls.Droid.Forms.Internals
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class GestureManager : IDisposable
     {
         IVisualElementRenderer _renderer;

@@ -7,6 +7,7 @@ using AApplication = Android.App.Application;
 
 namespace Xfx.Controls.Droid.Extensions
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     public static class FontExtensions
     {
         private static readonly Dictionary<Tuple<string, FontAttributes>, Typeface> _typefaces = new Dictionary<Tuple<string, FontAttributes>, Typeface>();
