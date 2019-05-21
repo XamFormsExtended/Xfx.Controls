@@ -5,6 +5,7 @@ using Xamarin.Forms.Internals;
 
 namespace Xfx.Controls.Droid.Forms.Internals
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class PanGestureHandler
     {
         readonly Func<double, double> _pixelTranslation;

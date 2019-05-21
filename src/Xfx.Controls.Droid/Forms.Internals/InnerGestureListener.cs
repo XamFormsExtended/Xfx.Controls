@@ -8,6 +8,7 @@ using Object = Java.Lang.Object;
 
 namespace Xfx.Controls.Droid.Forms.Internals
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class InnerGestureListener : Object, GestureDetector.IOnGestureListener, GestureDetector.IOnDoubleTapListener
     {
         readonly TapGestureHandler _tapGestureHandler;

@@ -8,6 +8,7 @@ using Xfx.Controls.Droid.Extensions;
 
 namespace Xfx.Controls.Droid.XfxComboBox
 {
+    [Android.Runtime.Preserve (AllMembers = true)]
     internal class XfxComboBoxFilter : Filter
     {
         private readonly Func<string, ICollection<string>, ICollection<string>> _sortingAlgorithm;
