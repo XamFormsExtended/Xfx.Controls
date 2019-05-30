@@ -51,6 +51,7 @@ namespace Xfx.Controls.Example.Features.Controls
         public MainPageModel()
         {
             Name = "John Smith Jr.";
+            EmailAddress = "";
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace Xfx.Controls.Example.Features.Controls
             var text = newvalue.ToString();
 
             // if the text is empty or already contains an @ symbol, don't update anything.
-            if (string.IsNullOrEmpty(text) || text.Contains("@")) return;
+            if (text.Contains("@")) return;
 
             /*
             note, you could use some sort of FastObservableCollection if 
@@ -148,8 +149,8 @@ namespace Xfx.Controls.Example.Features.Controls
             // I actually recommend using FluentValidation for this
             switch (propertyName)
             {
-                case nameof(Name):{ ValidateName(); break;}
-                case nameof(Foo):{ ValidateFoo(); break;}
+                case nameof(Name): { ValidateName(); break; }
+                case nameof(Foo): { ValidateFoo(); break; }
             }
 
             IsValid = Errors.Any();

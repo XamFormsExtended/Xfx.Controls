@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Forms.Internals\InstantAutoCompleteTextView.cs" />
     <Compile Include="Renderers\XfxCardViewRendererDroid.cs" />
     <Compile Include="Forms.Internals\InnerScaleListener.cs" />
     <Compile Include="Forms.Internals\PinchGestureHandler.cs" />

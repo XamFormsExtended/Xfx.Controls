@@ -38,6 +38,8 @@
                              Placeholder="Enter your email address"
                              ActivePlaceholderColor="BlueViolet"
                              ItemSelected="Email_ItemSelected"
+                             OpenOnFocus="True"
+                             ShowIfEmpty="True"
                              Focused="Email_OnFocused"
                              Unfocused="Email_OnUnfocused"
                              SelectedItem="{Binding SelectedItem}"

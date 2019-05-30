@@ -10,6 +10,7 @@ using Android.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Xfx;
+using Xfx.Controls.Droid.Forms.Internals;
 using Xfx.Controls.Droid.Renderers;
 using Xfx.Controls.Droid.XfxComboBox;
 using Resource = Android.Resource;
@@ -18,19 +19,19 @@ using Resource = Android.Resource;
 
 namespace Xfx.Controls.Droid.Renderers
 {
-    [Android.Runtime.Preserve (AllMembers = true)]
+    [Android.Runtime.Preserve(AllMembers = true)]
     public class XfxComboBoxRendererDroid : XfxEntryRendererDroid
     {
         public XfxComboBoxRendererDroid(Context context) : base(context)
         {
         }
 
-        private AppCompatAutoCompleteTextView AutoComplete => (AppCompatAutoCompleteTextView)Control?.EditText;
+        private InstantAutoCompleteTextView AutoComplete => (InstantAutoCompleteTextView)Control?.EditText;
 
         protected override TextInputLayout CreateNativeControl()
         {
             var textInputLayout = new TextInputLayout(Context);
-            var autoComplete = new AppCompatAutoCompleteTextView(Context)
+            var autoComplete = new InstantAutoCompleteTextView(Context)
             {
                 SupportBackgroundTintList = ColorStateList.ValueOf(GetPlaceholderColor())
             };
@@ -63,7 +64,11 @@ namespace Xfx.Controls.Droid.Renderers
                 AutoComplete.ItemClick += AutoCompleteOnItemSelected;
 
                 if (e.NewElement is Xfx.XfxComboBox elm)
+                {
                     elm.CollectionChanged += ItemsSourceCollectionChanged;
+                    AutoComplete.SetOpenOnFocus(elm.OpenOnFocus);
+                    AutoComplete.ShowIfEmpty = elm.ShowIfEmpty;
+                }
             }
         }
 
@@ -88,9 +93,9 @@ namespace Xfx.Controls.Droid.Renderers
             if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
                 return;
 
-            var view = (AutoCompleteTextView) sender;
+            var view = (AutoCompleteTextView)sender;
             var selectedItemArgs = new XfxSelectedItemChangedEventArgs(view.Text, args.Position);
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             element.OnItemSelectedInternal(Element, selectedItemArgs);
             HideKeyboard();
         }
@@ -101,7 +106,7 @@ namespace Xfx.Controls.Droid.Renderers
             if (Element == null || Control == null || Control.Handle == IntPtr.Zero || EditText == null || EditText.Handle == IntPtr.Zero || AutoComplete == null || AutoComplete.Handle == IntPtr.Zero)
                 return;
 
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             ResetAdapter(element);
         }
 
@@ -123,7 +128,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetItemsSource()
         {
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             if (element.ItemsSource == null) return;
 
             ResetAdapter(element);
@@ -131,7 +136,7 @@ namespace Xfx.Controls.Droid.Renderers
 
         private void SetThreshold()
         {
-            var element = (Xfx.XfxComboBox) Element;
+            var element = (Xfx.XfxComboBox)Element;
             AutoComplete.Threshold = element.Threshold;
         }
     }
