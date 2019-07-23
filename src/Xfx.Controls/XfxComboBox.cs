@@ -30,6 +30,9 @@ namespace Xfx
             typeof(XfxComboBox),
             2);
 
+        public bool OpenOnFocus { get; set; }
+        public bool ShowIfEmpty { get; set; }
+
         /// <summary>
         ///     Sorting Algorithm for the drop down list. This is a bindable property.
         /// </summary>
@@ -84,12 +87,12 @@ namespace Xfx
         }
         private static void OnItemsSourcePropertyChangedInternal(BindableObject bindable, object oldvalue, object newvalue)
         {
-            var combo = (XfxComboBox) bindable;
+            var combo = (XfxComboBox)bindable;
             var observableOld = oldvalue as INotifyCollectionChanged;
             var observableNew = newvalue as INotifyCollectionChanged;
             combo.OnItemsSourcePropertyChanged(combo, oldvalue, newvalue);
 
-            if (observableOld != null )
+            if (observableOld != null)
             {
                 observableOld.CollectionChanged -= combo.OnCollectionChangedInternal;
             }
